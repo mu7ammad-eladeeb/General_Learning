@@ -440,3 +440,48 @@ def calculator(n1, n2):
     else:
         print(div)
 ```
+
+# sys Module for Information
+
+`exc_info` function from `sys` module prints Exception details.
+
+```python
+import sys
+
+try:
+    # code which can cause exception
+except:
+    print(sys.exc_info())
+```
+## Output:
+( class_name, standard_message, traceback_object )
+
+It returns a tuple containing three values as above.
+
+# Challenge
+Difficulty: Easy
+
+A function takes a key as argument. Complete function to fetch value for entered key. If key not found in dictionary, KeyError will be raised. Handle it and print exception class name and standard message by using above way. Else, print value in else block.
+
+## Hints
+Hint 1: Use Slicing to get class name and standard message
+
+# Solution
+```python
+import sys
+
+age = {
+    'Peter': 23,
+    'Lopez': 24,
+    'Glenn': 27,
+    'Jay': 29
+}
+
+def fetch(key):
+    try:
+        value = age[key]
+    except:
+        print(sys.exc_info()[0:2])
+    else:
+        print(value)
+```
