@@ -485,3 +485,94 @@ def fetch(key):
     else:
         print(value)
 ```
+
+# Types of Exceptions
+
+There are **two types of Exceptions** in Python:
+
+## 1. Built-in Exceptions
+
+These Exceptions are already available in Python.
+
+**Examples:**
+- `EOFError`
+- `IndexError`
+- `TypeError`
+- `ValueError`
+
+## 2. User-defined Exceptions (Custom Exceptions)
+
+These Exceptions are created by programmers.
+
+**Example:**
+- Raising an Exception if the user enters an invalid password.
+
+## Remember
+
+Every Exception is actually a **class** in Python inherited from the built-in `BaseException` class.
+
+So, `IndexError` is also a built-in class inherited from `BaseException`.
+
+As soon as an Exception occurs, an **object (instance)** of the raised Exception class is created.
+
+---
+
+## Example
+
+```python
+def observe(idx):
+    try:
+        # A list containing 4 elements.
+        data = [10, 20, 30, 40]
+
+        # Tries to access the element at the given index.
+        # If idx is outside the valid range (0-3),
+        # Python raises an IndexError.
+        print(data[idx])
+
+    except Exception as e:
+        # 'e' is the exception object created by Python.
+        # type(e) shows the class of the exception object.
+        print(type(e))
+
+        # mro() stands for Method Resolution Order.
+        # It returns a list of classes that Python searches
+        # when looking for methods or attributes.
+        # Since IndexError inherits from LookupError,
+        # LookupError inherits from Exception,
+        # Exception inherits from BaseException,
+        # and BaseException inherits from object,
+        # mro() displays this inheritance chain.
+        print(IndexError.mro())
+```
+
+### Output
+
+```text
+<class 'IndexError'>
+[<class 'IndexError'>,
+ <class 'LookupError'>,
+ <class 'Exception'>,
+ <class 'BaseException'>,
+ <class 'object'>]
+```
+
+### Explanation of Output
+
+- `type(e)` prints:
+
+  ```python
+  <class 'IndexError'>
+  ```
+
+  This shows that the exception object `e` belongs to the `IndexError` class.
+
+- `IndexError.mro()` prints the inheritance hierarchy of the `IndexError` class:
+
+  - `IndexError` → The actual exception raised.
+  - `LookupError` → Parent class of `IndexError`.
+  - `Exception` → Base class for most built-in exceptions.
+  - `BaseException` → Root class of all Python exceptions.
+  - `object` → The root class of all Python classes.
+
+This demonstrates that every built-in exception is a class and ultimately inherits from `BaseException`.
