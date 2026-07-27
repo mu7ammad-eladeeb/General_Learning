@@ -633,15 +633,3 @@ def contact_details(mobile):
     else:
         print("valid")
 ```
-### Another Solution
-```python
-def contact_details(mobile):
-    try:
-        for i in mobile:
-            if not int(i) and len(mobile) != 12:
-                raise ValueError()
-    except:
-        print("Invalid")
-    else:
-        print("valid")
-```
