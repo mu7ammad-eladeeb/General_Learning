@@ -576,3 +576,72 @@ def observe(idx):
   - `object` → The root class of all Python classes.
 
 This demonstrates that every built-in exception is a class and ultimately inherits from `BaseException`.
+
+# Raising an Exception
+
+## `raise` Keyword
+
+You can raise any Exception (Built-in or Custom) by using the `raise` keyword.
+
+You can also pass a message inside the raised Exception that describes the problem.
+
+### Syntax
+
+```python
+raise ExceptionName(optional_message)
+```
+
+### Example
+
+```python
+try:
+    n = int(input("Enter the number for factorial:"))
+    if n < 0:
+        raise ValueError("Number cannot be negative")
+    # factorial code here
+except Exception as obj:
+    print(obj)
+```
+
+**Explanation:**
+
+In the above example, the `raise` statement is executed if the user enters a number less than `0`. This raises a `ValueError`, and control is transferred to the `except` block. The message `"Number cannot be negative"` is stored in `obj` and printed on the console.
+
+---
+
+# Challenge (Easy)
+
+A function will take a mobile number (`string`) as input.
+
+- Raise `ValueError` if any character is not a digit or if the length is not equal to **12** digits.
+- Print `"Invalid"` on the console if an exception is raised.
+- Otherwise, print `"valid"`.
+
+## Hint
+
+Use the `isdigit()` method of the `str` class.
+
+### Solution
+
+```python
+def contact_details(mobile):
+    try:
+        if not (mobile.isdigit() and len(mobile) == 12):
+            raise ValueError("Invalid")
+    except ValueError as obj:
+        print(obj)
+    else:
+        print("valid")
+```
+### Another Solution
+```python
+def contact_details(mobile):
+    try:
+        for i in mobile:
+            if not int(i) and len(mobile) != 12:
+                raise ValueError()
+    except:
+        print("Invalid")
+    else:
+        print("valid")
+```
