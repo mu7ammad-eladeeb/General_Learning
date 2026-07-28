@@ -633,3 +633,101 @@ def contact_details(mobile):
     else:
         print("valid")
 ```
+
+# User Defined Exception
+
+## How to Create a User-Defined Exception?
+
+There are three steps:
+
+1. Create an Exception class by inheriting the `Exception` class.
+2. Raise the created Exception for a particular condition.
+3. Handle that Exception.
+
+---
+
+## Example: Prevent Division by Five
+
+Suppose you want to prevent users from dividing by `5`. If the second number is `5`, a custom Exception should be raised.
+
+### Step 1: Create a Custom Exception Class
+
+```python
+class FiveDivisionError(Exception):
+    pass
+```
+
+`FiveDivisionError` is a custom Exception created by inheriting the `Exception` class.
+
+> **Note:** You can define a constructor to customize the Exception, but in this example, the message is provided in the `raise` statement.
+
+---
+
+### Step 2: Raise the Exception
+
+```python
+try:
+    a = int(input("1st Number: "))
+    b = int(input("2nd Number: "))
+
+    if b == 5:
+        raise FiveDivisionError("Cannot divide by five")
+
+    div = a / b
+    print("Division:", div)
+```
+
+If `b == 5`, the `FiveDivisionError` Exception is raised.
+
+---
+
+### Step 3: Handle the Exception
+
+```python
+except Exception as obj:
+    print(obj)
+```
+
+The `except` block catches the raised Exception and prints its message.
+
+---
+
+# Challenge
+
+## Easy
+
+Age will be passed to the function `access`.
+
+Complete the function so that:
+
+- Print `"Access Denied!"` and stop function execution if `age` is less than `18`.
+- Otherwise, print `"Session Created!"`.
+
+Use **Exception handling only** and create a custom Exception named `AccessError`.
+
+---
+
+## Hints
+
+### Hint 1
+
+Print the messages exactly as given in the challenge.
+
+---
+
+# Solution
+
+```python
+class AccessError(Exception):
+    pass
+
+
+def access(age):
+    try:
+        if age < 18:
+            raise AccessError("Access Denied!")
+    except Exception as e:
+        print(e)
+    else:
+        print("Session Created!")
+```
