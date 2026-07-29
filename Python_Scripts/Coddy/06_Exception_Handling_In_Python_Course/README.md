@@ -731,3 +731,116 @@ def access(age):
     else:
         print("Session Created!")
 ```
+
+# Exception Handling Exercise-1
+
+## Problem Statement
+
+The signed password for user **`"coddy"`** is **`"12345"`**.
+
+Create a function that takes a password as input from the user. If the entered password does not match the stored password, raise an **`Invalid_Password`** exception with the message:
+
+```text
+Invalid password, try again
+```
+
+Otherwise, print:
+
+```text
+session created
+```
+
+The user should be prompted again until the correct password is entered.
+
+---
+
+## Hint
+
+- Use **recursion** to prompt the user again after an incorrect password.
+
+---
+
+## Solution
+
+```python
+stored_password = "12345"  # fetched from database (Imagine)
+
+class Invalid_Password(Exception):
+    pass
+
+def login():
+    try:
+        password = input()
+        if password != stored_password:
+            raise Invalid_Password("Invalid password, try again")
+    except Exception as e:
+        print(e)
+        login()
+    else:
+        print("session created")
+```
+
+---
+
+## Explanation
+
+- The correct password is stored in the variable `stored_password`.
+- A custom exception named `Invalid_Password` is created by inheriting from `Exception`.
+- The `login()` function reads the password entered by the user.
+- If the entered password does not match the stored password, an `Invalid_Password` exception is raised with the message:
+
+  ```text
+  Invalid password, try again
+  ```
+
+- The exception is caught in the `except` block, where:
+  - The error message is printed.
+  - The `login()` function is called again (using recursion) to prompt the user for another attempt.
+- If no exception occurs, the `else` block executes and prints:
+
+  ```text
+  session created
+  ```
+
+- This process continues until the user enters the correct password.
+
+  ## Alternative Solution (Using a `while` Loop)
+
+```python
+stored_password = "12345"  # fetched from database (Imagine)
+
+class Invalid_Password(Exception):
+    pass
+
+def login():
+    while True:
+        try:
+            password = input()
+            if password != stored_password:
+                raise Invalid_Password("Invalid password, try again")
+        except Exception as obj:
+            print(obj)
+        else:
+            print("session created")
+            break
+```
+
+### Explanation
+
+- The correct password is stored in the variable `stored_password`.
+- A custom exception named `Invalid_Password` is created by inheriting from the `Exception` class.
+- The `login()` function uses a `while True` loop to repeatedly prompt the user for a password.
+- Inside the `try` block:
+  - The user enters a password using `input()`.
+  - If the entered password does not match the stored password, an `Invalid_Password` exception is raised with the message:
+    ```text
+    Invalid password, try again
+    ```
+- The `except` block catches the exception and prints the error message.
+- If no exception occurs, the `else` block executes:
+  - It prints:
+    ```text
+    session created
+    ```
+  - The `break` statement exits the loop, ending the function.
+- Unlike the recursive solution, this approach uses a loop to repeatedly ask for the password, avoiding recursive function calls and making it more efficient for a large number of incorrect attempts.
