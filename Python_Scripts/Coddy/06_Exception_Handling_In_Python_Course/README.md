@@ -804,7 +804,7 @@ def login():
 
 - This process continues until the user enters the correct password.
 
-  ## Alternative Solution (Using a `while` Loop)
+  ## Alternative Solution (Using a `while` Loop) -> More Efficient Solution
 
 ```python
 stored_password = "12345"  # fetched from database (Imagine)
