@@ -11,7 +11,7 @@ def login():
         login()
     else:
         print("session created")
-# Another Solution:
+# Another Solution (more efficient):
 """
 stored_password = "12345" #fetched from database (Imagine)
 class Invalid_Password(Exception):
