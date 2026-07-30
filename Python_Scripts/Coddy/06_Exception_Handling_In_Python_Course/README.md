@@ -844,3 +844,125 @@ def login():
     ```
   - The `break` statement exits the loop, ending the function.
 - Unlike the recursive solution, this approach uses a loop to repeatedly ask for the password, avoiding recursive function calls and making it more efficient for a large number of incorrect attempts.
+
+# Exception Handling Example-2
+
+## Example 1
+
+Let's take an example of bank transactions. We are having multiple custom exceptions.
+
+1. Assume a user's bank account must contain at least **100$**. While making a transaction, if the remaining balance goes below **100$**, an exception should be generated.
+
+2. A user should have a maximum of **3 attempts**. If the user tries for a **fourth attempt**, an exception should be generated and the bank account should be frozen.
+
+> In this example, only the **first case** is implemented. The second case is left as a challenge.
+
+## Step 1: Create a User-Defined Exception Class
+
+```python
+class BalanceException(Exception):
+    pass
+```
+
+## Step 2: Raise the Exception for a Particular Condition
+
+```python
+balance = 1000
+
+try:
+    amt = float(input("Enter the amount to withdraw:"))
+
+    # Check remaining amount after transaction
+    temp = balance - amt
+
+    if temp < 100:
+        raise BalanceException("Insufficient balance")
+
+except Exception as obj:
+    print(obj)
+```
+
+In the above code, a custom exception is raised if the remaining balance goes below **100$**.
+
+## Using the `else` Block
+
+If no exception occurs, the transaction can be completed by updating the balance.
+
+```python
+else:
+    balance = balance - amt
+```
+
+## Using the `finally` Block
+
+Whether an exception occurs or not, we want to print the remaining balance. We can use the `finally` block for that.
+
+```python
+finally:
+    print("Remaining balance is:", balance)
+```
+
+## Challenge
+
+**Medium**
+
+Add another custom exception for the second case and update the given code.
+
+### Hint
+
+- Use **recursion** for the next attempt.
+- Use the **`global`** keyword to access global data inside the function.
+
+---
+
+# Solution
+
+```python
+balance = 10000   # Imagine it is fetched from database.
+
+class BalanceException(Exception):
+    pass
+
+class AttemptException(Exception):
+    pass
+
+attempt = 1
+
+def transaction():
+    global balance, attempt
+
+    try:
+        amt = float(input())
+
+        # Check remaining amount after transaction
+        temp = balance - amt
+
+        if temp < 100:
+            raise BalanceException("Insufficient balance")
+
+    except Exception as obj:
+        print(obj)
+
+        try:
+            if attempt == 3:
+                raise AttemptException("No more attempts allowed!")
+
+            attempt += 1
+            transaction()
+
+        except Exception as e:
+            print(e)
+
+    else:
+        balance = balance - amt
+        print("Transaction is success, Remaining balance is:", balance)
+```
+
+## Explanation
+
+- **`BalanceException`** is raised if the withdrawal would reduce the remaining balance below **100$**.
+- **`AttemptException`** is raised after **3 failed attempts**, preventing any further transactions.
+- The **`attempt`** variable keeps track of the number of failed attempts.
+- The **`global`** keyword allows the function to update the global variables `balance` and `attempt`.
+- **Recursion** is used to give the user another chance after an invalid transaction.
+- If no exception occurs, the transaction is completed and the updated balance is displayed.
