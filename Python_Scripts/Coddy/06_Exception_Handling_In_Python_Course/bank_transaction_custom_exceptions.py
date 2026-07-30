@@ -36,5 +36,3 @@ def transaction():
     else:
         balance = balance - amt
         print("Transaction is success, Remaining balance is:", balance)
-
-transaction()
