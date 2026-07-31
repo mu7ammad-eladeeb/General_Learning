@@ -966,3 +966,196 @@ def transaction():
 - The **`global`** keyword allows the function to update the global variables `balance` and `attempt`.
 - **Recursion** is used to give the user another chance after an invalid transaction.
 - If no exception occurs, the transaction is completed and the updated balance is displayed.
+
+# Exception Handling Example-3
+
+## Exercise - 03
+
+Create a function `calculator()` that handles both **user-defined (custom)** and **built-in** exceptions.
+
+The function takes a mathematical expression (string) as input.
+
+### Requirements
+
+The expression must follow this format:
+
+```text
+operand operator operand
+```
+
+Example:
+
+```text
+6 * 5
+```
+
+---
+
+## Exception Cases
+
+### 1. Invalid Expression
+
+The expression must contain **two operands and one operator**, separated by spaces.
+
+Example of a valid expression:
+
+```text
+6 * 5
+```
+
+Otherwise, raise the user-defined exception:
+
+```python
+InvalidOperation
+```
+
+Print:
+
+```text
+Please enter two operands and operator separated by space
+```
+
+---
+
+### 2. Invalid Operator
+
+Only the following operators are allowed:
+
+```text
++  -  *  /
+```
+
+If any other operator is used, raise the user-defined exception:
+
+```python
+InvalidOperator
+```
+
+Print:
+
+```text
+Invalid operator
+```
+
+---
+
+### 3. Invalid Operands
+
+Both operands must be numeric.
+
+Raise the built-in exception:
+
+```python
+TypeError
+```
+
+Print the standard exception message.
+
+---
+
+### 4. Division by Zero
+
+If division by zero occurs, raise the built-in exception:
+
+```python
+ZeroDivisionError
+```
+
+Print the standard exception message.
+
+---
+
+## Exception Messages
+
+| Exception | Message |
+|-----------|---------|
+| `InvalidOperation` | `Please enter two operands and operator separated by space` |
+| `InvalidOperator` | `Invalid operator` |
+| `TypeError` | Standard exception message |
+| `ZeroDivisionError` | Standard exception message |
+
+---
+
+## Solution
+
+```python
+class InvalidOperation(Exception):
+    pass
+
+class InvalidOperator(Exception):
+    pass
+
+
+def calculator(exp):
+    try:
+        operators = ('+', '-', '*', '/')
+        elements = exp.split()
+
+        if len(elements) != 3:
+            raise InvalidOperation(
+                "Please enter two operands and operator separated by space"
+            )
+
+        op = elements[1]
+
+        if op not in operators:
+            raise InvalidOperator("Invalid operator")
+
+        num1 = float(elements[0])
+        num2 = float(elements[2])
+
+        # Check for ZeroDivisionError before performing the actual operation
+        num1 / num2
+
+    except Exception as e:
+        print(e)
+
+    else:
+        if op == '+':
+            result = num1 + num2
+        elif op == '-':
+            result = num1 - num2
+        elif op == '*':
+            result = num1 * num2
+        elif op == '/':
+            result = num1 / num2
+
+        print(result)
+```
+
+---
+
+## Explanation
+
+### Custom Exceptions
+
+Two custom exceptions are created:
+
+- `InvalidOperation` → Raised when the expression format is incorrect.
+- `InvalidOperator` → Raised when an unsupported operator is used.
+
+### Validation Steps
+
+1. Split the expression into parts using `split()`.
+2. Ensure there are exactly three elements.
+3. Verify that the operator is one of `+`, `-`, `*`, or `/`.
+4. Convert both operands to `float`.
+5. Perform a temporary division (`num1 / num2`) to detect a `ZeroDivisionError` before calculating the final result.
+
+### Exception Handling
+
+All exceptions are handled by:
+
+```python
+except Exception as e:
+    print(e)
+```
+
+This prints:
+
+- Custom exception messages for `InvalidOperation` and `InvalidOperator`.
+- Standard Python messages for `TypeError` and `ZeroDivisionError`.
+
+### Successful Execution
+
+If no exception occurs, the appropriate mathematical operation is performed and the result is printed.
