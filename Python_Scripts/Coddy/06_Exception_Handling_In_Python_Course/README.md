@@ -1159,3 +1159,129 @@ This prints:
 ### Successful Execution
 
 If no exception occurs, the appropriate mathematical operation is performed and the result is printed.
+
+# Customize Tracebacks
+
+When you run the program below, Python displays the **traceback details**, the **exception type**, and the **standard exception message** in the output window.
+
+## Example
+
+```python
+print(100 + "hello")
+```
+
+### Output
+
+```text
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    print(100 + "hello")
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+```
+
+The output consists of two parts:
+
+- The **first three lines** are the **traceback details**, which contain information such as:
+  - Filename
+  - Line number
+  - Statement where the exception occurred
+- The **last line** contains:
+  - **Exception type**
+  - **Standard exception message**
+
+---
+
+## `sys.excepthook()`
+
+When an exception occurs, Python calls the `sys.excepthook()` function with the following arguments:
+
+- **`exc_type`** – Type of exception that occurred.
+- **`exc_value`** – Standard exception message.
+- **`exc_traceback`** – Traceback details.
+
+The default `sys.excepthook()` function prints all of this information to the output window as a standard error.
+
+---
+
+## Challenge
+
+**Difficulty:** Easy
+
+Override the `sys.excepthook()` function to customize the exception output.
+
+For the statement:
+
+```python
+print(100 + "hello")
+```
+
+the program should display:
+
+```text
+Something Went Wrong!
+unsupported operand type(s) for +: 'int' and 'str'
+```
+
+---
+
+## Hints
+
+### Hint 1
+
+Create your own function with the same parameters as `sys.excepthook()`.
+
+Assign your function to `sys.excepthook`.
+
+When an exception occurs, Python will call your function instead of the default `sys.excepthook()`.
+
+---
+
+# Solution
+
+```python
+import sys
+
+def my_exception(exc_type, exc_value, exc_traceback):
+    print("Something Went Wrong!")
+    print(exc_value)
+
+sys.excepthook = my_exception
+
+def add(val1, val2):
+    print(val1 + val2)
+```
+
+## Explanation
+
+1. Import the `sys` module.
+2. Create a custom exception handler named `my_exception()` with the same three parameters as `sys.excepthook()`:
+   - `exc_type`
+   - `exc_value`
+   - `exc_traceback`
+3. Inside the handler:
+   - Print a custom message: `"Something Went Wrong!"`
+   - Print only the exception message using `exc_value`.
+4. Replace the default exception handler by assigning:
+
+   ```python
+   sys.excepthook = my_exception
+   ```
+
+5. The `add()` function simply adds two values. If incompatible types are passed (for example, an integer and a string), a `TypeError` is raised automatically. Instead of displaying the full traceback, Python calls the custom exception handler and prints only the customized output.
+
+# Another Solution
+```python
+import sys
+
+def my_exception(exc_type, exc_value, exc_traceback):
+    print("Something Went Wrong!")
+    print(exc_value)
+
+def add(val1, val2):
+    try:
+       result = val1 + val2
+    except Exception as obj:
+        my_exception(obj.__class__, obj, obj.__traceback__)
+    else:
+        print(result)
+```
