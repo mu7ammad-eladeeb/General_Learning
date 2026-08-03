@@ -83,3 +83,63 @@ Python opens the file using the **default mode**, which is **read mode (`"r"`)**
 This means Python expects the file to already exist and prepares it for reading.
 
 The different file modes (such as read, write, append, etc.) will be discussed separately.
+
+# Read from a File in Python
+
+After opening a file, you can read its contents using the `read()` method.
+
+## Syntax
+
+```python
+f = open("coddy.txt")
+s = f.read()
+```
+
+### Explanation
+
+- `open("coddy.txt")` opens the file named **coddy.txt** in **read mode** by default.
+- `f.read()` reads **all the contents** of the file.
+- The returned content is stored in the variable `s`.
+
+## Example
+
+```python
+f = open("coddy.txt")
+s = f.read()
+print(s)
+```
+
+### Example File (`coddy.txt`)
+
+```text
+Hello, World!
+Welcome to Python.
+```
+
+### Output
+
+```text
+Hello, World!
+Welcome to Python.
+```
+
+---
+
+# Challenge
+
+## Problem
+
+Given the file named **`a.txt`**, read its contents and print them.
+
+## Solution
+
+```python
+f = open("a.txt")
+print(f.read())
+```
+
+### Explanation
+
+- Open the file **`a.txt`**.
+- Use `read()` to read the entire file.
+- Pass the result directly to `print()` to display the file's contents.
