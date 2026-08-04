@@ -230,3 +230,139 @@ open("a.txt", "rt")
 ```
 
 Both open `a.txt` for reading in text mode.
+
+# Writing to Files in Python
+
+To write data into a file, you must open it in **write (`'w'`)** mode or **append (`'a'`)** mode.
+
+## Write vs Append
+
+| Mode | Description |
+|------|-------------|
+| `'w'` | Writes to the file. If the file already exists, **all existing content is overwritten**. If the file does not exist, it is created. |
+| `'a'` | Appends (adds) new content to the **end** of the file. Existing content is preserved. If the file does not exist, it is created. |
+
+---
+
+# Writing with `write()`
+
+Use the `write()` method to write text into a file.
+
+## Syntax
+
+```python
+f = open("a.txt", "w")
+f.write("Some text")
+```
+
+### Explanation
+
+- `open("a.txt", "w")` opens the file in write mode.
+- `write("Some text")` writes the given text into the file.
+- If `a.txt` already contains data, it will be **replaced** with `"Some text"`.
+
+---
+
+# Example: Write Mode (`'w'`)
+
+```python
+f = open("notes.txt", "w")
+f.write("Python is fun!")
+```
+
+### Result (`notes.txt`)
+
+```text
+Python is fun!
+```
+
+If `notes.txt` previously contained:
+
+```text
+Hello
+Welcome
+```
+
+After running the code, it becomes:
+
+```text
+Python is fun!
+```
+
+---
+
+# Example: Append Mode (`'a'`)
+
+```python
+f = open("notes.txt", "a")
+f.write("\nKeep practicing!")
+```
+
+### Before
+
+```text
+Python is fun!
+```
+
+### After
+
+```text
+Python is fun!
+Keep practicing!
+```
+
+Notice that the existing content remains unchanged, and the new text is added to the end of the file.
+
+---
+
+# Challenge
+
+## Problem
+
+The file **`c.txt`** initially contains:
+
+```text
+Hello World
+```
+
+Modify the file so that it finally contains:
+
+```text
+Hello World!
+```
+
+You may use either **append** mode or **write** mode.
+
+---
+
+## Solution 1: Using Append Mode (Recommended)
+
+```python
+f = open("c.txt", "a")
+f.write("!")
+```
+
+### Result
+
+```text
+Hello World!
+```
+
+Since the file already contains `Hello World`, append mode simply adds the missing exclamation mark.
+
+---
+
+## Solution 2: Using Write Mode
+
+```python
+f = open("c.txt", "w")
+f.write("Hello World!")
+```
+
+### Result
+
+```text
+Hello World!
+```
+
+This solution also works, but it **overwrites** the entire file before writing the new text.
