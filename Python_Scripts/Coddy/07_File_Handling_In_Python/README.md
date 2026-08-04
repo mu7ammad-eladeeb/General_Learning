@@ -143,3 +143,90 @@ print(f.read())
 - Open the file **`a.txt`**.
 - Use `read()` to read the entire file.
 - Pass the result directly to `print()` to display the file's contents.
+
+# File Open Modes in Python
+
+When opening a file, you can specify how you want to use it by providing a **mode** as the second argument to the `open()` function.
+
+## Syntax
+
+```python
+open(filename, mode)
+```
+
+- `filename` is the name (or path) of the file.
+- `mode` determines how the file will be opened.
+
+---
+
+# File Modes
+
+| Mode | Key | Description |
+|------|-----|-------------|
+| Read | `'r'` | Opens a file for reading. |
+| Append | `'a'` | Opens a file for appending (adding content to the end of the file). |
+| Write | `'w'` | Opens a file for writing. Existing contents are overwritten. |
+| Create | `'x'` | Creates a new file. Raises an error if the file already exists. |
+
+> **Note:** If the file does **not** exist, all modes will create the file **except** **read mode (`'r'`)**.
+
+---
+
+# Text and Binary Modes
+
+You can also specify whether the file should be opened in **text** or **binary** mode.
+
+| Mode | Key | Description |
+|------|-----|-------------|
+| Text | `'t'` | Opens the file in text mode. |
+| Binary | `'b'` | Opens the file in binary mode. |
+
+---
+
+# Examples
+
+## Open a file in append mode
+
+```python
+open("data.csv", "a")
+```
+
+Opens `data.csv` and appends new data to the end of the file.
+
+---
+
+## Open a file in write and binary mode
+
+```python
+open("foo.txt", "wb")
+```
+
+Opens `foo.txt` for writing in binary mode.
+
+---
+
+## Open a file in read and write mode
+
+```python
+open("bar.txt", "rw")
+```
+
+Opens `bar.txt` for both reading and writing.
+
+---
+
+# Default Mode
+
+If no mode is specified, Python uses **read text mode (`'rt'`)** by default.
+
+These two statements are equivalent:
+
+```python
+open("a.txt")
+```
+
+```python
+open("a.txt", "rt")
+```
+
+Both open `a.txt` for reading in text mode.
