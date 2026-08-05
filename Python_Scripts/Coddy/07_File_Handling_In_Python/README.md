@@ -366,3 +366,75 @@ Hello World!
 ```
 
 This solution also works, but it **overwrites** the entire file before writing the new text.
+
+# Creating Files in Python
+
+Python can create a new file using the `open()` function with one of the following modes:
+
+- **Append (`'a'`)**
+- **Write (`'w'`)**
+- **Create (`'x'`)**
+
+## Syntax
+
+```python
+open(filename, mode)
+```
+
+---
+
+# File Creation Modes
+
+| Mode | Description |
+|------|-------------|
+| `'a'` | Opens a file for appending. If the file does not exist, it is created. |
+| `'w'` | Opens a file for writing. If the file does not exist, it is created. If it already exists, its contents are overwritten. |
+| `'x'` | Creates a new file. If the file already exists, Python raises a `FileExistsError`. |
+
+---
+
+# Example: Create a File Using Append Mode
+
+```python
+f = open("notes.txt", "a")
+```
+
+If `notes.txt` does not exist, Python creates it.
+
+---
+
+# Example: Create a File Using Write Mode
+
+```python
+f = open("report.txt", "w")
+```
+
+If `report.txt` does not exist, Python creates it.
+
+If it already exists, its contents are erased before writing new data.
+
+---
+
+# Example: Create a File Using Create Mode
+
+```python
+f = open("data.txt", "x")
+```
+
+This creates a new file named `data.txt`.
+
+If `data.txt` already exists, Python raises an error:
+
+```text
+FileExistsError: [Errno 17] File exists: 'data.txt'
+```
+
+---
+
+# Summary
+
+| Mode | Creates File if Missing | Overwrites Existing File | Raises Error if File Exists |
+|------|:-----------------------:|:------------------------:|:---------------------------:|
+| `'a'` | ✅ | ❌ | ❌ |
+| `'w'` | ✅ | ✅ | ❌ |
+| `'x'` | ✅ | ❌ | ✅ |
