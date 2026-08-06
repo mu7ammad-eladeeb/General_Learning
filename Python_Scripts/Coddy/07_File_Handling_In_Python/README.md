@@ -438,3 +438,66 @@ FileExistsError: [Errno 17] File exists: 'data.txt'
 | `'a'` | ✅ | ❌ | ❌ |
 | `'w'` | ✅ | ✅ | ❌ |
 | `'x'` | ✅ | ❌ | ✅ |
+
+# Deleting Files in Python
+
+Sometimes you need to delete a file from your computer using Python.
+
+To do this, use the **`os`** module and its **`remove()`** function.
+
+## Syntax
+
+```python
+import os
+
+os.remove("filename")
+```
+
+- `import os` imports Python's built-in **os** module.
+- `os.remove()` deletes the specified file.
+
+---
+
+# Example
+
+Delete a file named `a.txt`:
+
+```python
+import os
+
+os.remove("a.txt")
+```
+
+If `a.txt` exists, it will be permanently deleted.
+
+---
+
+# Another Example
+
+Delete a file named `notes.txt`:
+
+```python
+import os
+
+os.remove("notes.txt")
+```
+
+---
+
+# Important Note
+
+If the specified file does **not** exist, Python raises a `FileNotFoundError`.
+
+Example:
+
+```python
+import os
+
+os.remove("missing.txt")
+```
+
+### Output
+
+```text
+FileNotFoundError: [Errno 2] No such file or directory: 'missing.txt'
+```
