@@ -501,3 +501,174 @@ os.remove("missing.txt")
 ```text
 FileNotFoundError: [Errno 2] No such file or directory: 'missing.txt'
 ```
+
+# More Ways to Read Files in Python
+
+In addition to the basic `read()` method, Python provides several other ways to read data from a file.
+
+---
+
+# Read a Specific Number of Characters
+
+You can specify how many characters you want to read by passing a number to `read()`.
+
+## Syntax
+
+```python
+f = open("file.txt")
+s = f.read(10)
+```
+
+### Explanation
+
+- `f.read(10)` reads only the **first 10 characters** from the file.
+- The characters are stored in the variable `s`.
+
+### Example
+
+Suppose `file.txt` contains:
+
+```text
+Hello Python Programming
+```
+
+```python
+f = open("file.txt")
+print(f.read(10))
+```
+
+### Output
+
+```text
+Hello Pyth
+```
+
+---
+
+# Read One Line at a Time with `readline()`
+
+The `readline()` method reads **one line** from the file each time it is called.
+
+## Example
+
+```python
+f = open("file.txt")
+
+print(f.readline())
+print(f.readline())
+```
+
+If `file.txt` contains:
+
+```text
+Apple
+Banana
+Cherry
+```
+
+### Output
+
+```text
+Apple
+
+Banana
+```
+
+The first call reads the first line, and the second call reads the next line.
+
+---
+
+# Read All Lines with `readlines()`
+
+The `readlines()` method reads **all lines** from a file and returns them as a list of strings.
+
+## Example
+
+```python
+f = open("file.txt")
+print(f.readlines())
+```
+
+If `file.txt` contains:
+
+```text
+Apple
+Banana
+Cherry
+```
+
+### Output
+
+```python
+['Apple\n', 'Banana\n', 'Cherry']
+```
+
+Each element in the list represents one line from the file.
+
+---
+
+# Loop Through a File Line by Line
+
+You can iterate over a file directly using a `for` loop.
+
+## Example
+
+```python
+f = open("file.txt")
+
+for line in f:
+    print(line)
+```
+
+If `file.txt` contains:
+
+```text
+Apple
+Banana
+Cherry
+```
+
+### Output
+
+```text
+Apple
+Banana
+Cherry
+```
+
+This approach is commonly used when processing large files because it reads the file one line at a time.
+
+---
+
+# Challenge
+
+## Problem
+
+A file named **`numbers.txt`** contains one number on each line.
+
+Your task is to:
+
+1. Read the file **line by line**.
+2. Print **only the even numbers** (numbers divisible by `2`).
+
+> **Note:** When reading from a file, each line is returned as a **string**. Convert it to an integer using `int()` before performing arithmetic operations.
+
+---
+
+# Solution
+
+```python
+f = open("numbers.txt")
+
+for line in f:
+    if int(line) % 2 == 0:
+        print(int(line))
+```
+
+### Explanation
+
+- Open `numbers.txt`.
+- Read the file one line at a time using a `for` loop.
+- Convert each line from a string to an integer with `int(line)`.
+- Check whether the number is even using `number % 2 == 0`.
+- Print the number if the condition is true.
