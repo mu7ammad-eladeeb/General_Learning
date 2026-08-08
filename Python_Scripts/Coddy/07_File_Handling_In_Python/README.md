@@ -672,3 +672,95 @@ for line in f:
 - Convert each line from a string to an integer with `int(line)`.
 - Check whether the number is even using `number % 2 == 0`.
 - Print the number if the condition is true.
+
+# Closing Files in Python
+
+It is good practice to **close a file after opening it**.
+
+Closing a file releases the resources associated with it and ensures that the file is properly finished with.
+
+---
+
+# Using `close()`
+
+You can close an opened file using the `close()` method.
+
+## Example
+
+```python
+f = open("a.txt")
+f.close()
+```
+
+### Explanation
+
+- `open("a.txt")` opens the file.
+- `f.close()` closes the file after you finish working with it.
+
+If you perform operations on the file, close it afterward:
+
+```python
+f = open("a.txt")
+
+print(f.read())
+
+f.close()
+```
+
+---
+
+# Using `with`
+
+Python also provides a better and safer way to work with files by using the **`with` statement**.
+
+## Syntax
+
+```python
+with open("a.txt") as f:
+    # perform operations on f
+```
+
+The file is automatically closed when the `with` block finishes.
+
+## Example
+
+```python
+with open("a.txt") as f:
+    print(f.read())
+```
+
+You do **not** need to call `f.close()` yourself.
+
+---
+
+# Why Use `with`?
+
+Using `with` automatically handles closing the file, even when you finish the operations inside the block.
+
+### Without `with`
+
+```python
+f = open("a.txt")
+
+print(f.read())
+
+f.close()
+```
+
+### With `with`
+
+```python
+with open("a.txt") as f:
+    print(f.read())
+```
+
+The `with` statement is generally preferred because it makes file handling simpler and helps ensure that the file is closed properly.
+
+---
+
+# Summary
+
+| Method | File Closed Automatically? |
+|--------|-----------------------------|
+| `f.close()` | ❌ No, you must call it manually |
+| `with open(...) as f:` | ✅ Yes |
