@@ -764,3 +764,364 @@ The `with` statement is generally preferred because it makes file handling simpl
 |--------|-----------------------------|
 | `f.close()` | ❌ No, you must call it manually |
 | `with open(...) as f:` | ✅ Yes |
+
+# Practice #2 — Average Word Length
+
+## Challenge
+
+**Difficulty:** Medium
+
+Write a function named `average_word_length` which gets a **filename** as an argument and returns the **average word length**, rounded to **two decimal places**, in the file.
+
+For example, if `input1.txt` contains:
+
+```text
+The quick brown fox jumps over the lazy dog. The dog barks, and the fox runs away.
+```
+
+Then:
+
+```python
+average_word_length("input1.txt")
+```
+
+should return:
+
+```text
+3.71
+```
+
+> **Note:** Remove any punctuation before calculating the word lengths.
+
+---
+
+# Hints
+
+## Hint 1
+
+Remove these punctuation characters from the words:
+
+```text
+! ? ' " , .
+```
+
+Instead of completely removing the punctuation, replace each punctuation character with a **space**.
+
+For example:
+
+```python
+text = text.replace(",", " ")
+```
+
+This changes:
+
+```text
+Hello,World
+```
+
+into:
+
+```text
+Hello World
+```
+
+This is useful because replacing punctuation with a space prevents words from being joined together.
+
+---
+
+## Hint 2
+
+Use the `round()` function to round the result to two decimal places:
+
+```python
+round(res, 2)
+```
+
+Here, `res` is the calculated average.
+
+---
+
+# Solution
+
+```python
+def average_word_length(filename):
+    with open(filename) as f:
+        text = f.read()
+
+    punctuation = "!?'\".,"
+
+    for char in punctuation:
+        text = text.replace(char, " ")
+
+    words = text.split()
+    total_length = sum(len(word) for word in words)
+
+    return round(total_length / len(words), 2)
+```
+
+---
+
+# Explanation
+
+## 1. Define the Function
+
+```python
+def average_word_length(filename):
+```
+
+The function is named `average_word_length`.
+
+It accepts one argument:
+
+```python
+filename
+```
+
+This represents the name of the file containing the text.
+
+For example:
+
+```python
+average_word_length("input1.txt")
+```
+
+---
+
+## 2. Open the File
+
+```python
+with open(filename) as f:
+```
+
+The `open()` function opens the specified file.
+
+The file is opened in **read mode** by default.
+
+The `with` statement automatically closes the file after the operations inside the block are finished.
+
+---
+
+## 3. Read the File
+
+```python
+text = f.read()
+```
+
+This reads the entire contents of the file and stores them in the variable `text`.
+
+For example:
+
+```text
+The quick brown fox jumps over the lazy dog. The dog barks, and the fox runs away.
+```
+
+is stored as one string.
+
+---
+
+## 4. Define the Punctuation
+
+```python
+punctuation = "!?'\".,"
+```
+
+The string contains the punctuation characters that should be replaced:
+
+```text
+! ? ' " , .
+```
+
+Each character will be processed separately.
+
+---
+
+## 5. Replace Punctuation with Spaces
+
+```python
+for char in punctuation:
+    text = text.replace(char, " ")
+```
+
+The `for` loop goes through each punctuation character.
+
+For example:
+
+```python
+text = text.replace(",", " ")
+```
+
+replaces every comma with a space.
+
+So:
+
+```text
+Hello,World
+```
+
+becomes:
+
+```text
+Hello World
+```
+
+Similarly:
+
+```text
+dog. barks, and fox!
+```
+
+becomes:
+
+```text
+dog  barks  and fox
+```
+
+Replacing punctuation with a space is important because simply removing punctuation could accidentally join two words together.
+
+For example, removing the comma from:
+
+```text
+Hello,World
+```
+
+would produce:
+
+```text
+HelloWorld
+```
+
+But replacing it with a space produces the correct result:
+
+```text
+Hello World
+```
+
+---
+
+## 6. Split the Text into Words
+
+```python
+words = text.split()
+```
+
+The `split()` method separates the text into individual words.
+
+For example:
+
+```python
+"The quick brown fox"
+```
+
+becomes:
+
+```python
+["The", "quick", "brown", "fox"]
+```
+
+Because `split()` without an argument handles whitespace, multiple spaces are not a problem.
+
+---
+
+## 7. Calculate the Total Length
+
+```python
+total_length = sum(len(word) for word in words)
+```
+
+`len(word)` gives the number of characters in each word.
+
+For example:
+
+```python
+len("The")
+```
+
+returns:
+
+```text
+3
+```
+
+The `sum()` function adds the lengths of all the words together.
+
+For example:
+
+```text
+The    → 3
+quick  → 5
+brown  → 5
+fox    → 3
+```
+
+The total is:
+
+```text
+3 + 5 + 5 + 3 = 16
+```
+
+---
+
+## 8. Calculate the Average
+
+```python
+total_length / len(words)
+```
+
+The average word length is calculated by dividing the total number of characters by the number of words.
+
+The formula is:
+
+```text
+Average Word Length =
+Total Length of All Words / Number of Words
+```
+
+`len(words)` gives the number of words.
+
+---
+
+## 9. Round the Result
+
+```python
+round(total_length / len(words), 2)
+```
+
+The `round()` function rounds the result to **two decimal places**.
+
+For example:
+
+```python
+round(3.714285, 2)
+```
+
+returns:
+
+```text
+3.71
+```
+
+The function returns this value.
+
+---
+
+# Complete Flow
+
+The program processes the file in these steps:
+
+```text
+Read the file
+     ↓
+Replace punctuation with spaces
+     ↓
+Split the text into words
+     ↓
+Find the length of every word
+     ↓
+Add all word lengths
+     ↓
+Divide by the number of words
+     ↓
+Round to 2 decimal places
+     ↓
+Return the average
+```
