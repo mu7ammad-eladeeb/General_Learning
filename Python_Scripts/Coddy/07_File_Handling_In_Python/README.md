@@ -1125,3 +1125,590 @@ Round to 2 decimal places
      ↓
 Return the average
 ```
+
+# Practice #3
+
+## Challenge
+
+**Difficulty:** Medium
+
+Write a Python program that reads a CSV file named `scores.txt`, determines the highest score in each subject, identifies the student who achieved that score, and displays the results in a readable format.
+
+## Tasks
+
+1. Read the sample CSV file named `scores.txt`.
+2. Determine the **highest score** in each subject.
+3. Determine the **student who achieved** the highest score in each subject.
+4. Display the calculated information in the required format.
+
+## Sample CSV File — `scores.txt`
+
+```text
+Name,Math,Science,History
+Alice,85,90,78
+Bob,92,78,85
+Carol,78,92,88
+David,88,82,90
+Eve,95,88,75
+```
+
+## Expected Output
+
+```text
+Highest Scores:
+Math: Eve (95)
+Science: Carol (92)
+History: David (90)
+```
+
+---
+
+# Solution
+
+```python
+with open("scores.txt", "r") as f:
+    master = [line.strip().split(",") for line in f.readlines() if line.strip()]
+
+headers = master[0]
+subjects = headers[1:]
+rows = master[1:]
+
+row_dic = {}
+
+for col_idx, subject in enumerate(subjects, start=1):
+    max_score = -1
+    top_student = ""
+
+    for row in rows:
+        stud_name = row[0]
+        score = int(row[col_idx])
+
+        if score > max_score:
+            max_score = score
+            top_student = stud_name
+
+    row_dic[subject] = (top_student, max_score)
+
+print("Highest Scores:")
+
+for sub, (student, score) in row_dic.items():
+    print(f"{sub}: {student} ({score})")
+```
+
+---
+
+# Explanation
+
+## 1. Open the file
+
+```python
+with open("scores.txt", "r") as f:
+```
+
+`open()` opens the `scores.txt` file in **read mode**.
+
+The `"r"` means **read**.
+
+Using `with` ensures that the file is automatically closed after we finish working with it.
+
+---
+
+## 2. Read and process all lines
+
+```python
+master = [line.strip().split(",") for line in f.readlines() if line.strip()]
+```
+
+This is a **list comprehension** that performs several operations at once.
+
+### `f.readlines()`
+
+Reads all lines from the file.
+
+For example:
+
+```text
+Name,Math,Science,History
+Alice,85,90,78
+Bob,92,78,85
+...
+```
+
+### `if line.strip()`
+
+This ignores empty lines.
+
+### `line.strip()`
+
+Removes whitespace and the newline character (`\n`) from the beginning and end of each line.
+
+For example:
+
+```python
+"Alice,85,90,78\n"
+```
+
+becomes:
+
+```python
+"Alice,85,90,78"
+```
+
+### `.split(",")`
+
+Splits each line wherever a comma appears.
+
+For example:
+
+```python
+"Alice,85,90,78".split(",")
+```
+
+becomes:
+
+```python
+["Alice", "85", "90", "78"]
+```
+
+Therefore, `master` becomes:
+
+```python
+[
+    ["Name", "Math", "Science", "History"],
+    ["Alice", "85", "90", "78"],
+    ["Bob", "92", "78", "85"],
+    ["Carol", "78", "92", "88"],
+    ["David", "88", "82", "90"],
+    ["Eve", "95", "88", "75"]
+]
+```
+
+---
+
+## 3. Get the headers
+
+```python
+headers = master[0]
+```
+
+The first row contains the column names:
+
+```python
+["Name", "Math", "Science", "History"]
+```
+
+So:
+
+```python
+headers[0]  # "Name"
+headers[1]  # "Math"
+headers[2]  # "Science"
+headers[3]  # "History"
+```
+
+---
+
+## 4. Get the subjects
+
+```python
+subjects = headers[1:]
+```
+
+We don't need `"Name"` because it isn't a subject.
+
+`headers[1:]` starts from index `1` and takes everything after it.
+
+The result is:
+
+```python
+["Math", "Science", "History"]
+```
+
+---
+
+## 5. Get the student rows
+
+```python
+rows = master[1:]
+```
+
+Again, we don't need the first row because it contains the headers.
+
+`master[1:]` gives us:
+
+```python
+[
+    ["Alice", "85", "90", "78"],
+    ["Bob", "92", "78", "85"],
+    ["Carol", "78", "92", "88"],
+    ["David", "88", "82", "90"],
+    ["Eve", "95", "88", "75"]
+]
+```
+
+---
+
+## 6. Create a dictionary
+
+```python
+row_dic = {}
+```
+
+This dictionary will store the highest-scoring student and their score for each subject.
+
+Eventually, it will contain something like:
+
+```python
+{
+    "Math": ("Eve", 95),
+    "Science": ("Carol", 92),
+    "History": ("David", 90)
+}
+```
+
+---
+
+## 7. Loop through the subjects
+
+```python
+for col_idx, subject in enumerate(subjects, start=1):
+```
+
+`enumerate()` gives us both:
+
+* the **index** of the subject
+* the **subject name**
+
+Because we use `start=1`, the indexes match the positions in each student row.
+
+The loop produces:
+
+```text
+1 → Math
+2 → Science
+3 → History
+```
+
+This is useful because the score for Math is at index `1`, Science at index `2`, and History at index `3`.
+
+---
+
+## 8. Initialize the highest score
+
+```python
+max_score = -1
+top_student = ""
+```
+
+For every subject, we start with:
+
+```python
+max_score = -1
+```
+
+This means we haven't found a score yet.
+
+We also start with an empty student name:
+
+```python
+top_student = ""
+```
+
+As we examine the students, these values will be updated.
+
+---
+
+## 9. Loop through all students
+
+```python
+for row in rows:
+```
+
+For the Math subject, for example, the program checks every row:
+
+```text
+Alice
+Bob
+Carol
+David
+Eve
+```
+
+---
+
+## 10. Get the student's name
+
+```python
+stud_name = row[0]
+```
+
+The first item in every row is the student's name.
+
+For example:
+
+```python
+row = ["Alice", "85", "90", "78"]
+```
+
+Then:
+
+```python
+row[0]
+```
+
+is:
+
+```text
+Alice
+```
+
+---
+
+## 11. Get the student's score
+
+```python
+score = int(row[col_idx])
+```
+
+`col_idx` tells us which subject we're currently processing.
+
+For example, when processing Math:
+
+```python
+col_idx = 1
+```
+
+So:
+
+```python
+row[1]
+```
+
+gets the Math score.
+
+Because the value came from a text file, it is initially a string:
+
+```python
+"85"
+```
+
+`int()` converts it into an integer:
+
+```python
+85
+```
+
+This allows us to compare scores numerically.
+
+---
+
+## 12. Check for a new highest score
+
+```python
+if score > max_score:
+    max_score = score
+    top_student = stud_name
+```
+
+If the current score is greater than the highest score found so far, we update both variables.
+
+For Math, the process is:
+
+```text
+Alice → 85
+```
+
+Since `85 > -1`:
+
+```python
+max_score = 85
+top_student = "Alice"
+```
+
+Then:
+
+```text
+Bob → 92
+```
+
+Since `92 > 85`:
+
+```python
+max_score = 92
+top_student = "Bob"
+```
+
+Then:
+
+```text
+Carol → 78
+```
+
+Since `78 > 92` is false, nothing changes.
+
+Then:
+
+```text
+David → 88
+```
+
+Again, nothing changes.
+
+Finally:
+
+```text
+Eve → 95
+```
+
+Since `95 > 92`:
+
+```python
+max_score = 95
+top_student = "Eve"
+```
+
+So the highest Math score is:
+
+```text
+Eve (95)
+```
+
+---
+
+## 13. Store the result in the dictionary
+
+```python
+row_dic[subject] = (top_student, max_score)
+```
+
+After finishing all students for a particular subject, the result is stored in the dictionary.
+
+For Math:
+
+```python
+row_dic["Math"] = ("Eve", 95)
+```
+
+After processing all subjects, the dictionary becomes:
+
+```python
+{
+    "Math": ("Eve", 95),
+    "Science": ("Carol", 92),
+    "History": ("David", 90)
+}
+```
+
+The value for each subject is a **tuple** containing:
+
+```text
+(student name, highest score)
+```
+
+---
+
+## 14. Display the heading
+
+```python
+print("Highest Scores:")
+```
+
+This prints:
+
+```text
+Highest Scores:
+```
+
+---
+
+## 15. Loop through the dictionary
+
+```python
+for sub, (student, score) in row_dic.items():
+```
+
+`.items()` gives us both the dictionary key and its value.
+
+For example:
+
+```python
+"Math", ("Eve", 95)
+```
+
+The tuple is unpacked directly into:
+
+```python
+student = "Eve"
+score = 95
+```
+
+So the loop effectively gives us:
+
+```text
+sub = "Math"
+student = "Eve"
+score = 95
+```
+
+and then:
+
+```text
+sub = "Science"
+student = "Carol"
+score = 92
+```
+
+and:
+
+```text
+sub = "History"
+student = "David"
+score = 90
+```
+
+---
+
+## 16. Print the final result
+
+```python
+print(f"{sub}: {student} ({score})")
+```
+
+An **f-string** allows us to insert the variables directly into the string.
+
+For example:
+
+```python
+sub = "Math"
+student = "Eve"
+score = 95
+```
+
+produces:
+
+```text
+Math: Eve (95)
+```
+
+## Final Output
+
+```text
+Highest Scores:
+Math: Eve (95)
+Science: Carol (92)
+History: David (90)
+```
+
+## Key Ideas Used
+
+* `open()` — opens the file.
+* `readlines()` — reads all lines.
+* `strip()` — removes surrounding whitespace and newline characters.
+* `split(",")` — separates CSV values.
+* List comprehension — processes the file lines concisely.
+* Slicing (`[1:]`) — skips the header row.
+* `enumerate()` — provides both an index and a subject name.
+* `int()` — converts score strings into integers.
+* Dictionary — stores the highest result for each subject.
+* Tuple unpacking — extracts the student and score from each dictionary value.
+* f-string — formats the final output.
