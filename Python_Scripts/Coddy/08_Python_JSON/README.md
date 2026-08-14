@@ -407,3 +407,381 @@ A simple way to remember them:
 
 * **`s` in `dumps` and `loads` → string**
 * **No `s` in `dump` and `load` → file**
+
+# `json.dumps()`
+
+The `json.dumps()` function is a key component of Python's built-in `json` module.
+
+It converts, or **serializes**, a Python object into a **JSON-formatted string**.
+
+This is useful when you need to prepare Python data for:
+
+* Storage
+* Transmission
+* APIs
+* Configuration files
+* Data exchange between different systems
+
+## Basic Usage
+
+The basic syntax of `json.dumps()` is:
+
+```python
+import json
+
+json_string = json.dumps(python_object)
+```
+
+The function takes a Python object, such as a dictionary or list, and returns a JSON-formatted **string**.
+
+## Example
+
+Let's convert a Python dictionary into a JSON string:
+
+```python
+import json
+
+python_dict = {
+    "name": "John",
+    "age": 30,
+    "city": "New York"
+}
+
+json_string = json.dumps(python_dict)
+
+print(json_string)
+```
+
+Output:
+
+```text
+{"name": "John", "age": 30, "city": "New York"}
+```
+
+The important point is that `json.dumps()` does **not** return another dictionary. It returns a **string** containing JSON data.
+
+You can verify this using `type()`:
+
+```python
+print(type(json_string))
+```
+
+Output:
+
+```text
+<class 'str'>
+```
+
+# Data Type Conversion
+
+`json.dumps()` automatically converts common Python data types into their corresponding JSON types.
+
+| Python  | JSON    |
+| ------- | ------- |
+| `dict`  | Object  |
+| `list`  | Array   |
+| `str`   | String  |
+| `int`   | Number  |
+| `float` | Number  |
+| `True`  | `true`  |
+| `False` | `false` |
+| `None`  | `null`  |
+
+For example:
+
+```python
+import json
+
+data = {
+    "name": "Alice",
+    "age": 30,
+    "height": 1.65,
+    "is_student": False,
+    "courses": ["Python", "SQL"],
+    "address": None
+}
+
+json_string = json.dumps(data)
+
+print(json_string)
+```
+
+The Python values are converted to their JSON equivalents automatically.
+
+Notice the difference between Python and JSON Boolean and null values:
+
+```python
+True   → true
+False  → false
+None   → null
+```
+
+# Formatting JSON with `json.dumps()`
+
+`json.dumps()` provides several optional arguments that allow you to control how the resulting JSON string is formatted.
+
+For example:
+
+```python
+json.dumps(
+    data,
+    indent=4,
+    separators=(", ", ": "),
+    sort_keys=True
+)
+```
+
+### `indent=4`
+
+```python
+indent=4
+```
+
+Formats the JSON using **4 spaces** for each indentation level.
+
+Without indentation:
+
+```json
+{"name": "Alice", "age": 30}
+```
+
+With `indent=4`:
+
+```json
+{
+    "name": "Alice",
+    "age": 30
+}
+```
+
+### `separators=(", ", ": ")`
+
+The `separators` argument controls how items and key-value pairs are separated.
+
+```python
+separators=(", ", ": ")
+```
+
+means:
+
+* `", "` separates items with a comma followed by a space.
+* `": "` separates keys and values with a colon followed by a space.
+
+### `sort_keys=True`
+
+```python
+sort_keys=True
+```
+
+sorts dictionary keys alphabetically in the resulting JSON string.
+
+For example:
+
+```python
+data = {
+    "name": "Alice",
+    "age": 30,
+    "city": "New York"
+}
+```
+
+Using:
+
+```python
+json.dumps(data, sort_keys=True)
+```
+
+produces:
+
+```json
+{"age": 30, "city": "New York", "name": "Alice"}
+```
+
+# Challenge
+
+**Difficulty:** Easy
+
+Create a function that takes a Python object as input and returns a formatted JSON string with specific indentation and separators.
+
+The function should:
+
+1. Use `json.dumps()` to convert the input object to a JSON string.
+2. Set the indentation to **4 spaces**.
+3. Use `", "` as the item separator.
+4. Use `": "` as the key separator.
+5. Ensure that all keys in the resulting JSON string are sorted alphabetically.
+6. Print the resulting formatted JSON string.
+
+The following input will be provided:
+
+```text
+{"name": "Alice", "age": 30, "city": "New York", "hobbies": ["reading", "painting"], "is_student": false}
+```
+
+# Solution
+
+```python
+import json
+
+data = json.loads(input())
+
+def format_json(obj):
+    return json.dumps(
+        obj,
+        indent=4,
+        separators=(", ", ": "),
+        sort_keys=True
+    )
+
+print(format_json(data))
+```
+
+# Solution Explanation
+
+## 1. Import the `json` Module
+
+```python
+import json
+```
+
+This allows us to use `json.loads()` and `json.dumps()`.
+
+## 2. Read and Parse the Input
+
+The input is provided in JSON format:
+
+```text
+{"name": "Alice", "age": 30, "city": "New York", "hobbies": ["reading", "painting"], "is_student": false}
+```
+
+We use:
+
+```python
+data = json.loads(input())
+```
+
+to convert the JSON string into a Python dictionary.
+
+This is necessary because the challenge asks us to create a function that takes a **Python object** as input.
+
+After `json.loads()`, the data becomes approximately:
+
+```python
+{
+    "name": "Alice",
+    "age": 30,
+    "city": "New York",
+    "hobbies": ["reading", "painting"],
+    "is_student": False
+}
+```
+
+Notice that JSON's `false` becomes Python's `False`.
+
+## 3. Define the Function
+
+```python
+def format_json(obj):
+```
+
+The function receives the Python object through the parameter `obj`.
+
+## 4. Use `json.dumps()`
+
+```python
+return json.dumps(
+    obj,
+    indent=4,
+    separators=(", ", ": "),
+    sort_keys=True
+)
+```
+
+The function uses four important arguments.
+
+### `indent=4`
+
+```python
+indent=4
+```
+
+makes each nested level use 4 spaces.
+
+### `separators=(", ", ": ")`
+
+```python
+separators=(", ", ": ")
+```
+
+specifies:
+
+* `", "` between items.
+* `": "` between keys and values.
+
+### `sort_keys=True`
+
+```python
+sort_keys=True
+```
+
+sorts the dictionary keys alphabetically.
+
+The keys will therefore appear in this order:
+
+```text
+age
+city
+hobbies
+is_student
+name
+```
+
+## 5. Print the Result
+
+```python
+print(format_json(data))
+```
+
+This calls the function and prints the formatted JSON string.
+
+## Expected Output
+
+```json
+{
+    "age": 30, 
+    "city": "New York", 
+    "hobbies": [
+        "reading", 
+        "painting"
+    ], 
+    "is_student": false, 
+    "name": "Alice"
+}
+```
+
+# Key Takeaways
+
+The most important part of the solution is:
+
+```python
+json.dumps(
+    obj,
+    indent=4,
+    separators=(", ", ": "),
+    sort_keys=True
+)
+```
+
+Remember:
+
+* `json.dumps()` → Python object → JSON string
+* `indent=4` → uses 4 spaces for indentation
+* `separators=(", ", ": ")` → controls separators
+* `sort_keys=True` → sorts keys alphabetically
+
+The difference between `dumps()` and `loads()` is:
+
+```text
+Python object ──dumps()──> JSON string
+JSON string   ──loads()──> Python object
+```
