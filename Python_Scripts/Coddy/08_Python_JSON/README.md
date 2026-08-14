@@ -1,6 +1,615 @@
+# Intro to JSON
+
+**JSON (JavaScript Object Notation)** is a lightweight, text-based **data interchange format**. It is easy for humans to read and write, and simple for machines to parse and generate.
+
+JSON is commonly used for exchanging and storing structured data.
+
+## Structure of JSON
+
+JSON is built on two main structures:
+
+1. **A collection of name/value pairs** — similar to a Python dictionary.
+2. **An ordered list of values** — similar to a Python list.
+
+### JSON Objects
+
+JSON data is represented using **key-value pairs** enclosed in curly braces `{}`.
+
+```json
+{
+    "name": "John Doe",
+    "age": 30,
+    "city": "New York",
+    "hobbies": ["reading", "swimming", "coding"]
+}
+```
+
+In this example:
+
+* `"name"` is a key and `"John Doe"` is its value.
+* `"age"` is a key and `30` is its value.
+* `"city"` is a key and `"New York"` is its value.
+* `"hobbies"` is a key whose value is an array.
+
+A JSON object is similar to a Python dictionary:
+
+```python
+{
+    "name": "John Doe",
+    "age": 30,
+    "city": "New York"
+}
+```
+
+### JSON Arrays
+
+JSON arrays are ordered collections of values enclosed in square brackets `[]`.
+
+For example:
+
+```json
+["reading", "swimming", "coding"]
+```
+
+A JSON array is similar to a Python list:
+
+```python
+["reading", "swimming", "coding"]
+```
+
+## JSON Data Types
+
+JSON supports the following main data types:
+
+### 1. String
+
+A string is text enclosed in double quotes:
+
+```json
+"Hello, World!"
+```
+
+Example:
+
+```json
+{
+    "name": "John"
+}
+```
+
+> JSON strings use **double quotes**.
+
+### 2. Number
+
+JSON supports numbers such as integers and floating-point numbers:
+
+```json
+42
+```
+
+```json
+3.14
+```
+
+Example:
+
+```json
+{
+    "age": 30,
+    "height": 1.75
+}
+```
+
+### 3. Boolean
+
+JSON has two Boolean values:
+
+```json
+true
+```
+
+and:
+
+```json
+false
+```
+
+Example:
+
+```json
+{
+    "is_student": true
+}
+```
+
+Notice that JSON uses lowercase `true` and `false`.
+
+In Python, the equivalents are:
+
+```python
+True
+False
+```
+
+### 4. Null
+
+JSON uses `null` to represent the absence of a value:
+
+```json
+null
+```
+
+Example:
+
+```json
+{
+    "middle_name": null
+}
+```
+
+The Python equivalent is:
+
+```python
+None
+```
+
+### 5. Object
+
+An object is a collection of key-value pairs enclosed in `{}`:
+
+```json
+{
+    "name": "John",
+    "age": 30
+}
+```
+
+The JSON object is similar to a Python dictionary:
+
+```python
+{
+    "name": "John",
+    "age": 30
+}
+```
+
+### 6. Array
+
+An array is an ordered collection of values enclosed in `[]`:
+
+```json
+[1, 2, 3]
+```
+
+It is similar to a Python list:
+
+```python
+[1, 2, 3]
+```
+
+## JSON vs Python Data Types
+
+| JSON    | Python          |
+| ------- | --------------- |
+| Object  | `dict`          |
+| Array   | `list`          |
+| String  | `str`           |
+| Number  | `int` / `float` |
+| `true`  | `True`          |
+| `false` | `False`         |
+| `null`  | `None`          |
+
+For example, this JSON:
+
+```json
+{
+    "name": "Alice",
+    "age": 25,
+    "is_student": true,
+    "courses": ["Python", "SQL"],
+    "address": null
+}
+```
+
+is equivalent to this Python data:
+
+```python
+{
+    "name": "Alice",
+    "age": 25,
+    "is_student": True,
+    "courses": ["Python", "SQL"],
+    "address": None
+}
+```
+
+## Common Use Cases
+
+JSON is widely used for:
+
+### 1. API Responses
+
+Many web services and APIs use JSON to send data between a server and a client.
+
+Example:
+
+```json
+{
+    "id": 101,
+    "name": "Alice",
+    "email": "alice@example.com"
+}
+```
+
+### 2. Configuration Files
+
+Applications often use JSON files to store settings and configuration information.
+
+Example:
+
+```json
+{
+    "theme": "dark",
+    "language": "English",
+    "notifications": true
+}
+```
+
+### 3. Data Storage
+
+JSON can be used to store structured information in files.
+
+Example:
+
+```json
+{
+    "name": "Python",
+    "year": 1991,
+    "versions": ["3.8", "3.9", "3.10", "3.11"]
+}
+```
+
+### 4. Data Exchange Between Programming Languages
+
+JSON makes it easy for different programming languages and systems to exchange data.
+
+For example, a Python application can send JSON data to a JavaScript application, and the JavaScript application can process it.
+
+## Why JSON Is Important
+
+JSON is popular because it is:
+
+* **Simple** — its structure is easy to understand.
+* **Lightweight** — it does not contain unnecessary formatting.
+* **Human-readable** — people can easily read and edit it.
+* **Language-independent** — many programming languages support it.
+* **Widely supported** — it is commonly used in APIs, web applications, and data storage.
+
+Because of its simplicity and versatility, **JSON is one of the most important formats for modern data exchange and storage**.
+
+# JSON vs Python Data Types
+
+JSON and Python have similar data types, but there are some important differences.
+
+Understanding how JSON data types correspond to Python data types is essential when working with JSON in Python, especially when **encoding** and **decoding** data.
+
+## JSON and Python Data Type Mappings
+
+### 1. Object → Dictionary
+
+A JSON **object** is equivalent to a Python **dictionary (`dict`)**.
+
+**JSON:**
+
+```json
+{
+    "name": "John",
+    "age": 30
+}
+```
+
+**Python:**
+
+```python
+{
+    "name": "John",
+    "age": 30
+}
+```
+
+Both use key-value pairs.
+
+---
+
+### 2. Array → List
+
+A JSON **array** is equivalent to a Python **list (`list`)**.
+
+**JSON:**
+
+```json
+[1, 2, 3, 4]
+```
+
+**Python:**
+
+```python
+[1, 2, 3, 4]
+```
+
+Both represent an ordered collection of values.
+
+---
+
+### 3. String → String
+
+A JSON **string** corresponds to a Python **string (`str`)**.
+
+**JSON:**
+
+```json
+"Hello, World!"
+```
+
+**Python:**
+
+```python
+"Hello, World!"
+```
+
+> JSON strings use double quotes.
+
+---
+
+### 4. Number → Integer
+
+A JSON number without a decimal point corresponds to a Python **integer (`int`)**.
+
+**JSON:**
+
+```json
+42
+```
+
+**Python:**
+
+```python
+42
+```
+
+---
+
+### 5. Number → Float
+
+A JSON number with a decimal point corresponds to a Python **float (`float`)**.
+
+**JSON:**
+
+```json
+3.14
+```
+
+**Python:**
+
+```python
+3.14
+```
+
+---
+
+### 6. Boolean → Boolean
+
+JSON has two Boolean values:
+
+```json
+true
+false
+```
+
+Python uses:
+
+```python
+True
+False
+```
+
+So:
+
+**JSON:**
+
+```json
+{
+    "is_student": true
+}
+```
+
+**Python:**
+
+```python
+{
+    "is_student": True
+}
+```
+
+The main difference is capitalization.
+
+---
+
+### 7. Null → None
+
+JSON uses `null` to represent the absence of a value.
+
+Python uses `None`.
+
+**JSON:**
+
+```json
+null
+```
+
+**Python:**
+
+```python
+None
+```
+
+For example:
+
+**JSON:**
+
+```json
+{
+    "middle_name": null
+}
+```
+
+**Python:**
+
+```python
+{
+    "middle_name": None
+}
+```
+
+## Quick Comparison Table
+
+| JSON Type | Python Equivalent   | Example            |
+| --------- | ------------------- | ------------------ |
+| Object    | Dictionary (`dict`) | `{"name": "John"}` |
+| Array     | List (`list`)       | `[1, 2, 3]`        |
+| String    | String (`str`)      | `"Hello"`          |
+| Number    | Integer (`int`)     | `42`               |
+| Number    | Float (`float`)     | `3.14`             |
+| Boolean   | Boolean (`bool`)    | `true` → `True`    |
+| Null      | `None`              | `null` → `None`    |
+
+## Key Differences
+
+### 1. Boolean and Null Values
+
+JSON uses lowercase:
+
+```json
+true
+false
+null
+```
+
+Python uses:
+
+```python
+True
+False
+None
+```
+
+This difference is important when manually writing JSON data.
+
+---
+
+### 2. Numbers
+
+JSON uses a general **number** type.
+
+It does not explicitly distinguish between Python's `int` and `float` types in the same way Python does.
+
+For example, JSON can contain:
+
+```json
+42
+```
+
+and:
+
+```json
+3.14
+```
+
+When JSON data is decoded by Python, these are normally represented as:
+
+```python
+42       # int
+3.14     # float
+```
+
+---
+
+### 3. Python Has Additional Data Types
+
+Python supports data types that do not have direct JSON equivalents.
+
+For example:
+
+```python
+(1, 2, 3)
+```
+
+is a **tuple**, while:
+
+```python
+{1, 2, 3}
+```
+
+is a **set**.
+
+JSON does not have separate tuple or set data types.
+
+When converting Python data to JSON, these types may need to be converted into JSON-supported types first.
+
+For example, a tuple can be represented as a JSON array:
+
+```python
+(1, 2, 3)
+```
+
+becomes:
+
+```json
+[1, 2, 3]
+```
+
+## Why These Mappings Matter
+
+When working with JSON in Python, data is often converted between the two formats.
+
+For example:
+
+```text
+Python object → JSON → Python object
+```
+
+Using the `json` module:
+
+```python
+json.dumps()
+```
+
+converts Python data into JSON.
+
+```python
+json.loads()
+```
+
+converts JSON data back into Python.
+
+The mappings can be summarized as:
+
+```text
+Python dict    ↔ JSON object
+Python list    ↔ JSON array
+Python str     ↔ JSON string
+Python int     ↔ JSON number
+Python float   ↔ JSON number
+Python True    ↔ JSON true
+Python False   ↔ JSON false
+Python None    ↔ JSON null
+```
+
+Understanding these mappings is crucial when working with JSON data in Python because they determine how data is **encoded and decoded** between the two formats.
+
 # The `json` Module
 
-The **`json` module** is a built-in Python library that provides functions for working with **JSON (JavaScript Object Notation)** data.
+The **`json` module** is a built-in Python module in the standard python library that provides functions for working with **JSON (JavaScript Object Notation)** data.
 
 It allows you to:
 
