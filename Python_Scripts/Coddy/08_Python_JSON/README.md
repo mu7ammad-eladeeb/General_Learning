@@ -1394,3 +1394,391 @@ The difference between `dumps()` and `loads()` is:
 Python object ──dumps()──> JSON string
 JSON string   ──loads()──> Python object
 ```
+# Formatting JSON Output
+
+When working with JSON data, it's often useful to format the output for better readability. Python's `json.dumps()` function provides parameters to control the formatting of JSON output, making it more human-readable. This process is often called **pretty-printing**.
+
+## The `indent` Parameter
+
+The `indent` parameter in `json.dumps()` allows you to specify the number of spaces for indentation. This creates a more readable, hierarchical structure:
+
+```python
+import json
+
+data = {"name": "John", "age": 30, "city": "New York"}
+
+# Without indentation
+print(json.dumps(data))
+
+# With indentation
+print(json.dumps(data, indent=2))
+```
+
+The output with `indent=2` will be:
+
+```json
+{
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}
+```
+
+### How `indent` Works
+
+* `indent=2` → uses 2 spaces for each indentation level.
+* `indent=4` → uses 4 spaces for each indentation level.
+* A larger value creates more spacing.
+* If `indent` is not provided, the JSON is printed on a single line.
+
+## The `separators` Parameter
+
+The `separators` parameter allows you to specify the separators used between items and between keys and values.
+
+It is a tuple containing two strings:
+
+```python
+(item_separator, key_separator)
+```
+
+For example:
+
+```python
+# Default separators
+print(json.dumps(data, indent=2))
+
+# Custom separators
+print(json.dumps(data, indent=2, separators=(", ", ": ")))
+```
+
+The default separators are:
+
+```python
+(", ", ": ")
+```
+
+This means:
+
+* `", "` separates items with a comma followed by a space.
+* `": "` separates keys from their values with a colon followed by a space.
+
+You can remove the spaces to create more compact JSON:
+
+```python
+print(json.dumps(data, separators=(",", ":")))
+```
+
+The result will look like:
+
+```json
+{"name":"John","age":30,"city":"New York"}
+```
+
+## Combining Parameters
+
+You can combine `indent` and `separators` to have fine-tuned control over the JSON output:
+
+```python
+formatted_json = json.dumps(
+    data,
+    indent=4,
+    separators=(", ", ": ")
+)
+
+print(formatted_json)
+```
+
+This produces a nicely formatted and easy-to-read JSON output, which is especially useful when working with complex nested structures.
+
+---
+
+# Challenge
+
+**Difficulty:** Easy
+
+Create a function that formats a nested JSON structure with custom indentation and separators.
+
+The function should:
+
+1. Accept three parameters:
+
+   * A Python dictionary or list.
+   * An indentation level.
+   * A boolean flag for compact output.
+2. Use `json.dumps()` to convert the input to a JSON string.
+3. Use the specified indentation when `compact` is `False`.
+4. Use no indentation when `compact` is `True`.
+5. Use `", "` and `": "` as separators when `compact` is `False`.
+6. Use `","` and `":"` as separators when `compact` is `True`.
+7. Return the formatted JSON string.
+8. Print the resulting formatted JSON string.
+
+## Solution
+
+```python
+import json
+
+
+def format_json(data, indent_level, compact):
+    if compact:
+        indent = None
+        separators = (",", ":")
+    else:
+        indent = indent_level
+        separators = (", ", ": ")
+
+    return json.dumps(
+        data,
+        indent=indent,
+        separators=separators
+    )
+
+
+data = {
+    "menu": {
+        "id": "file",
+        "value": "File",
+        "popup": {
+            "menuitem": [
+                {
+                    "value": "New",
+                    "onclick": "CreateNewDoc()"
+                },
+                {
+                    "value": "Open",
+                    "onclick": "OpenDoc()"
+                },
+                {
+                    "value": "Close",
+                    "onclick": "CloseDoc()"
+                }
+            ]
+        }
+    }
+}
+
+indent_level = 4
+compact = False
+
+result = format_json(data, indent_level, compact)
+
+print(result)
+```
+
+## Solution Explanation
+
+### 1. Import `json`
+
+```python
+import json
+```
+
+We import Python's built-in `json` module so that we can use `json.dumps()`.
+
+---
+
+### 2. Create the Function
+
+```python
+def format_json(data, indent_level, compact):
+```
+
+The function accepts three parameters:
+
+* `data` → the dictionary or list that we want to convert to JSON.
+* `indent_level` → the number of spaces used for indentation.
+* `compact` → determines whether the JSON should be compact or readable.
+
+---
+
+### 3. Handle Compact Output
+
+```python
+if compact:
+    indent = None
+    separators = (",", ":")
+```
+
+If `compact` is `True`:
+
+* `indent = None` prevents indentation.
+* `(",", ":")` removes spaces after commas and colons.
+
+For example:
+
+```json
+{"name":"John","age":30}
+```
+
+---
+
+### 4. Handle Formatted Output
+
+```python
+else:
+    indent = indent_level
+    separators = (", ", ": ")
+```
+
+If `compact` is `False`:
+
+* `indent` receives the specified indentation level.
+* `(", ", ": ")` adds spaces after commas and colons.
+
+For example:
+
+```json
+{
+    "name": "John",
+    "age": 30
+}
+```
+
+---
+
+### 5. Convert the Data to JSON
+
+```python
+return json.dumps(
+    data,
+    indent=indent,
+    separators=separators
+)
+```
+
+`json.dumps()` converts the Python dictionary into a JSON-formatted string.
+
+The values of `indent` and `separators` are determined by the `compact` flag.
+
+---
+
+### 6. Create the Input Data
+
+```python
+data = {
+    "menu": {
+        "id": "file",
+        "value": "File",
+        "popup": {
+            "menuitem": [
+                {
+                    "value": "New",
+                    "onclick": "CreateNewDoc()"
+                },
+                {
+                    "value": "Open",
+                    "onclick": "OpenDoc()"
+                },
+                {
+                    "value": "Close",
+                    "onclick": "CloseDoc()"
+                }
+            ]
+        }
+    }
+}
+```
+
+This is the nested Python dictionary that will be formatted as JSON.
+
+---
+
+### 7. Set the Function Arguments
+
+```python
+indent_level = 4
+compact = False
+```
+
+The challenge provides:
+
+```text
+4
+false
+```
+
+In Python, JSON's `false` corresponds to Python's `False`.
+
+Therefore:
+
+```python
+indent_level = 4
+compact = False
+```
+
+means that the output should use **4 spaces for indentation** and should **not** be compact.
+
+---
+
+### 8. Call the Function
+
+```python
+result = format_json(data, indent_level, compact)
+```
+
+The function receives:
+
+```text
+data
+4
+False
+```
+
+Since `compact` is `False`, the function uses:
+
+```python
+indent = 4
+separators = (", ", ": ")
+```
+
+---
+
+### 9. Print the Result
+
+```python
+print(result)
+```
+
+Finally, the formatted JSON string is displayed.
+
+The output will be:
+
+```json
+{
+    "menu": {
+        "id": "file",
+        "value": "File",
+        "popup": {
+            "menuitem": [
+                {
+                    "value": "New",
+                    "onclick": "CreateNewDoc()"
+                },
+                {
+                    "value": "Open",
+                    "onclick": "OpenDoc()"
+                },
+                {
+                    "value": "Close",
+                    "onclick": "CloseDoc()"
+                }
+            ]
+        }
+    }
+}
+```
+
+## Key Idea
+
+The most important part of the solution is deciding the values of `indent` and `separators` based on the `compact` flag:
+
+```python
+if compact:
+    indent = None
+    separators = (",", ":")
+else:
+    indent = indent_level
+    separators = (", ", ": ")
+```
+
+This allows the **same function** to produce either readable or compact JSON output.
