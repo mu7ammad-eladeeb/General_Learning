@@ -1782,3 +1782,444 @@ else:
 ```
 
 This allows the **same function** to produce either readable or compact JSON output.
+
+# Custom JSON Encoding
+
+Custom JSON encoding is a powerful feature in Python's `json` module that allows you to serialize complex Python objects that are not natively supported by JSON.
+
+This is particularly useful when working with custom classes or objects that do not have a direct JSON representation.
+
+## The `JSONEncoder` Class
+
+To create a custom JSON encoder, subclass the `json.JSONEncoder` class and override its `default()` method:
+
+```python
+import json
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, YourCustomClass):
+            return obj.to_dict()
+
+        return json.JSONEncoder.default(self, obj)
+```
+
+The `default()` method is called when Python encounters an object that cannot normally be serialized into JSON.
+
+If the object is an instance of our custom class, we can convert it into a dictionary or another JSON-compatible type.
+
+For objects we do not know how to handle, we should fall back to the original encoder:
+
+```python
+return json.JSONEncoder.default(self, obj)
+```
+
+## Using the Custom Encoder
+
+Once the custom encoder has been created, pass it to `json.dumps()` using the `cls` parameter:
+
+```python
+json_string = json.dumps(your_object, cls=CustomEncoder)
+```
+
+We can also use it with `json.dump()` when writing JSON directly to a file.
+
+---
+
+## Example: Encoding a Custom Class
+
+Consider this example:
+
+```python
+import json
+from datetime import datetime
+
+
+class Person:
+    def __init__(self, name, birthdate):
+        self.name = name
+        self.birthdate = birthdate
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Person):
+            return {
+                "name": obj.name,
+                "birthdate": obj.birthdate.isoformat()
+            }
+
+        elif isinstance(obj, datetime):
+            return obj.isoformat()
+
+        return json.JSONEncoder.default(self, obj)
+
+
+person = Person("Alice", datetime(1990, 5, 15))
+
+json_string = json.dumps(
+    person,
+    cls=CustomEncoder,
+    indent=2
+)
+
+print(json_string)
+```
+
+Here, the `Person` object is not directly JSON serializable.
+
+The custom encoder converts it into a dictionary:
+
+```python
+{
+    "name": obj.name,
+    "birthdate": obj.birthdate.isoformat()
+}
+```
+
+The `datetime` object is also converted into a JSON-compatible string using `isoformat()`.
+
+---
+
+# Challenge
+
+**Difficulty: Easy**
+
+Create a custom JSON encoder for a `ComplexNumber` class.
+
+The encoder should convert complex numbers to a JSON object with `"real"` and `"imag"` keys for the real and imaginary parts, respectively.
+
+### Requirements
+
+1. Define a `ComplexNumber` class with `real` and `imag` attributes.
+2. Create a custom `JSONEncoder` subclass that handles `ComplexNumber` objects.
+3. Implement a function that takes a list of `ComplexNumber` objects and returns a JSON string representation using the custom encoder.
+4. Print the resulting JSON string.
+5. Ensure that the JSON is formatted with an indent of 2 spaces.
+
+### Input
+
+The following input will be provided:
+
+```text
+3.14,2.71
+1.41,-1.73
+2.0,0
+0,-1
+```
+
+Each line represents a complex number with the real and imaginary parts separated by a comma.
+
+### Expected JSON Structure
+
+Each `ComplexNumber` should be converted into an object with this structure:
+
+```json
+{
+  "real": 3.14,
+  "imag": 2.71
+}
+```
+
+The complete output should therefore be a JSON array containing all the converted complex numbers.
+
+---
+
+# Solution
+
+```python
+import json
+
+
+class ComplexNumber:
+    def __init__(self, real, imag):
+        self.real = real
+        self.imag = imag
+
+
+class ComplexNumberEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ComplexNumber):
+            return {
+                "real": obj.real,
+                "imag": obj.imag
+            }
+
+        return json.JSONEncoder.default(self, obj)
+
+
+def encode_complex_numbers(numbers):
+    return json.dumps(
+        numbers,
+        cls=ComplexNumberEncoder,
+        indent=2
+    )
+
+
+numbers = []
+
+while True:
+    try:
+        line = input().strip()
+
+        if not line:
+            break
+
+        real, imag = map(float, line.split(","))
+        numbers.append(ComplexNumber(real, imag))
+
+    except EOFError:
+        break
+
+
+print(encode_complex_numbers(numbers))
+```
+
+---
+
+# Solution Explanation
+
+## 1. Import the `json` module
+
+```python
+import json
+```
+
+The `json` module provides the `JSONEncoder` class and the `json.dumps()` function that we need to convert Python objects into JSON.
+
+---
+
+## 2. Define the `ComplexNumber` class
+
+```python
+class ComplexNumber:
+    def __init__(self, real, imag):
+        self.real = real
+        self.imag = imag
+```
+
+The class contains two attributes:
+
+* `real` — the real part of the complex number.
+* `imag` — the imaginary part of the complex number.
+
+For example:
+
+```python
+number = ComplexNumber(3.14, 2.71)
+```
+
+creates an object equivalent to:
+
+```text
+real = 3.14
+imag = 2.71
+```
+
+---
+
+## 3. Create the custom JSON encoder
+
+```python
+class ComplexNumberEncoder(json.JSONEncoder):
+```
+
+The class inherits from `json.JSONEncoder`.
+
+This allows us to customize how `ComplexNumber` objects are converted to JSON.
+
+---
+
+## 4. Override the `default()` method
+
+```python
+def default(self, obj):
+    if isinstance(obj, ComplexNumber):
+        return {
+            "real": obj.real,
+            "imag": obj.imag
+        }
+
+    return json.JSONEncoder.default(self, obj)
+```
+
+The `default()` method is called when the JSON encoder encounters an object that it does not know how to serialize.
+
+We use:
+
+```python
+isinstance(obj, ComplexNumber)
+```
+
+to check whether the object is a `ComplexNumber`.
+
+If it is, we convert it into a dictionary:
+
+```python
+{
+    "real": obj.real,
+    "imag": obj.imag
+}
+```
+
+Dictionaries are natively supported by JSON, so the encoder can then serialize this dictionary.
+
+For any other unsupported object, we use:
+
+```python
+json.JSONEncoder.default(self, obj)
+```
+
+This falls back to the standard JSON encoder behavior.
+
+---
+
+## 5. Create the encoding function
+
+```python
+def encode_complex_numbers(numbers):
+    return json.dumps(
+        numbers,
+        cls=ComplexNumberEncoder,
+        indent=2
+    )
+```
+
+The function receives a list of `ComplexNumber` objects.
+
+The important part is:
+
+```python
+cls=ComplexNumberEncoder
+```
+
+This tells `json.dumps()` to use our custom encoder.
+
+The:
+
+```python
+indent=2
+```
+
+parameter formats the JSON using two spaces for indentation.
+
+---
+
+## 6. Read the input
+
+```python
+numbers = []
+
+while True:
+    try:
+        line = input().strip()
+
+        if not line:
+            break
+
+        real, imag = map(float, line.split(","))
+        numbers.append(ComplexNumber(real, imag))
+
+    except EOFError:
+        break
+```
+
+We start with an empty list:
+
+```python
+numbers = []
+```
+
+Each input line contains two values separated by a comma:
+
+```text
+3.14,2.71
+```
+
+We split the line:
+
+```python
+line.split(",")
+```
+
+which produces:
+
+```python
+["3.14", "2.71"]
+```
+
+Then:
+
+```python
+map(float, ...)
+```
+
+converts the values into floating-point numbers.
+
+Finally, we create a `ComplexNumber` object:
+
+```python
+ComplexNumber(real, imag)
+```
+
+and add it to the list.
+
+---
+
+## 7. Print the JSON
+
+```python
+print(encode_complex_numbers(numbers))
+```
+
+The list of `ComplexNumber` objects is passed to our encoding function.
+
+The custom encoder converts every `ComplexNumber` into a dictionary before producing the final JSON string.
+
+For the provided input, the result is:
+
+```json
+[
+  {
+    "real": 3.14,
+    "imag": 2.71
+  },
+  {
+    "real": 1.41,
+    "imag": -1.73
+  },
+  {
+    "real": 2.0,
+    "imag": 0.0
+  },
+  {
+    "real": 0.0,
+    "imag": -1.0
+  }
+]
+```
+
+## Key Points
+
+* `JSONEncoder` can be subclassed to support custom Python objects.
+* The `default()` method handles objects that are not natively JSON serializable.
+* `isinstance()` checks whether the object is a `ComplexNumber`.
+* The custom object is converted into a dictionary containing `"real"` and `"imag"`.
+* `cls=ComplexNumberEncoder` tells `json.dumps()` to use the custom encoder.
+* `indent=2` produces nicely formatted JSON.
+* Calling `json.JSONEncoder.default()` provides a fallback for objects that our custom encoder does not handle.
+
+The overall process is:
+
+```text
+ComplexNumber object
+        ↓
+Custom JSONEncoder
+        ↓
+Dictionary
+        ↓
+JSON object
+```
+
+This approach allows custom Python classes to be easily integrated into JSON-based applications.
