@@ -2223,3 +2223,287 @@ JSON object
 ```
 
 This approach allows custom Python classes to be easily integrated into JSON-based applications.
+
+# `json.loads()`
+
+The `json.loads()` function is an important part of Python's built-in `json` module. It is used to **parse a JSON-formatted string and convert it into a Python object**. This process is called **deserialization**.
+
+## Basic Usage
+
+The basic syntax of `json.loads()` is:
+
+```python
+import json
+
+python_object = json.loads(json_string)
+```
+
+The function takes a JSON string as its argument and returns the corresponding Python object.
+
+For example:
+
+```python
+import json
+
+json_string = '{"name": "John", "age": 30, "city": "New York"}'
+
+parsed_data = json.loads(json_string)
+
+print(type(parsed_data))
+print(parsed_data)
+```
+
+Output:
+
+```text
+<class 'dict'>
+{'name': 'John', 'age': 30, 'city': 'New York'}
+```
+
+The JSON object is converted into a Python dictionary.
+
+## Data Type Conversion
+
+`json.loads()` automatically converts JSON data types into their corresponding Python types:
+
+| JSON Type | Python Type      |
+| --------- | ---------------- |
+| Object    | `dict`           |
+| Array     | `list`           |
+| String    | `str`            |
+| Number    | `int` or `float` |
+| `true`    | `True`           |
+| `false`   | `False`          |
+| `null`    | `None`           |
+
+For example:
+
+```python
+import json
+
+json_string = '''
+{
+    "name": "John",
+    "age": 30,
+    "is_student": false,
+    "courses": ["Python", "JSON"],
+    "address": null
+}
+'''
+
+data = json.loads(json_string)
+
+print(type(data))              # <class 'dict'>
+print(type(data["courses"]))   # <class 'list'>
+print(data["is_student"])      # False
+print(data["address"])         # None
+```
+
+`json.loads()` is especially useful when JSON data is received as a string, such as data returned by an API.
+
+---
+
+# Challenge
+
+**Difficulty: Easy**
+
+Create a function that parses a JSON string containing information about a book and performs several operations on the parsed data.
+
+The function should:
+
+1. Use `json.loads()` to parse the input JSON string.
+2. Extract:
+
+   * The title of the book
+   * The number of pages
+   * The list of authors
+3. Perform the following operations:
+
+   * Convert the title to uppercase.
+   * Increase the number of pages by `10`.
+   * Sort the authors alphabetically.
+4. Create a new dictionary containing the modified data.
+5. Return a string in this format:
+
+```text
+TITLE | Pages: X | Authors: A, B, C
+```
+
+The input will be:
+
+```json
+{"title": "Python Programming", "pages": 300, "authors": ["John Smith", "Alice Johnson", "Bob Wilson"]}
+```
+
+Print the resulting string.
+
+---
+
+# Solution
+
+```python
+import json
+
+
+def process_book(json_string):
+    book = json.loads(json_string)
+
+    title = book["title"].upper()
+    pages = book["pages"] + 10
+    authors = sorted(book["authors"])
+
+    modified_book = {
+        "title": title,
+        "pages": pages,
+        "authors": authors
+    }
+
+    return f'{modified_book["title"]} | Pages: {modified_book["pages"]} | Authors: {", ".join(modified_book["authors"])}'
+
+
+json_string = '{"title": "Python Programming", "pages": 300, "authors": ["John Smith", "Alice Johnson", "Bob Wilson"]}'
+
+print(process_book(json_string))
+```
+
+Output:
+
+```text
+PYTHON PROGRAMMING | Pages: 310 | Authors: Alice Johnson, Bob Wilson, John Smith
+```
+
+---
+
+# Solution Explanation
+
+### 1. Import `json`
+
+```python
+import json
+```
+
+The `json` module provides the `json.loads()` function that we need to convert the JSON string into a Python dictionary.
+
+### 2. Parse the JSON string
+
+```python
+book = json.loads(json_string)
+```
+
+The input is a JSON string:
+
+```json
+{"title": "Python Programming", "pages": 300, "authors": ["John Smith", "Alice Johnson", "Bob Wilson"]}
+```
+
+After calling `json.loads()`, it becomes a Python dictionary:
+
+```python
+{
+    "title": "Python Programming",
+    "pages": 300,
+    "authors": ["John Smith", "Alice Johnson", "Bob Wilson"]
+}
+```
+
+Now we can access its values using dictionary keys.
+
+### 3. Convert the title to uppercase
+
+```python
+title = book["title"].upper()
+```
+
+`book["title"]` gives:
+
+```text
+Python Programming
+```
+
+Calling `.upper()` converts it to:
+
+```text
+PYTHON PROGRAMMING
+```
+
+### 4. Increase the number of pages
+
+```python
+pages = book["pages"] + 10
+```
+
+The original number of pages is `300`, so:
+
+```text
+300 + 10 = 310
+```
+
+Therefore, `pages` becomes `310`.
+
+### 5. Sort the authors
+
+```python
+authors = sorted(book["authors"])
+```
+
+The original list is:
+
+```python
+["John Smith", "Alice Johnson", "Bob Wilson"]
+```
+
+`sorted()` returns the authors in alphabetical order:
+
+```python
+["Alice Johnson", "Bob Wilson", "John Smith"]
+```
+
+### 6. Create a new dictionary
+
+```python
+modified_book = {
+    "title": title,
+    "pages": pages,
+    "authors": authors
+}
+```
+
+This creates a new dictionary containing all the modified values:
+
+```python
+{
+    "title": "PYTHON PROGRAMMING",
+    "pages": 310,
+    "authors": ["Alice Johnson", "Bob Wilson", "John Smith"]
+}
+```
+
+### 7. Build the final string
+
+```python
+return f'{modified_book["title"]} | Pages: {modified_book["pages"]} | Authors: {", ".join(modified_book["authors"])}'
+```
+
+The `f-string` inserts the modified values into the required format.
+
+The `join()` method converts the list of authors:
+
+```python
+["Alice Johnson", "Bob Wilson", "John Smith"]
+```
+
+into:
+
+```text
+Alice Johnson, Bob Wilson, John Smith
+```
+
+The final result is:
+
+```text
+PYTHON PROGRAMMING | Pages: 310 | Authors: Alice Johnson, Bob Wilson, John Smith
+```
+
+### Key Idea
+
+The important part of this challenge is understanding that **`json.loads()` converts JSON text into a Python object**, allowing you to work with the data using normal Python operations such as dictionary access, `.upper()`, `+`, `sorted()`, and `.join()`.
