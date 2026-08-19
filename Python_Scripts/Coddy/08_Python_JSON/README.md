@@ -3165,3 +3165,687 @@ False *  2 = 0
 ```
 
 This behavior is a built-in feature of Python and is useful when Boolean values need to be counted or used in mathematical calculations.
+
+# Custom JSON Decoding
+
+Custom JSON decoding is an advanced feature of Python's `json` module that allows you to control how JSON data is converted into Python objects. This is particularly useful when dealing with complex data structures or when you want to create specific Python objects from JSON data.
+
+### The JSONDecoder Class
+
+To implement custom JSON decoding, you need to subclass the `json.JSONDecoder` class and override its `object_hook` method:
+
+```python
+import json
+
+class CustomDecoder(json.JSONDecoder):
+    def object_hook(self, dct):
+        # Custom decoding logic here
+        return dct
+```
+
+### Using the Custom Decoder
+
+Once you've defined your custom decoder, you can use it with `json.loads()` or `json.load()`:
+
+```python
+decoded_object = json.loads(json_string, cls=CustomDecoder)
+```
+
+The `cls` parameter tells `json.loads()` which custom decoder class to use.
+
+When the JSON is decoded, the `object_hook()` method can inspect each JSON object and decide whether it should remain a dictionary or be converted into a custom Python object.
+
+### Example: Decoding to Custom Objects
+
+Let's look at a practical example where we decode JSON data into custom Python objects:
+
+```python
+import json
+from datetime import datetime
+
+class Person:
+    def __init__(self, name, birthdate):
+        self.name = name
+        self.birthdate = birthdate
+
+class CustomDecoder(json.JSONDecoder):
+    def object_hook(self, dct):
+        if 'name' in dct and 'birthdate' in dct:
+            return Person(dct['name'], datetime.fromisoformat(dct['birthdate']))
+        return dct
+
+json_string = '{"name": "Alice", "birthdate": "1990-05-15"}'
+person = json.loads(json_string, cls=CustomDecoder)
+
+print(type(person))  # Output: <class '__main__.Person'>
+print(person.name)   # Output: Alice
+print(person.birthdate)  # Output: 1990-05-15 00:00:00
+```
+
+In this example, `object_hook()` checks whether the decoded dictionary contains both `"name"` and `"birthdate"`.
+
+If both keys exist, it creates a `Person` object instead of returning the dictionary.
+
+The `birthdate` string is also converted into a Python `datetime` object using `datetime.fromisoformat()`.
+
+If the dictionary does not contain the required keys, `return dct` leaves it as a normal dictionary.
+
+### Key Points
+
+* The `object_hook` method is called for each decoded object.
+* You can check for specific keys or patterns to determine how to decode the object.
+* Return the object as-is if no custom decoding is needed for that particular structure.
+* Custom decoders are useful for creating domain-specific objects directly from JSON data.
+
+By using custom JSON decoders, you can seamlessly integrate JSON data into your Python application's object model, making data deserialization more flexible and aligned with your specific needs.
+
+---
+
+# Challenge
+
+**Difficulty: Easy**
+
+Create a custom JSON decoder for a weather data system. The decoder should convert JSON strings into `WeatherData` objects with specific attributes and conversions.
+
+Implement the following:
+
+1. Define a `WeatherData` class with attributes: `location`, `temperature`, `humidity`, and `conditions`.
+2. Create a custom `JSONDecoder` subclass that:
+
+   * Converts temperature from Fahrenheit to Celsius, rounded to one decimal place.
+   * Ensures humidity is represented as a percentage (e.g., `0.65` becomes `65%`).
+   * Capitalizes each word in the conditions string.
+3. Implement a function that takes a JSON string, uses the custom decoder to parse it, and returns a formatted string with the weather data.
+
+The following input will be provided:
+
+```json
+{"location": "new york", "temperature": 72, "humidity": 0.65, "conditions": "partly cloudy"}
+```
+
+Print the resulting formatted string in the following format:
+
+```text
+"Location: [location], Temperature: [temp]°C, Humidity: [humidity], Conditions: [conditions]"
+```
+
+---
+
+# Solution
+
+```python
+import json
+
+
+class WeatherData:
+    def __init__(self, location, temperature, humidity, conditions):
+        self.location = location
+        self.temperature = temperature
+        self.humidity = humidity
+        self.conditions = conditions
+
+
+class WeatherDecoder(json.JSONDecoder):
+    def __init__(self, *args, **kwargs):
+        # Explicitly pass object_hook so it isn't set to None
+        super().__init__(object_hook=self.object_hook, *args, **kwargs)
+
+    def object_hook(self, dct):
+        if all(key in dct for key in ["location", "temperature", "humidity", "conditions"]):
+            location = dct["location"].title()
+            temperature = round((dct["temperature"] - 32) * 5 / 9, 1)
+            humidity = round(dct["humidity"] * 100)
+            conditions = dct["conditions"].title()
+
+            return WeatherData(
+                location,
+                temperature,
+                humidity,
+                conditions
+            )
+
+        return dct
+
+
+def format_weather(json_string):
+    weather = json.loads(json_string, cls=WeatherDecoder)
+
+    return (
+        f"Location: {weather.location}, Temperature: {weather.temperature}°C, Humidity: {weather.humidity}%, Conditions: {weather.conditions}"
+    )
+
+
+json_string = '{"location": "new york", "temperature": 72, "humidity": 0.65, "conditions": "partly cloudy"}'
+
+print(format_weather(json_string))
+```
+
+## Explanation of the Solution
+
+### 1. Import the `json` module
+
+```python
+import json
+```
+
+The `json` module provides the tools needed to decode JSON data.
+
+We specifically need:
+
+* `json.JSONDecoder` to create our custom decoder.
+* `json.loads()` to convert the JSON string into a Python object.
+
+---
+
+### 2. Create the `WeatherData` class
+
+```python
+class WeatherData:
+    def __init__(self, location, temperature, humidity, conditions):
+        self.location = location
+        self.temperature = temperature
+        self.humidity = humidity
+        self.conditions = conditions
+```
+
+The `WeatherData` class represents the weather information as a Python object.
+
+It has four attributes:
+
+```text
+location
+temperature
+humidity
+conditions
+```
+
+For example, after decoding, we want to have an object similar to:
+
+```python
+weather.location
+weather.temperature
+weather.humidity
+weather.conditions
+```
+
+---
+
+### 3. Create the custom `JSONDecoder`
+
+```python
+class WeatherDecoder(json.JSONDecoder):
+```
+
+`WeatherDecoder` inherits from Python's built-in `json.JSONDecoder`.
+
+Inheritance allows us to customize the normal JSON decoding behavior.
+
+The important part of this custom decoder is the `object_hook()` method.
+
+---
+
+### 4. Customize the decoder's `__init__()` method
+
+```python
+def __init__(self, *args, **kwargs):
+    # Explicitly pass object_hook so it isn't set to None
+    super().__init__(object_hook=self.object_hook, *args, **kwargs)
+```
+
+This part is important because it explicitly tells the parent `JSONDecoder` to use our custom `object_hook()` method.
+
+Normally, `JSONDecoder` can receive an `object_hook` argument when it is created.
+
+Here, we explicitly pass:
+
+```python
+object_hook=self.object_hook
+```
+
+This means:
+
+> "Whenever the JSON decoder creates a dictionary from a JSON object, call my `object_hook()` method with that dictionary."
+
+### What are `*args` and `**kwargs`?
+
+```python
+*args
+```
+
+collects additional positional arguments.
+
+```python
+**kwargs
+```
+
+collects additional keyword arguments.
+
+They allow our custom decoder to accept the normal arguments that a `JSONDecoder` can receive.
+
+Then:
+
+```python
+super().__init__(...)
+```
+
+calls the `__init__()` method of the parent `json.JSONDecoder` class.
+
+So this line:
+
+```python
+super().__init__(object_hook=self.object_hook, *args, **kwargs)
+```
+
+initializes the normal JSON decoder while also registering our custom `object_hook()`.
+
+---
+
+### 5. Define `object_hook()`
+
+```python
+def object_hook(self, dct):
+```
+
+The `object_hook()` method receives a dictionary whenever a JSON object is decoded.
+
+For the challenge, the JSON:
+
+```json
+{"location": "new york", "temperature": 72, "humidity": 0.65, "conditions": "partly cloudy"}
+```
+
+is initially represented as a Python dictionary:
+
+```python
+{
+    "location": "new york",
+    "temperature": 72,
+    "humidity": 0.65,
+    "conditions": "partly cloudy"
+}
+```
+
+That dictionary is passed to:
+
+```python
+object_hook(self, dct)
+```
+
+where `dct` contains the decoded data.
+
+---
+
+### 6. Check for all required keys
+
+```python
+if all(key in dct for key in ["location", "temperature", "humidity", "conditions"]):
+```
+
+This checks whether all four required keys exist in the dictionary.
+
+The required keys are:
+
+```text
+location
+temperature
+humidity
+conditions
+```
+
+The `all()` function returns `True` only if every condition is `True`.
+
+So this:
+
+```python
+all(key in dct for key in ["location", "temperature", "humidity", "conditions"])
+```
+
+essentially asks:
+
+> Does `dct` contain `location`, `temperature`, `humidity`, and `conditions`?
+
+If all four exist, we know that the dictionary represents weather data.
+
+---
+
+### 7. Format the location
+
+```python
+location = dct["location"].title()
+```
+
+The `.title()` method capitalizes the first letter of each word.
+
+The input is:
+
+```text
+new york
+```
+
+After `.title()`:
+
+```text
+New York
+```
+
+So the location is converted from:
+
+```text
+"new york"
+```
+
+to:
+
+```text
+"New York"
+```
+
+---
+
+### 8. Convert Fahrenheit to Celsius
+
+```python
+temperature = round((dct["temperature"] - 32) * 5 / 9, 1)
+```
+
+The formula for converting Fahrenheit to Celsius is:
+
+```text
+Celsius = (Fahrenheit - 32) × 5 / 9
+```
+
+The input temperature is:
+
+```text
+72°F
+```
+
+So:
+
+```text
+(72 - 32) × 5 / 9
+```
+
+which gives approximately:
+
+```text
+22.222...
+```
+
+The `round()` function rounds the result to one decimal place:
+
+```python
+round(..., 1)
+```
+
+Therefore:
+
+```text
+22.2
+```
+
+is stored in `temperature`.
+
+---
+
+### 9. Convert humidity to a percentage
+
+```python
+humidity = round(dct["humidity"] * 100)
+```
+
+The JSON contains humidity as:
+
+```text
+0.65
+```
+
+To convert this decimal into a percentage, multiply it by `100`:
+
+```text
+0.65 × 100 = 65
+```
+
+Therefore, `humidity` becomes:
+
+```text
+65
+```
+
+The `%` symbol is added later when the final string is created.
+
+---
+
+### 10. Format the weather conditions
+
+```python
+conditions = dct["conditions"].title()
+```
+
+The input is:
+
+```text
+partly cloudy
+```
+
+Using `.title()` changes it to:
+
+```text
+Partly Cloudy
+```
+
+So the conditions are stored in a more readable format.
+
+---
+
+### 11. Create the `WeatherData` object
+
+```python
+return WeatherData(
+    location,
+    temperature,
+    humidity,
+    conditions
+)
+```
+
+After all the conversions are complete, a `WeatherData` object is created.
+
+The object receives:
+
+```text
+location     → New York
+temperature  → 22.2
+humidity     → 65
+conditions   → Partly Cloudy
+```
+
+Instead of returning the original dictionary, `object_hook()` returns this custom object.
+
+This is the main purpose of custom JSON decoding.
+
+---
+
+### 12. Return other dictionaries unchanged
+
+```python
+return dct
+```
+
+If the dictionary does not contain all four weather-related keys, it is returned unchanged.
+
+This is important because `object_hook()` can be called for every JSON object encountered during decoding.
+
+For example, if a JSON object is unrelated to weather data, we do not want to convert it into a `WeatherData` object.
+
+---
+
+### 13. Create the `format_weather()` function
+
+```python
+def format_weather(json_string):
+```
+
+This function receives the JSON string and handles the decoding and formatting.
+
+---
+
+### 14. Decode using the custom decoder
+
+```python
+weather = json.loads(json_string, cls=WeatherDecoder)
+```
+
+The `cls` parameter tells `json.loads()` to use our `WeatherDecoder`.
+
+Without `cls=WeatherDecoder`, Python would normally use the default JSON decoder.
+
+With:
+
+```python
+cls=WeatherDecoder
+```
+
+the custom decoder is used.
+
+The process is:
+
+```text
+JSON string
+    ↓
+json.loads()
+    ↓
+WeatherDecoder
+    ↓
+object_hook()
+    ↓
+WeatherData object
+```
+
+Therefore, `weather` becomes a `WeatherData` object.
+
+---
+
+### 15. Create the formatted string
+
+```python
+return (
+    f"Location: {weather.location}, Temperature: {weather.temperature}°C, Humidity: {weather.humidity}%, Conditions: {weather.conditions}"
+)
+```
+
+The attributes of the `WeatherData` object are accessed using dot notation:
+
+```python
+weather.location
+weather.temperature
+weather.humidity
+weather.conditions
+```
+
+The values are then inserted into the required output format.
+
+The final result is:
+
+```text
+Location: New York, Temperature: 22.2°C, Humidity: 65%, Conditions: Partly Cloudy
+```
+
+---
+
+### 16. Create the JSON input
+
+```python
+json_string = '{"location": "new york", "temperature": 72, "humidity": 0.65, "conditions": "partly cloudy"}'
+```
+
+This variable contains the JSON string that will be decoded.
+
+The values are:
+
+```text
+location     → new york
+temperature  → 72°F
+humidity     → 0.65
+conditions   → partly cloudy
+```
+
+---
+
+### 17. Call the function
+
+```python
+print(format_weather(json_string))
+```
+
+The JSON string is passed to `format_weather()`.
+
+The function:
+
+1. Decodes the JSON using `WeatherDecoder`.
+2. Converts the dictionary into a `WeatherData` object.
+3. Converts Fahrenheit to Celsius.
+4. Converts humidity to a percentage.
+5. Capitalizes the location and conditions.
+6. Creates the final formatted string.
+7. Returns that string.
+8. `print()` displays it.
+
+The output is:
+
+```text
+Location: New York, Temperature: 22.2°C, Humidity: 65%, Conditions: Partly Cloudy
+```
+
+---
+
+## Complete Flow
+
+```text
+JSON string
+    ↓
+json.loads(json_string, cls=WeatherDecoder)
+    ↓
+WeatherDecoder.__init__()
+    ↓
+object_hook() is registered
+    ↓
+JSON object becomes a dictionary
+    ↓
+object_hook(dct)
+    ↓
+Check for required weather keys
+    ↓
+Location → "New York"
+Temperature → 72°F → 22.2°C
+Humidity → 0.65 → 65%
+Conditions → "Partly Cloudy"
+    ↓
+WeatherData object
+    ↓
+format_weather()
+    ↓
+Formatted string
+```
+
+## Key Idea
+
+The most important concept in this example is that **`object_hook()` allows us to customize what Python creates from a JSON object**.
+
+Normally:
+
+```text
+JSON object → Python dictionary
+```
+
+With the custom decoder:
+
+```text
+JSON object
+    ↓
+object_hook()
+    ↓
+WeatherData object
+```
+
+The custom decoder therefore lets us perform transformations during deserialization instead of manually processing the dictionary after `json.loads()` has finished.
