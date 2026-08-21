@@ -104,3 +104,205 @@ Hello, Alice!
 ```
 
 The important idea is that **`get_greeting` is created and used inside `greeting_generator`**, demonstrating how a function can contain another function.
+
+# Functions as Arguments
+
+In Python, we can pass a function as an argument to another function.
+
+For example:
+
+```python
+def add_numbers(a, b):
+    return a + b
+
+def multiply_numbers(a, b):
+    return a * b
+
+def calculate(func, a, b):
+    return func(a, b)
+
+result = calculate(add_numbers, 2, 3)
+print(result)  # Output: 5
+
+result = calculate(multiply_numbers, 2, 3)
+print(result)  # Output: 6
+```
+
+In this example, we define two functions: `add_numbers` and `multiply_numbers`.
+
+We then define a third function called `calculate`, which takes a function `func` as its first argument, along with two additional arguments `a` and `b`.
+
+When we call `calculate`, we pass the **name of the function** we want to use (`add_numbers` or `multiply_numbers`) as the `func` argument, along with the two numbers we want to operate on.
+
+The `calculate` function then calls the function stored in `func` with the two numbers:
+
+```python
+return func(a, b)
+```
+
+In the example above, we call `calculate` twice: once with `add_numbers` and once with `multiply_numbers`.
+
+The first call returns the sum of `2` and `3`, which is `5`, and the second call returns the product of `2` and `3`, which is `6`.
+
+This demonstrates that **functions are objects in Python and can be passed around just like other values**.
+
+---
+
+# Challenge
+
+**Difficulty:** Easy
+
+Write a function called `list_operator` that takes a list of integers and an operator function as arguments.
+
+The `operator` function should take two integers as input and return a single integer as output.
+
+The `list_operator` function should apply the operator function to all pairs of adjacent integers in the list and return a new list with the results.
+
+### Example
+
+```python
+>>> numbers = [1, 2, 3, 4, 5]
+>>> result = list_operator(numbers, operator.add)
+>>> result
+[3, 5, 7, 9]
+
+>>> numbers = [10, 20, 30, 40]
+>>> result = list_operator(numbers, operator.mul)
+>>> result
+[200, 600, 1200]
+```
+
+### Constraints
+
+* The input list will always contain at least two integers.
+* The operator function will always take two integers as input and return a single integer as output.
+
+---
+
+# Solution
+
+```python
+def list_operator(numbers, operator):
+    result = []
+
+    for i in range(len(numbers) - 1):
+        result.append(operator(numbers[i], numbers[i + 1]))
+
+    return result
+```
+
+### Explanation
+
+The function receives two arguments:
+
+* `numbers` — the list of integers.
+* `operator` — a function that takes two integers and returns an integer.
+
+First, we create an empty list to store the results:
+
+```python
+result = []
+```
+
+Next, we loop through the list using:
+
+```python
+for i in range(len(numbers) - 1):
+```
+
+We use `len(numbers) - 1` because we are working with **pairs of adjacent elements**. For each element, we need another element immediately after it.
+
+For example, with:
+
+```python
+numbers = [1, 2, 3, 4, 5]
+```
+
+the adjacent pairs are:
+
+```text
+(1, 2)
+(2, 3)
+(3, 4)
+(4, 5)
+```
+
+Inside the loop, we call the function passed as `operator`:
+
+```python
+operator(numbers[i], numbers[i + 1])
+```
+
+The important part is that `operator` is itself a function. Therefore, we can call it just like any other function.
+
+For example, if we pass `operator.add`:
+
+```python
+list_operator(numbers, operator.add)
+```
+
+then:
+
+```python
+operator(numbers[i], numbers[i + 1])
+```
+
+performs addition.
+
+For the first pair:
+
+```python
+operator.add(1, 2)
+```
+
+produces:
+
+```text
+3
+```
+
+For the next pair:
+
+```python
+operator.add(2, 3)
+```
+
+produces:
+
+```text
+5
+```
+
+The results are added to the `result` list using:
+
+```python
+result.append(...)
+```
+
+Finally, we return the completed list:
+
+```python
+return result
+```
+
+The same function can work with a completely different operation without changing its code. For example:
+
+```python
+list_operator([10, 20, 30, 40], operator.mul)
+```
+
+passes the multiplication function as the argument, so each adjacent pair is multiplied:
+
+```text
+10 × 20 = 200
+20 × 30 = 600
+30 × 40 = 1200
+```
+
+The result is:
+
+```python
+[200, 600, 1200]
+```
+
+The key concept is that **`list_operator` does not need to know what operation the `operator` function performs**. It simply receives a function and calls it with each pair of adjacent numbers.
