@@ -306,3 +306,98 @@ The result is:
 ```
 
 The key concept is that **`list_operator` does not need to know what operation the `operator` function performs**. It simply receives a function and calls it with each pair of adjacent numbers.
+
+# Return a Function
+
+In Python, we can also return a function as a returned value.
+
+For example,
+
+```python
+def get_multiplier(n):
+    def multiplier(x):
+        return x * n
+    return multiplier
+
+double = get_multiplier(2)
+triple = get_multiplier(3)
+
+print(double(5))  # Output: 10
+print(triple(5))  # Output: 15
+```
+
+In this example, the `get_multiplier` function returns a new function called `multiplier`, which takes a single argument `x` and returns the product of `x` and the argument `n` passed to `get_multiplier`.
+
+We then use `get_multiplier` to create two new functions: `double` (which multiplies its input by 2) and `triple` (which multiplies its input by 3).
+
+When we call these functions with an argument (such as 5), they use the `multiplier` function returned by `get_multiplier` to compute the result.
+
+So in the example above, `double(5)` returns 10 (because `5 * 2 = 10`), and `triple(5)` returns 15 (because `5 * 3 = 15`).
+
+## Challenge
+
+**Easy**
+
+Write a function called `function_builder` that takes two integers `a` and `b` as input and returns a new function.
+
+The new function should take a single integer `x` as input and return the value of `(a * x) + b`.
+
+Here's an example of how the function should work:
+
+```python
+>>> my_func = function_builder(2, 3)
+>>> my_func(5)
+13
+
+>>> function_builder(1, 2)(3)
+5
+```
+
+## Solution
+
+```python
+def function_builder(a, b):
+    def new_function(x):
+        return (a * x) + b
+    return new_function
+```
+
+## Explanation
+
+The `function_builder` function receives `a` and `b` and defines another function called `new_function` inside it.
+
+The inner `new_function` takes `x` and calculates:
+
+```python
+(a * x) + b
+```
+
+Finally, `function_builder` returns `new_function`.
+
+For example:
+
+```python
+my_func = function_builder(2, 3)
+```
+
+Here, `a` is `2` and `b` is `3`. The returned function remembers these values.
+
+Therefore:
+
+```python
+my_func(5)
+```
+
+calculates:
+
+```python
+(2 * 5) + 3
+```
+
+which gives:
+
+```text
+13
+```
+
+The important idea is that `function_builder` **returns a function**, and that returned function can be stored in a variable and called later.
