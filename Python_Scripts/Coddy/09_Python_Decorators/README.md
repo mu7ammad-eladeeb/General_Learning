@@ -401,3 +401,122 @@ which gives:
 ```
 
 The important idea is that `function_builder` **returns a function**, and that returned function can be stored in a variable and called later.
+
+# **Decorators Usage**
+
+In Python, a **decorator** is a function that takes another function as input and extends the behavior of the input function without explicitly modifying its code. Decorators are a powerful way to modify or enhance the behavior of functions in a flexible and reusable way.
+
+Here's an example of a simple decorator function:
+
+```python
+def my_decorator(func):
+    def wrapper():
+        print("Before the function is called.")
+        func()
+        print("After the function is called.")
+    return wrapper
+```
+
+In this example, the `my_decorator` function takes another function `func` as input and returns a new function called `wrapper`.
+
+The `wrapper` function adds some behavior before and after the `func` function is called.
+
+## **Challenge**
+
+**Easy**
+
+Write a decorator function called `debug` that takes a function `func` as input and returns a new function that prints the name of `func` and the return value of `func` every time it is called.
+
+> To get the name of **`func`**, use **`func.__name__`**.
+
+Here's an example of the use of the `debug` decorator:
+
+```python
+def hello():
+    return "Hello"
+
+debug_hello = debug(hello)
+debug_hello()
+```
+
+The decorator should print:
+
+```python
+Calling hello
+hello returned: Hello
+```
+
+> You can assume all the functions passed to **`debug`** are **no-arguments functions**.
+
+## **Solution**
+
+```python
+def debug(func):
+    def wrapper():
+        print("Calling", func.__name__)
+        result = func()
+        print(func.__name__, "returned:", result)
+        return result
+    return wrapper
+```
+
+## **Explanation**
+
+The `debug` function receives another function as its parameter, `func`.
+
+Inside `debug`, we create a new function called `wrapper`. Since the challenge specifies that the functions have **no arguments**, `wrapper` does not need any parameters.
+
+First, we print the name of the original function:
+
+```python
+print("Calling", func.__name__)
+```
+
+The `__name__` attribute gives us the function's name. For example, if `func` is `hello`, then `func.__name__` is `"hello"`.
+
+Next, we call the original function and store its return value:
+
+```python
+result = func()
+```
+
+Then we print the function's name and the value it returned:
+
+```python
+print(func.__name__, "returned:", result)
+```
+
+Finally, we return `result` from `wrapper`:
+
+```python
+return result
+```
+
+This allows the decorated function to keep its original return value.
+
+The last step of the decorator is:
+
+```python
+return wrapper
+```
+
+This means `debug` returns the new `wrapper` function.
+
+For example:
+
+```python
+def hello():
+    return "Hello"
+
+debug_hello = debug(hello)
+debug_hello()
+```
+
+When `debug_hello()` is called, the `wrapper` function runs and produces:
+
+```text
+Calling hello
+hello returned: Hello
+```
+
+So, the decorator adds debugging information around the original function **without changing the original `hello` function itself**.
