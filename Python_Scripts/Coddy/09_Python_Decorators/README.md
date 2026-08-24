@@ -520,3 +520,143 @@ hello returned: Hello
 ```
 
 So, the decorator adds debugging information around the original function **without changing the original `hello` function itself**.
+
+# **Python Syntax**
+
+In the previous lesson, we saw how to create function decorators, however, Python provides a much more elegant way to achieve this functionality using the `@` symbol.
+
+For example,
+
+```python
+def my_decorator(func):
+    def wrapper():
+        print("Before function is called.")
+        func()
+        print("After function is called.")
+    return wrapper
+
+@my_decorator
+def my_function():
+    print("Inside my_function.")
+```
+
+When we run `my_function()`, we'll see output like this:
+
+```text
+Before function is called.
+Inside my_function.
+After function is called.
+```
+
+This shows that the decorator function `my_decorator` was able to modify the behavior of `my_function` by adding some extra code before and after it was called.
+
+## Challenge
+
+**Easy**
+
+You are given a code for a function `add`.
+
+Your task is to write a function decorator named `debug`, as in the last lesson, but with some additions:
+
+* Append the function decorator `debug` to `add` using the `@` symbol.
+* The debug function should support function arguments.
+
+To support function with arguments in a decorator:
+
+```python
+def my_decorator(func):
+    def wrapper(a, b):
+        print("Before function is called.")
+        func(a, b)
+        print("After function is called.")
+    return wrapper
+```
+
+**Example:**
+
+For a function call `add(2, 3)`, should be printed,
+
+```text
+Calling add with arguments (2, 3)
+add returned: 5
+```
+
+## Solution
+
+```python
+def debug(func):
+    def wrapper(a, b):
+        print(f"Calling {func.__name__} with arguments ({a}, {b})")
+        result = func(a, b)
+        print(f"{func.__name__} returned: {result}")
+        return result
+    return wrapper
+
+@debug
+def add(a, b):
+    return a + b
+
+add(2, 3)
+```
+
+### Explanation
+
+The `debug` function is the decorator. It receives the original `add` function as `func`.
+
+The `wrapper(a, b)` function supports the two arguments that `add()` receives.
+
+```python
+print(f"Calling {func.__name__} with arguments ({a}, {b})")
+```
+
+This prints the function's name and its arguments.
+
+```python
+result = func(a, b)
+```
+
+This calls the original `add` function and stores its returned value in `result`.
+
+```python
+print(f"{func.__name__} returned: {result}")
+```
+
+This prints the value returned by the function.
+
+```python
+return result
+```
+
+This returns the original function's result from the wrapper. This is important because otherwise `add(2, 3)` would perform the calculation, but the wrapped function itself would return `None`.
+
+Finally,
+
+```python
+@debug
+def add(a, b):
+    return a + b
+```
+
+is equivalent to:
+
+```python
+def add(a, b):
+    return a + b
+
+add = debug(add)
+```
+
+So, when we call:
+
+```python
+add(2, 3)
+```
+
+Python actually calls the `wrapper` created by `debug`.
+
+The output is:
+
+```text
+Calling add with arguments (2, 3)
+add returned: 5
+```
