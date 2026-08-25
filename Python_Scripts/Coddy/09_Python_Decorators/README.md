@@ -660,3 +660,313 @@ The output is:
 Calling add with arguments (2, 3)
 add returned: 5
 ```
+
+# **Chaining Decorators**
+
+It's possible to **chain** multiple decorators together to modify the behavior of a function. To chain decorators, you simply apply them one after the other, with the innermost decorator closest to the function being decorated.
+
+Here's an example:
+
+```python
+def make_bold(func):
+    def wrapper():
+        return "<b>" + func() + "</b>"
+    return wrapper
+
+def make_italic(func):
+    def wrapper():
+        return "<i>" + func() + "</i>"
+    return wrapper
+
+@make_bold
+@make_italic
+def hello():
+    return "Hello, world!"
+
+print(hello())
+```
+
+The final output is:
+
+```python
+<b><i>Hello, world!</i></b>
+```
+
+> *Notice that in the above example the decorator **returns the value** from the function, until now we only seen decorators which execute the function without returning it result!*
+
+---
+
+## **Challenge**
+
+**Medium**
+
+Write a function called `my_decorator` that takes an integer argument `n` and returns a decorator function that wraps a given function `func` in `n` layers of HTML tags. The outermost tag should be `<div>`, the next layer should be `<p>`, and so on, with each subsequent layer alternating between `<div>` and `<p>` tags. The innermost layer should wrap the output of the function in `<b>` tags.
+
+You are given the code that will be executed with `my_decorator`, do not change it!
+
+**Example:**
+
+```python
+@my_decorator(3)
+def my_function(s):
+    return s.upper()
+
+result = my_function("hello world")
+print(result)
+```
+
+Output:
+
+```python
+<div>
+<p>
+<div>
+<b>
+HELLO WORLD
+</b>
+</div>
+</p>
+</div>
+```
+
+> *Use new lines (`\n`) to format the output correctly!*
+
+---
+
+## **Hint**
+
+Use the following skeleton:
+
+```python
+def my_decorator(n):
+    def inner_decorator(func):
+        def wrapper(s):
+            result = func(s)
+            # modify result
+            return result
+        return wrapper
+    return inner_decorator
+```
+
+---
+
+## **Solution**
+
+```python
+def my_decorator(n):
+    def inner_decorator(func):
+        def wrapper(s):
+            result = f"<b>\n{func(s)}\n</b>"
+
+            for i in range(n, 0, -1):
+                tag = "div" if i % 2 != 0 else "p"
+                result = f"<{tag}>\n{result}\n</{tag}>"
+
+            return result
+        return wrapper
+    return inner_decorator
+```
+
+---
+
+## **Solution Explanation**
+
+### 1. `my_decorator(n)`
+
+```python
+def my_decorator(n):
+```
+
+`my_decorator` takes `n`, which tells us how many HTML layers we need.
+
+For example:
+
+```python
+@my_decorator(3)
+```
+
+means we need **3 layers** of `<div>` and `<p>`.
+
+---
+
+### 2. `inner_decorator(func)`
+
+```python
+def inner_decorator(func):
+```
+
+This is the actual decorator. It receives the function that we want to modify.
+
+---
+
+### 3. `wrapper(s)`
+
+```python
+def wrapper(s):
+```
+
+The wrapper receives the string `s` that will be passed to the original function.
+
+We call the original function:
+
+```python
+result = f"<b>\n{func(s)}\n</b>"
+```
+
+If:
+
+```python
+my_function("hello world")
+```
+
+returns:
+
+```text
+HELLO WORLD
+```
+
+then `result` becomes:
+
+```text
+<b>
+HELLO WORLD
+</b>
+```
+
+The `<b>` tag is the **innermost layer**.
+
+---
+
+### 4. `range(n, 0, -1)`
+
+```python
+for i in range(n, 0, -1):
+```
+
+This counts backward from `n` to `1`.
+
+For example, if:
+
+```python
+n = 3
+```
+
+then:
+
+```python
+range(3, 0, -1)
+```
+
+produces:
+
+```text
+3
+2
+1
+```
+
+We count backward because every new tag **wraps around the existing result**.
+
+---
+
+### 5. Choosing `<div>` or `<p>`
+
+```python
+tag = "div" if i % 2 != 0 else "p"
+```
+
+Here, `%` gives us the remainder after division by `2`.
+
+For example:
+
+```text
+3 % 2 = 1
+2 % 2 = 0
+1 % 2 = 1
+```
+
+We use:
+
+```python
+i % 2 != 0
+```
+
+which means:
+
+> **Is `i` odd?**
+
+If it is odd, we use `<div>`.
+
+If it is even, we use `<p>`.
+
+Therefore, for `n = 3`:
+
+```text
+i = 3 → odd  → div
+i = 2 → even → p
+i = 1 → odd  → div
+```
+
+---
+
+### 6. Wrapping the result
+
+```python
+result = f"<{tag}>\n{result}\n</{tag}>"
+```
+
+Each iteration puts the current `result` inside another HTML tag.
+
+Starting with:
+
+```text
+<b>
+HELLO WORLD
+</b>
+```
+
+After `i = 3`:
+
+```text
+<div>
+<b>
+HELLO WORLD
+</b>
+</div>
+```
+
+After `i = 2`:
+
+```text
+<p>
+<div>
+<b>
+HELLO WORLD
+</b>
+</div>
+</p>
+```
+
+After `i = 1`:
+
+```text
+<div>
+<p>
+<div>
+<b>
+HELLO WORLD
+</b>
+</div>
+</p>
+</div>
+```
+
+So `<div>` becomes the **outermost tag**, `<p>` is the next layer, and the tags continue alternating until we reach the innermost `<b>` tag.
+
+Finally:
+
+```python
+return result
+```
+
+returns the completely wrapped result.
