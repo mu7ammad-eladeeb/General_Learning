@@ -970,3 +970,159 @@ return result
 ```
 
 returns the completely wrapped result.
+
+# **Practice #1**
+
+To wrap a function with **not known number of arguments** use,
+
+```python
+def decorator(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result
+    return wrapper
+```
+
+## Challenge
+
+**Easy**
+
+Write a decorator called `timing_decorator` that prints the execution time of a function in seconds, **rounded to 1 decimal points**.
+
+For example, if the decorated function named `foo` takes 2.5 seconds to execute, the decorator should print:
+
+```text
+foo took 2.5 seconds to execute
+```
+
+**`time` is a module in Python's standard library.**
+
+You can use the **`time` module** to get the current clock time,
+
+```python
+import time
+
+start = time.time()
+# Some operations
+end = time.time()
+diff = end - start  # execution time of "operations"
+```
+
+## Solution
+
+```python
+import time
+
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+
+        result = func(*args, **kwargs)
+
+        end = time.time()
+        execution_time = round(end - start, 1)
+
+        print(f"{func.__name__} took {execution_time} seconds to execute")
+
+        return result
+
+    return wrapper
+```
+
+## Explanation of the Solution
+
+### 1. Import the `time` module
+
+```python
+import time
+```
+
+We import the **`time` module** from Python's standard library so we can measure how long the function takes to execute.
+
+### 2. Create the decorator
+
+```python
+def timing_decorator(func):
+```
+
+`timing_decorator` receives the function that we want to measure as `func`.
+
+### 3. Accept any arguments
+
+```python
+def wrapper(*args, **kwargs):
+```
+
+The wrapper uses `*args` and `**kwargs` so it can work with functions that have **any number of positional and keyword arguments**.
+
+Then we can call the original function using:
+
+```python
+func(*args, **kwargs)
+```
+
+### 4. Record the start time
+
+```python
+start = time.time()
+```
+
+`time.time()` returns the current time. We store it in `start` immediately **before** the function runs.
+
+### 5. Execute the original function
+
+```python
+result = func(*args, **kwargs)
+```
+
+The original function is called with all of its arguments.
+
+We store its returned value in `result` so that the decorator doesn't change the function's original return value.
+
+### 6. Record the end time
+
+```python
+end = time.time()
+```
+
+After the function finishes, we get the current time again.
+
+### 7. Calculate the execution time
+
+```python
+execution_time = round(end - start, 1)
+```
+
+The difference between `end` and `start` gives us the function's execution time.
+
+`round(..., 1)` rounds the result to **1 decimal place**, as required by the challenge.
+
+### 8. Print the result
+
+```python
+print(f"{func.__name__} took {execution_time} seconds to execute")
+```
+
+`func.__name__` gives us the name of the function being decorated.
+
+For example, if the function is called `foo`, the output will look like:
+
+```text
+foo took 2.5 seconds to execute
+```
+
+### 9. Return the result
+
+```python
+return result
+```
+
+The decorator should still return whatever the original function returned. This allows the decorated function to behave normally while also measuring and printing its execution time.
+
+### 10. Return the wrapper
+
+```python
+return wrapper
+```
+
+The decorator returns the `wrapper` function, which replaces the original function and adds the timing behavior around it.
