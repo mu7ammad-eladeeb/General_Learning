@@ -1126,3 +1126,157 @@ return wrapper
 ```
 
 The decorator returns the `wrapper` function, which replaces the original function and adds the timing behavior around it.
+
+## **Practice #2**
+
+### **Challenge**
+
+**Medium**
+
+Write a decorator named `cache_decorator` that caches the return value of a function. The decorator should maintain a dictionary mapping input arguments to return values and check the dictionary before executing the function to see if the value has already been computed. If the value is in the cache, the decorator should return it immediately without executing the function. If the value is not in the cache, the decorator should execute the function and add the result to the cache before returning it.
+
+### **Solution**
+
+```python
+def cache_decorator(func):
+
+    cache = {}
+
+    def wrapper(*args, **kwargs):
+
+        if args not in cache:
+            result = func(*args, **kwargs)
+            cache[args] = result
+            return result
+
+        elif args in cache:
+            return cache[args]
+
+    return wrapper
+```
+
+### **Explanation**
+
+The goal of this decorator is to **store previously calculated results** so that the function does not need to execute again with the same arguments.
+
+#### **1. Create the cache**
+
+```python
+cache = {}
+```
+
+A dictionary named `cache` is created to store the function's arguments and their corresponding results.
+
+For example:
+
+```python
+cache = {
+    (5,): 25,
+    (10,): 100
+}
+```
+
+Here, `(5,)` is the argument passed to the function, and `25` is the result returned by the function.
+
+#### **2. Create the wrapper**
+
+```python
+def wrapper(*args, **kwargs):
+```
+
+The wrapper uses `*args` and `**kwargs` so it can accept a variable number of positional and keyword arguments.
+
+In this solution, however, only `args` are used as the cache key.
+
+#### **3. Check whether the arguments are already cached**
+
+```python
+if args not in cache:
+```
+
+The decorator checks whether the arguments have already been stored in the dictionary.
+
+If they are **not** in the cache, the function needs to be executed.
+
+#### **4. Execute the function**
+
+```python
+result = func(*args, **kwargs)
+```
+
+The original function is called with the arguments received by the wrapper, and its return value is stored in `result`.
+
+#### **5. Store the result**
+
+```python
+cache[args] = result
+```
+
+The arguments are used as the dictionary key, and the function's result is stored as the value.
+
+This means that the next time the function receives the same arguments, the result can be retrieved from the cache.
+
+#### **6. Return the new result**
+
+```python
+return result
+```
+
+The newly calculated result is returned to the caller.
+
+#### **7. Return the cached result**
+
+```python
+elif args in cache:
+    return cache[args]
+```
+
+If the arguments are already in the cache, the function is **not executed**.
+
+Instead, the previously calculated result is returned directly:
+
+```python
+return cache[args]
+```
+
+This is the main benefit of caching: **repeated calls with the same arguments can return their results immediately.**
+
+#### **8. Return the wrapper**
+
+```python
+return wrapper
+```
+
+Finally, the decorator returns the `wrapper` function, which replaces the original function when the decorator is applied.
+
+### **How it works**
+
+Suppose the decorated function is called like this:
+
+```python
+calculate(5)
+```
+
+The first call:
+
+```text
+5 → Function executes → Result is calculated → Result is stored in cache
+```
+
+A second call with the same argument:
+
+```text
+5 → Result found in cache → Function does not execute → Cached result is returned
+```
+
+So the cache prevents the function from repeating work that has already been done.
+
+### **Important Note**
+
+This solution uses only `args` as the cache key:
+
+```python
+cache[args] = result
+```
+
+Therefore, `kwargs` are passed to the function but are **not included in the cache key**. For a decorator that fully supports both positional and keyword arguments in caching, the cache key would need to account for `kwargs` as well.
