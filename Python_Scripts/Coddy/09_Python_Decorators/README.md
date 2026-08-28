@@ -1280,3 +1280,270 @@ cache[args] = result
 ```
 
 Therefore, `kwargs` are passed to the function but are **not included in the cache key**. For a decorator that fully supports both positional and keyword arguments in caching, the cache key would need to account for `kwargs` as well.
+
+## **Practice #3**
+````markdown
+
+Challenge
+
+Medium
+
+Write a decorator named `rate_limit` that limits the rate at which a function can be executed.
+
+The decorator should take a parameter indicating the maximum number of times the function can be called per second. If the function is called more than the maximum number of times per second, the decorator should raise an exception - `Exception("Function called too quickly")`.
+
+Tip: use the `time` library, to get the current time you can use `time.monotonic()`
+
+The test for this challenge executes a function with this decorator, every 0.2 second, 10 times in total.
+
+Hints:
+
+Hint 1
+
+Here is a skeleton of the solution:
+
+```python
+import time
+
+def rate_limit(max_calls):
+    start_time = [0]
+    count_calls = [0]
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            # Write code here
+            # Change start_time[0] and count_calls[0]
+        return wrapper
+    return decorator
+````
+
+---
+
+## Solution
+
+```python
+import time
+
+def rate_limit(max_calls):
+    start_time = [0]
+    count_calls = [0]
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            current_time = time.monotonic()
+
+            if current_time - start_time[0] >= 1:
+                start_time[0] = current_time
+                count_calls[0] = 0
+
+            count_calls[0] += 1
+
+            if count_calls[0] > max_calls:
+                raise Exception("Function called too quickly")
+
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+```
+
+## Explanation
+
+This is a **parameterized decorator** because `rate_limit()` receives `max_calls` before it receives the function.
+
+The structure is:
+
+```text
+rate_limit(max_calls)
+       ↓
+  decorator(func)
+       ↓
+    wrapper()
+       ↓
+original function
+```
+
+### 1. Import `time`
+
+```python
+import time
+```
+
+We use the `time` library to measure how much time has passed.
+
+The challenge specifically suggests:
+
+```python
+time.monotonic()
+```
+
+`time.monotonic()` gives us a clock value that is useful for measuring elapsed time.
+
+---
+
+### 2. Create the variables that store the state
+
+```python
+start_time = [0]
+count_calls = [0]
+```
+
+`start_time` stores when the current one-second period started.
+
+`count_calls` stores how many times the function has been called during that one-second period.
+
+They are lists containing one value instead of simple integers because `wrapper()` needs to modify these values.
+
+For example:
+
+```python
+count_calls[0] += 1
+```
+
+changes the value stored inside the list.
+
+---
+
+### 3. Get the current time
+
+```python
+current_time = time.monotonic()
+```
+
+Every time the decorated function is called, we get the current time.
+
+---
+
+### 4. Check whether one second has passed
+
+```python
+if current_time - start_time[0] >= 1:
+    start_time[0] = current_time
+    count_calls[0] = 0
+```
+
+This calculates how much time has passed since the beginning of the current one-second period:
+
+```python
+current_time - start_time[0]
+```
+
+If the result is greater than or equal to `1`, then one second has passed.
+
+We then start a new period:
+
+```python
+start_time[0] = current_time
+```
+
+and reset the call counter:
+
+```python
+count_calls[0] = 0
+```
+
+---
+
+### 5. Count the function call
+
+```python
+count_calls[0] += 1
+```
+
+Every time the function is called, the counter increases by one.
+
+For example, if `max_calls` is `3`:
+
+```text
+Call 1 → count = 1
+Call 2 → count = 2
+Call 3 → count = 3
+Call 4 → count = 4
+```
+
+---
+
+### 6. Check if the limit was exceeded
+
+```python
+if count_calls[0] > max_calls:
+    raise Exception("Function called too quickly")
+```
+
+If the number of calls becomes greater than `max_calls`, the decorator raises the required exception.
+
+For example:
+
+```python
+@rate_limit(3)
+def greet():
+    print("Hello")
+```
+
+The first three calls are allowed:
+
+```text
+Call 1 → allowed
+Call 2 → allowed
+Call 3 → allowed
+```
+
+But the fourth call within the same one-second period causes:
+
+```text
+Exception("Function called too quickly")
+```
+
+---
+
+### 7. Execute the original function
+
+```python
+return func(*args, **kwargs)
+```
+
+If the call is within the allowed limit, we execute the original function.
+
+`*args` allows any number of positional arguments, while `**kwargs` allows any number of keyword arguments.
+
+The `return` also makes sure that the original function's return value is passed back to the caller.
+
+---
+
+## Complete Flow
+
+Suppose we have:
+
+```python
+@rate_limit(3)
+def greet(name):
+    return f"Hello, {name}!"
+```
+
+The decorator allows **3 calls per second**.
+
+The process is:
+
+```text
+Function is called
+       ↓
+Get current time
+       ↓
+Has 1 second passed?
+   ↙           ↘
+ Yes            No
+ ↓               ↓
+Reset counter   Keep counter
+ ↓               ↓
+      Increase counter
+             ↓
+     count > max_calls?
+        ↙          ↘
+      Yes           No
+       ↓             ↓
+Raise Exception   Call function
+```
+
+So the main idea of the solution is:
+
+**Keep track of the time and the number of calls. If one second has passed, reset the counter. Otherwise, keep counting calls and raise an exception when the limit is exceeded.**
