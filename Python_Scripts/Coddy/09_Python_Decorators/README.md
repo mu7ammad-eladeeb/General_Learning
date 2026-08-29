@@ -1547,3 +1547,199 @@ Raise Exception   Call function
 So the main idea of the solution is:
 
 **Keep track of the time and the number of calls. If one second has passed, reset the counter. Otherwise, keep counting calls and raise an exception when the limit is exceeded.**
+
+# **Practice #4**
+
+![challenge icon](https://coddy.tech/icons/challenge-white.svg)
+
+## **Challenge**
+
+**Medium**
+
+Write a decorator named `restrict_range` that restricts the input arguments of a function to a specific range.
+
+The decorator should take two parameters indicating the minimum and maximum values allowed for the input arguments. If the input arguments are outside of the specified range, the decorator should raise an exception - `ValueError("Input argument out of range")`.
+
+Here's an example usage of the decorator:
+
+```python
+@restrict_range(0, 10)
+def add(a, b):
+    return a + b
+
+res = add(6, 5)  # returns 11
+res = add(3, 11)  # raises ValueError
+```
+
+You can assume:
+
+- All functions decorated with `restrict_range` use only numbers as arguments.
+- All functions decorated with `restrict_range` do not use `**kwargs`, just `*args`.
+
+![Hints icon](https://coddy.tech/icons/hint-white.svg)
+
+## **Hints**
+
+### Hint 1
+
+To iterate over all the arguments (`*args`):
+
+```python
+for arg in args:
+    # do something with arg
+```
+
+---
+
+# **Solution**
+
+```python
+def restrict_range(min_value, max_value):
+    def decorator(func):
+        def wrapper(*args):
+            for arg in args:
+                if arg < min_value or arg > max_value:
+                    raise ValueError("Input argument out of range")
+
+            return func(*args)
+
+        return wrapper
+
+    return decorator
+
+
+@restrict_range(0, 10)
+def add(a, b):
+    return a + b
+
+
+res = add(6, 5)
+print(res)  # Output: 11
+
+res = add(3, 11)  # Raises ValueError
+```
+
+---
+
+# **Explanation**
+
+The `restrict_range` decorator is a **decorator factory**. This means it first receives the minimum and maximum values, then creates and returns the actual decorator.
+
+## **1. Receiving the allowed range**
+
+```python
+def restrict_range(min_value, max_value):
+```
+
+The `restrict_range` function receives two values:
+
+- `min_value`: the smallest allowed value.
+- `max_value`: the largest allowed value.
+
+For example:
+
+```python
+@restrict_range(0, 10)
+```
+
+means that every argument passed to the decorated function must be between `0` and `10`, inclusive.
+
+---
+
+## **2. Receiving the original function**
+
+```python
+def decorator(func):
+```
+
+The `decorator` function receives the original function that we want to decorate.
+
+In this example, the original function is:
+
+```python
+def add(a, b):
+    return a + b
+```
+
+---
+
+## **3. Using `wrapper(*args)`**
+
+```python
+def wrapper(*args):
+```
+
+The wrapper uses `*args` so it can receive all positional arguments passed to the original function.
+
+For example:
+
+```python
+add(6, 5)
+```
+
+collects the arguments as:
+
+```python
+args = (6, 5)
+```
+
+---
+
+## **4. Checking every argument**
+
+```python
+for arg in args:
+    if arg < min_value or arg > max_value:
+        raise ValueError("Input argument out of range")
+```
+
+The `for` loop goes through every argument.
+
+For each argument, it checks whether the value is:
+
+- Less than `min_value`, or
+- Greater than `max_value`.
+
+If either condition is true, the decorator raises:
+
+```python
+ValueError("Input argument out of range")
+```
+
+For example:
+
+```python
+add(3, 11)
+```
+
+The value `11` is greater than the maximum allowed value `10`, so the decorator raises a `ValueError`.
+
+---
+
+## **5. Calling the original function**
+
+```python
+return func(*args)
+```
+
+If all arguments are within the allowed range, the original function is called normally.
+
+For example:
+
+```python
+add(6, 5)
+```
+
+Both `6` and `5` are between `0` and `10`, so the decorator allows the function to run:
+
+```python
+6 + 5
+```
+
+The result is:
+
+```python
+11
+```
+
+Therefore, the `restrict_range` decorator checks all input arguments before executing the original function and prevents the function from running if any argument is outside the specified range.
