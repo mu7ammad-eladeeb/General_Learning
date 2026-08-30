@@ -1743,3 +1743,152 @@ The result is:
 ```
 
 Therefore, the `restrict_range` decorator checks all input arguments before executing the original function and prevents the function from running if any argument is outside the specified range.
+
+
+## **Challenge**
+
+Easy
+
+Write a decorator named `memory_usage` that measures the memory usage of a function.
+
+The decorator should print a message indicating the amount of memory used by the function before and after it is executed, in the following format:
+
+```python
+Memory usage: 0 Bytes
+```
+
+To get the current "memory usage" (not exactly),
+
+```python
+import tracemalloc
+
+tracemalloc.start()
+res = # some operations
+current, peak = tracemalloc.get_traced_memory()
+```
+
+`current` will hold the value in Bytes.
+
+> *Return the result of the function in the end!*
+
+**Hints**
+
+Hint 1
+
+Very similar to the `timing_decorator`.
+
+---
+
+# Solution
+
+```python
+import tracemalloc
+
+
+def memory_usage(func):
+    def wrapper(*args, **kwargs):
+        tracemalloc.start()
+
+        result = func(*args, **kwargs)
+
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Memory usage: {current} Bytes")
+
+        tracemalloc.stop()
+
+        return result
+
+    return wrapper
+```
+
+# Explanation
+
+The `memory_usage` decorator measures the memory usage while the decorated function is executed.
+
+First, we import the `tracemalloc` module:
+
+```python
+import tracemalloc
+```
+
+`tracemalloc` is a Python module that allows us to trace memory allocations.
+
+The decorator receives the original function:
+
+```python
+def memory_usage(func):
+```
+
+Then, we create a `wrapper` function:
+
+```python
+def wrapper(*args, **kwargs):
+```
+
+Using `*args` and `**kwargs` allows the decorator to work with functions that accept any number of positional and keyword arguments.
+
+Before executing the original function, we start tracing memory:
+
+```python
+tracemalloc.start()
+```
+
+Next, we execute the original function and store its result:
+
+```python
+result = func(*args, **kwargs)
+```
+
+After the function finishes, we get the current and peak traced memory:
+
+```python
+current, peak = tracemalloc.get_traced_memory()
+```
+
+The `current` variable contains the current traced memory usage in Bytes, while `peak` contains the highest amount of traced memory used since tracing started.
+
+Then, we print the current memory usage:
+
+```python
+print(f"Memory usage: {current} Bytes")
+```
+
+This prints the memory usage in the required format:
+
+```text
+Memory usage: 0 Bytes
+```
+
+After getting the memory information, we stop tracing:
+
+```python
+tracemalloc.stop()
+```
+
+Finally, we return the original function's result:
+
+```python
+return result
+```
+
+This is important because the decorator should measure the memory usage without changing what the original function returns.
+
+## Example
+
+```python
+@memory_usage
+def create_list():
+    return [i for i in range(10000)]
+
+
+numbers = create_list()
+```
+
+When `create_list()` is called:
+
+1. `tracemalloc.start()` starts tracing memory.
+2. The `create_list()` function is executed.
+3. The current memory usage is retrieved using `tracemalloc.get_traced_memory()`.
+4. The memory usage is printed.
+5. `tracemalloc.stop()` stops tracing memory.
+6. The original function's result is returned normally.
