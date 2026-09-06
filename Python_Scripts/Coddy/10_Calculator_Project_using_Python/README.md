@@ -506,3 +506,197 @@ elif operator == '%' or operator == 'mod':
 ```
 
 The important idea is to **validate the inputs before performing the calculation**. If something is invalid, `raise Exception()` immediately stops the function and provides the required error message.
+
+# **Single number**
+
+Currently the `calc` function supports only two numbers operations.
+
+Let's add single number operations for `'+'` and `'-'`,
+
+- `calc('+', 5.4)` -> `5.4`
+- `calc('-', 3)` -> `-3`
+
+---
+
+# **Challenge**
+
+Easy
+
+Add support for single number operators for `'+'` and `'-'`.
+
+- Add default value, `None`, to the 3rd argument of `calc`
+
+---
+
+## **Hints**
+
+Hint 1
+
+To add default value, `None`, use,
+
+```python
+def calc(op, n1, n2=None):
+```
+
+---
+
+# Solution
+
+```python
+def calc(operator, num1, num2=None):
+    operator = operator.lower()
+
+    if not isinstance(num1, (int, float)):
+        raise Exception(f'Invalid number "{num1}"')
+
+    if num2 is not None and not isinstance(num2, (int, float)):
+        raise Exception(f'Invalid number "{num2}"')
+
+    if operator not in ['+', '-', '*', '/', '^', '%',
+                        'add', 'sub', 'mul', 'div', 'pow', 'mod']:
+        raise Exception(f'Invalid operator "{operator}"')
+
+    # Single number operations
+    if num2 is None:
+        if operator == '+' or operator == 'add':
+            return num1
+        elif operator == '-' or operator == 'sub':
+            return -num1
+        else:
+            raise Exception(f'Invalid operator "{operator}"')
+
+    # Two number operations
+    if operator == '+' or operator == 'add':
+        return num1 + num2
+    elif operator == '-' or operator == 'sub':
+        return num1 - num2
+    elif operator == '*' or operator == 'mul':
+        return num1 * num2
+    elif operator == '/' or operator == 'div':
+        if num2 == 0:
+            raise Exception("Division by zero")
+        return num1 / num2
+    elif operator == '^' or operator == 'pow':
+        return num1 ** num2
+    elif operator == '%' or operator == 'mod':
+        if num2 == 0:
+            raise Exception("Division by zero")
+        return num1 % num2
+```
+
+# Explanation
+
+The main change is giving the third argument a default value of `None`:
+
+```python
+def calc(operator, num1, num2=None):
+```
+
+This means that `num2` is optional. If the user doesn't provide a third argument, `num2` will automatically be `None`.
+
+For example:
+
+```python
+calc('+', 5.4)
+```
+
+is equivalent to:
+
+```python
+calc('+', 5.4, None)
+```
+
+## 1. Validate the first number
+
+The first number must still be an `int` or `float`:
+
+```python
+if not isinstance(num1, (int, float)):
+    raise Exception(f'Invalid number "{num1}"')
+```
+
+## 2. Validate the second number only when it exists
+
+Because `num2` can now be `None`, we need to make sure we don't treat `None` as an invalid number:
+
+```python
+if num2 is not None and not isinstance(num2, (int, float)):
+    raise Exception(f'Invalid number "{num2}"')
+```
+
+The condition checks whether `num2` is not `None` before checking its type.
+
+## 3. Handle single-number operations
+
+We check whether the user provided only one number:
+
+```python
+if num2 is None:
+```
+
+For `+`, the number stays unchanged:
+
+```python
+if operator == '+' or operator == 'add':
+    return num1
+```
+
+For `-`, we return the negative version of the number:
+
+```python
+elif operator == '-' or operator == 'sub':
+    return -num1
+```
+
+Therefore:
+
+```python
+calc('+', 5.4)  # 5.4
+calc('-', 3)    # -3
+```
+
+If a single number is provided with an operator that requires two numbers, such as `*` or `/`, an exception is raised:
+
+```python
+else:
+    raise Exception(f'Invalid operator "{operator}"')
+```
+
+## 4. Keep the existing two-number operations
+
+If `num2` is provided, the function continues to perform the normal two-number calculations:
+
+```python
+if operator == '+' or operator == 'add':
+    return num1 + num2
+elif operator == '-' or operator == 'sub':
+    return num1 - num2
+elif operator == '*' or operator == 'mul':
+    return num1 * num2
+elif operator == '/' or operator == 'div':
+    if num2 == 0:
+        raise Exception("Division by zero")
+    return num1 / num2
+elif operator == '^' or operator == 'pow':
+    return num1 ** num2
+elif operator == '%' or operator == 'mod':
+    if num2 == 0:
+        raise Exception("Division by zero")
+    return num1 % num2
+```
+
+So the function now supports both single-number and two-number operations:
+
+```python
+calc('+', 5.4)       # 5.4
+calc('-', 3)         # -3
+
+calc('+', 1, 3)      # 4
+calc('-', 1, 3)      # -2
+calc('*', 2, 3)      # 6
+calc('/', 1, 4)      # 0.25
+calc('^', 2, 3)      # 8
+calc('%', 10, 3)     # 1
+```
+
+The key idea is using `None` as the default value for `num2` to determine whether the function should perform a **single-number** or **two-number** operation.
