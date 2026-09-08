@@ -700,3 +700,94 @@ calc('%', 10, 3)     # 1
 ```
 
 The key idea is using `None` as the default value for `num2` to determine whether the function should perform a **single-number** or **two-number** operation.
+
+# **Basic structure**
+
+The next step is to evaluate a list of expressions.
+
+The basic structure is:
+
+```python
+[op, num1, num2]
+```
+
+Some examples:
+
+```python
+['+', 1, 2]      ->  calc('+', 1, 2)
+['*', 3, 2]      ->  calc('*', 3, 2)
+['/', 5.3, 0]    ->  calc('/', 5.3, 0)
+```
+
+
+# **Challenge**
+
+Easy
+
+Create function `eval` which gets a basic structure, a list as described above, and returns the calculation result.
+
+Use the `calc` function you created!
+
+---
+
+# Solution
+
+```python
+def eval(expression):
+    operator, num1, num2 = expression
+    return calc(operator, num1, num2)
+```
+
+# Explanation
+
+The `eval` function receives a list containing three values:
+
+```python
+[op, num1, num2]
+```
+
+For example:
+
+```python
+['+', 1, 2]
+```
+
+The first value is the operator, the second value is the first number, and the third value is the second number.
+
+We unpack the list into three variables:
+
+```python
+operator, num1, num2 = expression
+```
+
+For:
+
+```python
+['+', 1, 2]
+```
+
+the variables become:
+
+```python
+operator = '+'
+num1 = 1
+num2 = 2
+```
+
+Then we pass these values directly to the `calc` function:
+
+```python
+return calc(operator, num1, num2)
+```
+
+This allows us to reuse all the functionality and error handling that we already implemented in `calc`.
+
+For example:
+
+```python
+eval(['+', 1, 2])      # 3
+eval(['*', 3, 2])      # 6
+eval(['/', 5.3, 0])    # raises "Division by zero"
+```
+
+The main idea is that `eval` acts as a simple interface for a list-based expression: it **unpacks the list** and then **passes its values to `calc`**.
