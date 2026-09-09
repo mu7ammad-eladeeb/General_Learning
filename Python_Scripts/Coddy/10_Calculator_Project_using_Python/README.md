@@ -791,3 +791,200 @@ eval(['/', 5.3, 0])    # raises "Division by zero"
 ```
 
 The main idea is that `eval` acts as a simple interface for a list-based expression: it **unpacks the list** and then **passes its values to `calc`**.
+
+# **Recursive structure**
+
+The real power of the structure we saw last lesson comes with **recursion**.
+
+Consider calculation with more than one operator, for example:
+
+- `2 + 3 * 4 + 5`
+
+There is an order according to math rules, first we need to calculate `3 * 4` and then all the rest.
+
+The following calculation will be formatted into recursive structure in the possible ways:
+
+- `['+', ['+', 2, ['*', 3, 4]], 5]`
+- `['+', 2, ['+', 5, ['*', 3, 4]]]`
+- `['+', 5, ['+', ['*', 3, 4], 2]]`
+
+Notice that the deepest simple structure is always `['*', 3, 4]` which is the first to calculate. Also note that everything is the basic structure `[op, num1, num2]`.
+
+Some more examples of calculations to recursive structure:
+
+- `2 - 3` -> `['-', 2, 3]`
+- `1 - 2 + 3` -> `['+', ['-', 1, 2], 3]`
+- `1 * 2 - 3` -> `['-', ['*', 1, 2], 3]`
+- `2.3 + 3 / 4.2 - 2` -> `['-', ['+', 2.3, ['/', 3, 4.2]], 2]`
+
+---
+
+# **Challenge**
+
+Medium
+
+Upgrade the `eval` function to support recursive structures as described above.
+
+Notes:
+
+- Call `calc` when the structure is a simple structure, with an operator and **two numbers**.
+- Call `eval` recursively if one of the arguments is another structure (list).
+
+---
+
+## **Hints**
+
+Hint 1
+
+To check if `val` is a `list`, use:
+
+```python
+isinstance(val, list)
+```
+
+This is also the way to determine if one of the arguments is another structure (list) and call `eval` recursively with **this argument**.
+
+---
+
+# Solution
+
+```python
+def eval(expression):
+    operator, num1, num2 = expression
+
+    if isinstance(num1, list):
+        num1 = eval(num1)
+
+    if isinstance(num2, list):
+        num2 = eval(num2)
+
+    return calc(operator, num1, num2)
+```
+
+# Explanation
+
+The `eval` function receives a structure containing an operator and two arguments:
+
+```python
+operator, num1, num2 = expression
+```
+
+For example:
+
+```python
+['+', ['-', 5, 2], 3]
+```
+
+After unpacking:
+
+```python
+operator = '+'
+num1 = ['-', 5, 2]
+num2 = 3
+```
+
+The important part is that `num1` is a list, which means it is another calculation that needs to be evaluated first.
+
+## 1. Check if the first argument is a list
+
+```python
+if isinstance(num1, list):
+    num1 = eval(num1)
+```
+
+If `num1` is a list, we call `eval()` again with that list.
+
+For example:
+
+```python
+eval(['-', 5, 2])
+```
+
+returns:
+
+```python
+3
+```
+
+So `num1` becomes `3`.
+
+## 2. Check if the second argument is a list
+
+We do the same thing for `num2`:
+
+```python
+if isinstance(num2, list):
+    num2 = eval(num2)
+```
+
+This allows either argument to contain another nested calculation.
+
+## 3. Use `calc` when both arguments are numbers
+
+After recursively evaluating any nested lists, `num1` and `num2` are numbers.
+
+We can then call the `calc` function:
+
+```python
+return calc(operator, num1, num2)
+```
+
+This follows the challenge requirement to use `calc` for the actual calculation.
+
+## Example
+
+Consider:
+
+```python
+eval(['+', ['-', 5, 2], 3])
+```
+
+The structure represents:
+
+```text
+(5 - 2) + 3
+```
+
+First, `eval` sees that `num1` is a list:
+
+```python
+['-', 5, 2]
+```
+
+So it recursively evaluates it:
+
+```python
+eval(['-', 5, 2])
+```
+
+This calls:
+
+```python
+calc('-', 5, 2)
+```
+
+which returns:
+
+```python
+3
+```
+
+The original expression is now effectively:
+
+```python
+calc('+', 3, 3)
+```
+
+which returns:
+
+```python
+6
+```
+
+Therefore:
+
+```python
+eval(['+', ['-', 5, 2], 3])  # 6
+```
+
+The key idea is that **`eval` handles the structure, while `calc` performs the actual calculation**. Whenever `eval` encounters a nested list, it calls itself recursively until it reaches the deepest simple structure. That deepest calculation is evaluated first, and its result is then passed back up to the previous level.
