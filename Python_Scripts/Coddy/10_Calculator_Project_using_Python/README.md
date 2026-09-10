@@ -988,3 +988,210 @@ eval(['+', ['-', 5, 2], 3])  # 6
 ```
 
 The key idea is that **`eval` handles the structure, while `calc` performs the actual calculation**. Whenever `eval` encounters a nested list, it calls itself recursively until it reaches the deepest simple structure. That deepest calculation is evaluated first, and its result is then passed back up to the previous level.
+
+# **Single number operator**
+
+As we discussed in previous lesson we can add support to single number operator and not a pair.
+
+This is some examples with `eval`,
+
+- `eval(['-', 4])` -> `-4`
+- `eval(['+', 4, ['-', 4]])` -> `0`
+- `eval(['*', ['+', 4], ['-', 4]])` -> `-16`
+
+
+# **Challenge**
+
+Easy
+
+Add support for single number operator for the `eval` function.
+
+
+## **Hints**
+
+Hint 1
+
+
+Add separation between the length of the list,
+
+```python
+def eval(lst):
+    if len(lst) == 2:
+        # Handle single number operator
+    elif len(lst) == 3:
+        # Handle two numbers operator (regular)
+```
+
+---
+
+# Solution
+
+```python
+def eval(lst):
+    if len(lst) == 2:
+        operator, num1 = lst
+
+        if isinstance(num1, list):
+            num1 = eval(num1)
+
+        return calc(operator, num1)
+
+    elif len(lst) == 3:
+        operator, num1, num2 = lst
+
+        if isinstance(num1, list):
+            num1 = eval(num1)
+
+        if isinstance(num2, list):
+            num2 = eval(num2)
+
+        return calc(operator, num1, num2)
+```
+
+# Explanation
+
+The `eval` function needs to support both **single-number** and **two-number** operations.
+
+We can determine which type of operation we have by checking the length of the list:
+
+```python
+if len(lst) == 2:
+```
+
+A list with two elements represents a single-number operation:
+
+```python
+['-', 4]
+```
+
+We unpack the list:
+
+```python
+operator, num1 = lst
+```
+
+Then we check if `num1` is another list:
+
+```python
+if isinstance(num1, list):
+    num1 = eval(num1)
+```
+
+If it is a nested structure, we recursively call `eval()` to calculate it first.
+
+Finally, we pass the operator and number to `calc`:
+
+```python
+return calc(operator, num1)
+```
+
+Since `calc` already supports single-number operations, it can handle `+` and `-`.
+
+For example:
+
+```python
+eval(['-', 4])
+```
+
+calls:
+
+```python
+calc('-', 4)
+```
+
+and returns:
+
+```python
+-4
+```
+
+For a list with three elements:
+
+```python
+elif len(lst) == 3:
+```
+
+we have the regular two-number structure:
+
+```python
+[operator, num1, num2]
+```
+
+We unpack it:
+
+```python
+operator, num1, num2 = lst
+```
+
+Then we check both arguments for nested lists:
+
+```python
+if isinstance(num1, list):
+    num1 = eval(num1)
+
+if isinstance(num2, list):
+    num2 = eval(num2)
+```
+
+This allows us to handle recursive structures such as:
+
+```python
+eval(['+', 4, ['-', 4]])
+```
+
+The inner structure:
+
+```python
+['-', 4]
+```
+
+is evaluated first:
+
+```python
+calc('-', 4)
+```
+
+which gives:
+
+```python
+-4
+```
+
+The outer calculation then becomes:
+
+```python
+calc('+', 4, -4)
+```
+
+which returns:
+
+```python
+0
+```
+
+The same logic works when both arguments are nested:
+
+```python
+eval(['*', ['+', 4], ['-', 4]])
+```
+
+The two nested expressions are evaluated first:
+
+```python
+['+', 4]  ->  4
+['-', 4]  ->  -4
+```
+
+Then the outer calculation becomes:
+
+```python
+calc('*', 4, -4)
+```
+
+which returns:
+
+```python
+-16
+```
+
+The key idea is to **use `len(lst)` to determine whether the expression has one or two operands**, and then use recursion whenever an operand is itself a list. Finally, `calc` performs the actual calculation.
