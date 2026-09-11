@@ -1195,3 +1195,189 @@ which returns:
 ```
 
 The key idea is to **use `len(lst)` to determine whether the expression has one or two operands**, and then use recursion whenever an operand is itself a list. Finally, `calc` performs the actual calculation.
+
+# **Handling errors**
+
+Currently `eval` is not considering invalid input. The possible errors are:
+
+- Not a list as input.
+- Wrong size of list, only acceptable sizes are 2 and 3.
+
+---
+
+# **Challenge**
+
+Easy
+
+Add exception handling for the above errors.
+
+Some examples of the error messages by calls:
+
+- `eval('not a list')` -> `Failed to evaluate "not a list"`
+- `eval([])` -> `Failed to evaluate "[]"`
+- `eval(['+', 2, 3, 4])` -> `Failed to evaluate "['+', 2, 3, 4]"`
+- `eval(5)` -> `Failed to evaluate "5"`
+
+---
+
+# Solution
+
+```python
+def eval(lst):
+    if not isinstance(lst, list) or len(lst) not in [2, 3]:
+        raise Exception(f'Failed to evaluate "{lst}"')
+
+    if len(lst) == 2:
+        operator, num1 = lst
+
+        if isinstance(num1, list):
+            num1 = eval(num1)
+
+        return calc(operator, num1)
+
+    elif len(lst) == 3:
+        operator, num1, num2 = lst
+
+        if isinstance(num1, list):
+            num1 = eval(num1)
+
+        if isinstance(num2, list):
+            num2 = eval(num2)
+
+        return calc(operator, num1, num2)
+```
+
+# Explanation
+
+The first thing we need to do is validate the input before trying to unpack or evaluate it.
+
+We check whether `lst` is actually a list:
+
+```python
+isinstance(lst, list)
+```
+
+We also need to make sure that the list has either **2 or 3 elements**, because these are the only valid structures supported by `eval`.
+
+We combine both checks:
+
+```python
+if not isinstance(lst, list) or len(lst) not in [2, 3]:
+    raise Exception(f'Failed to evaluate "{lst}"')
+```
+
+The condition is true when either:
+
+- `lst` is not a list, or
+- the list does not contain exactly 2 or 3 elements.
+
+If either case occurs, we raise an exception with the required message:
+
+```python
+raise Exception(f'Failed to evaluate "{lst}"')
+```
+
+For example:
+
+```python
+eval('not a list')
+```
+
+raises:
+
+```text
+Failed to evaluate "not a list"
+```
+
+And:
+
+```python
+eval([])
+```
+
+raises:
+
+```text
+Failed to evaluate "[]"
+```
+
+Similarly:
+
+```python
+eval(['+', 2, 3, 4])
+```
+
+raises:
+
+```text
+Failed to evaluate "['+', 2, 3, 4]"
+```
+
+After the input passes the validation, we can safely check the length of the list.
+
+If the list has 2 elements:
+
+```python
+if len(lst) == 2:
+```
+
+it represents a single-number operation:
+
+```python
+['-', 4]
+```
+
+We unpack it:
+
+```python
+operator, num1 = lst
+```
+
+If `num1` is another list, we evaluate it recursively:
+
+```python
+if isinstance(num1, list):
+    num1 = eval(num1)
+```
+
+Then we use `calc` to perform the operation:
+
+```python
+return calc(operator, num1)
+```
+
+If the list has 3 elements:
+
+```python
+elif len(lst) == 3:
+```
+
+it represents the regular two-number structure:
+
+```python
+['+', 2, 3]
+```
+
+We unpack it:
+
+```python
+operator, num1, num2 = lst
+```
+
+Then we recursively evaluate either argument if it is a list:
+
+```python
+if isinstance(num1, list):
+    num1 = eval(num1)
+
+if isinstance(num2, list):
+    num2 = eval(num2)
+```
+
+Finally, we pass the evaluated values to `calc`:
+
+```python
+return calc(operator, num1, num2)
+```
+
+The important idea is to **validate the structure before processing it**. `eval` only accepts lists with exactly 2 or 3 elements. Once the input is valid, the function can continue with the existing recursive evaluation logic.
