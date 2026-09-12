@@ -67,7 +67,7 @@ def struct(lst):
             if lst[i] in ['+', 'add'] or lst[i] in ['-', 'sub']:
                 # Replace 3 elements (left, op, right) with 1 nested prefix list
                 lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
-                break
+                break # exists for loop so not to fall into the indexError (repeat iterating from 0)
 
     return lst[0]
   '''
