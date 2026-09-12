@@ -1381,3 +1381,275 @@ return calc(operator, num1, num2)
 ```
 
 The important idea is to **validate the structure before processing it**. `eval` only accepts lists with exactly 2 or 3 elements. Once the input is valid, the function can continue with the existing recursive evaluation logic.
+
+# **Basic operators**
+
+The next step is to struct list into our basic structure.
+
+Consider the calculation, 1 + 2 + 3, first we transform it into the list - `[1, '+', 2, '+', 3]` and then we **struct** it into what our `eval` function get - `['+',  ['+', 1, 2], 3]`.
+
+In this step we only care about structuring the list into the format the `eval` function get.
+
+Examples:
+
+- `[4.5, '-', 3]`  ->  `['-', 4.5, 3]`
+- `[4.5, '-', 3, '+', 2]`  ->  `['+', ['-', 4.5, 3], 2]`
+- `[1, 'sub', 2, 'add', 3, '+', 4]`  ->  `['+', ['add', ['sub', 1, 2], 3], 4]`
+
+
+# **Challenge (2 Solutions Below)**
+
+Medium
+
+Create the function `struct` which gets list in the above format and returns the format applicable to the `eval` function.
+
+Currently deal only with basic operators `'+'` and `'-'`.
+
+
+## **Hints**
+
+Hint 1
+
+
+Start from dealing with [num1, op, num2] formats and then move to the other ones.
+
+
+Hint 2
+
+
+change the input on the go,
+
+1. `struct([1, '+', 2, '+', 3, '+', 4])`
+2. `[1, '+', 2, '+', 3, '+', 4]`
+3. `[['+', 1, 2], '+', 3, '+', 4]`
+4. `[['+', ['+', 1, 2], 3], '+', 4]`
+5. `['+', ['+', ['+', 1, 2], 3], 4]`
+
+Use while loop and iterate over the list and **search** for the operators `'+'` or `'-'`.
+
+---
+
+## Solution 1
+
+```python
+def struct(lst):
+    while len(lst) > 1:
+        for i in range(1, len(lst) - 1):
+            if lst[i] in ['+', 'add'] or lst[i] in ['-', 'sub']:
+                # Replace 3 elements (left, op, right) with 1 nested prefix list
+                lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                break
+
+    return lst[0]
+```
+
+### Explanation
+
+### How `struct()` Collapses Linear Expressions
+
+The `struct` function converts a flat list of operations—such as `[1, 'sub', 2, 'add', 3]`—into a nested prefix structure like `['add', ['sub', 1, 2], 3]` so `eval()` can process it recursively.
+
+### Code Implementation
+
+def struct(lst):
+    while len(lst) > 1:
+        for i in range(1, len(lst) - 1):
+            if lst[i] in ['+', 'add'] or lst[i] in ['-', 'sub']:
+                # Replace 3 elements (left, op, right) with 1 nested prefix list
+                lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                break  # Exit for-loop immediately after modifying lst
+
+    return lst[0]
+
+---
+
+### Step-by-Step Execution Mechanics
+
+1. Outer Loop (`while len(lst) > 1`):
+   - Controls the global process. It keeps running as long as there are multiple items in `lst`.
+   - Every time a triplet is collapsed, `len(lst)` shrinks by 2.
+
+2. Operator Search (`for i in range(...)`):
+   - Scans the list from left to right to locate the first valid operator (`+`, `-`, `add`, or `sub`).
+
+3. In-Place Slice Replacement (`lst[i - 1:i + 2] = [...]`):
+   - Target Range: `i - 1:i + 2` targets 3 elements:
+     * `lst[i - 1]` -> Left number/expression
+     * `lst[i]` -> Operator
+     * `lst[i + 1]` -> Right number/expression
+   - Replacement: `[[lst[i], lst[i - 1], lst[i + 1]]]` creates the prefix triplet `[operator, left, right]`.
+   - Double Brackets `[[...]]`: Necessary for slice assignment so Python replaces all 3 original items with a single nested list object.
+
+4. Loop Reset (`break`):
+   - Calling `break` immediately stops the `for` loop after modifying `lst`.
+   - This prevents index errors or processing shifted elements, forcing the `while` loop to re-evaluate the updated list from index 0.
+
+5. Final Unwrapping (`return lst[0]`):
+   - When `len(lst) == 1`, the outer list contains only one item: your fully formatted prefix tree. Returning `lst[0]` extracts that inner structure for `eval()`.
+
+---
+
+### Execution Trace Example
+
+For input `[1, 'sub', 2, 'add', 3]`:
+
+Iteration | State of `lst` | Operation Performed | `len(lst)`
+--- | --- | --- | ---
+Start | [1, 'sub', 2, 'add', 3] | Initial list | 5
+Pass 1 | [['sub', 1, 2], 'add', 3] | Collapses `1, 'sub', 2` at indices `0:3` | 3
+Pass 2 | [['add', ['sub', 1, 2], 3]] | Collapses `['sub', 1, 2], 'add', 3` at indices `0:3` | 1
+Finish | ['add', ['sub', 1, 2], 3] | Returns `lst[0]` | —
+
+
+## Solution 2
+
+```python
+def struct(lst):
+
+    while len(lst) > 1:
+
+        num1 = lst[0]
+
+        op = lst[1]
+
+        num2 = lst[2]
+
+        new_structure = [op, num1, num2]
+
+        lst[0:3] = [new_structure]
+
+    return lst[0]
+```
+
+### Explanation
+
+This solution follows the same basic idea, but it is simpler because it doesn't use a `for` loop to search for the operator.
+
+We always work with the **first three elements**.
+
+For example:
+
+```python
+[1, '+', 2, '+', 3]
+```
+
+First:
+
+```python
+num1 = lst[0]
+```
+
+gives:
+
+```python
+num1 = 1
+```
+
+Then:
+
+```python
+op = lst[1]
+```
+
+gives:
+
+```python
+op = '+'
+```
+
+And:
+
+```python
+num2 = lst[2]
+```
+
+gives:
+
+```python
+num2 = 2
+```
+
+We then create the required structure:
+
+```python
+new_structure = [op, num1, num2]
+```
+
+which gives:
+
+```python
+['+', 1, 2]
+```
+
+Then:
+
+```python
+lst[0:3] = [new_structure]
+```
+
+replaces the first three elements:
+
+```python
+[1, '+', 2]
+```
+
+with one element:
+
+```python
+['+', 1, 2]
+```
+
+So:
+
+```python
+[1, '+', 2, '+', 3]
+```
+
+becomes:
+
+```python
+[['+', 1, 2], '+', 3]
+```
+
+The `while` loop continues doing the same thing until only one element remains.
+
+Finally:
+
+```python
+lst
+```
+
+looks like:
+
+```python
+[['+', ['+', 1, 2], 3]]
+```
+
+and:
+
+```python
+return lst[0]
+```
+
+returns:
+
+```python
+['+', ['+', 1, 2], 3]
+```
+
+
+### Difference between the two solutions
+
+**Solution 1** follows the hint exactly: it uses a `while` loop, iterates over the list with a `for` loop, and searches for `'+'` or `'-'`.
+
+**Solution 2** is shorter because it assumes we can always process the first three elements. It doesn't need to search for the operator.
+
+Both solutions use the same main idea:
+
+```text
+[num1, op, num2]
+        ↓
+[op, num1, num2]
+```
+
+and repeat this process until the entire expression has been transformed into the recursive format required by `eval`.
