@@ -1653,3 +1653,442 @@ Both solutions use the same main idea:
 ```
 
 and repeat this process until the entire expression has been transformed into the recursive format required by `eval`.
+
+# **Level one operators**
+
+As we discussed before there is an order in math.
+
+The operators `'*'`, `'/'` and `'%'` calculated before `'+'` and `'-'`.
+
+In this course we call to the operators `'*'`, `'/'` and `'%'` - **level one operators**.
+
+And the operators `'+'` and `'-'` - **level two operators**.
+
+
+
+# **Challenge**
+
+Easy
+
+Currently struct only supports level two operators.
+
+Your task is to add support for level one operators for `struct`.
+
+Make sure the order of calculations is taking place!
+
+Examples:
+
+- `struct([3, '*', 2])`  ->  `['*', 3, 2]`
+- `struct([1, '+', 2, 'mul', 3])`  ->  `['+', 1, ['mul', 2, 3]]`
+- `struct([2, 'mod', 3, '-', 4, '/', 5.2])`  ->  `['-', ['mod', 2, 3], ['/', 4, 5.2]]`
+
+
+
+## **Hints**
+
+Hint 1
+
+
+
+First go over all the **level one operators** and then the **level two operators**.
+
+
+
+# Solution
+
+```python
+def struct(lst):
+    operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+    operators_low = ['+', 'add', '-', 'sub']
+
+    while len(lst) > 1:
+        has_high = any(item in operators_high for item in lst)
+
+        for i in range(1, len(lst) - 1):
+            if has_high and lst[i] in operators_high:
+                lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                break
+
+            elif not has_high and lst[i] in operators_low:
+                # Replace 3 elements (left, op, right) with 1 nested prefix list
+                lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                break  # exits for loop so we can start iterating from 0 again
+
+    return lst[0]
+```
+
+# Explanation
+
+The main purpose of this solution is to make `struct` respect the mathematical order of operations.
+
+We have two groups of operators:
+
+```python
+operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+```
+
+These are the **level one operators**, so they must be processed first.
+
+```python
+operators_low = ['+', 'add', '-', 'sub']
+```
+
+These are the **level two operators**, so they are processed after all level one operators have been handled.
+
+## 1. Continue until one structure remains
+
+```python
+while len(lst) > 1:
+```
+
+We repeatedly restructure the list until it contains only one element.
+
+For example:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+will eventually become:
+
+```python
+[['+', 1, ['mul', 2, 3]]]
+```
+
+and then:
+
+```python
+return lst[0]
+```
+
+returns:
+
+```python
+['+', 1, ['mul', 2, 3]]
+```
+
+## 2. Check whether a level one operator exists
+
+```python
+has_high = any(item in operators_high for item in lst)
+```
+
+`any()` checks whether **at least one** element in `lst` is a level one operator.
+
+For example:
+
+```python
+lst = [1, '+', 2, 'mul', 3]
+```
+
+contains `'mul'`, which is a level one operator.
+
+Therefore:
+
+```python
+has_high
+```
+
+is:
+
+```python
+True
+```
+
+This tells us that we must process the level one operator before processing `'+'`.
+
+## 3. Iterate through the list
+
+```python
+for i in range(1, len(lst) - 1):
+```
+
+We start at index `1` because an operator needs an element before it and an element after it.
+
+For:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+the indexes are:
+
+```text
+index:  0    1    2     3    4
+        1   '+'   2    mul   3
+```
+
+## 4. Process level one operators first
+
+```python
+if has_high and lst[i] in operators_high:
+```
+
+If a level one operator exists, we look for it and process it first.
+
+For:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+we find:
+
+```python
+'mul'
+```
+
+and restructure:
+
+```python
+[2, 'mul', 3]
+```
+
+into:
+
+```python
+['mul', 2, 3]
+```
+
+So the whole list becomes:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+Notice that `'+'` was **not** processed yet.
+
+This is exactly what we want because multiplication has higher priority than addition.
+
+## 5. Why `break` is important
+
+After restructuring one operation:
+
+```python
+lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+```
+
+we use:
+
+```python
+break
+```
+
+This exits the `for` loop.
+
+Then the `while` loop starts again and checks the newly modified list.
+
+This is important because the indexes and length of `lst` have changed.
+
+For example:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+becomes:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+Then we start searching again from the beginning.
+
+## 6. Process level two operators
+
+The `elif` handles level two operators:
+
+```python
+elif not has_high and lst[i] in operators_low:
+```
+
+This part is reached only when there are **no level one operators left**.
+
+For example, after processing:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+we have:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+There are no level one operators left, so:
+
+```python
+has_high
+```
+
+is now:
+
+```python
+False
+```
+
+The code can therefore process `'+'`:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+becomes:
+
+```python
+[['+', 1, ['mul', 2, 3]]]
+```
+
+Now the list has one element, so the `while` loop stops.
+
+## 7. Why `lst[0]` is returned
+
+At the end, `lst` contains one element:
+
+```python
+[['+', 1, ['mul', 2, 3]]]
+```
+
+The complete structure is that single element:
+
+```python
+['+', 1, ['mul', 2, 3]]
+```
+
+Therefore:
+
+```python
+return lst[0]
+```
+
+returns the structure required by `eval`.
+
+## Example 1
+
+```python
+struct([3, '*', 2])
+```
+
+There is a level one operator:
+
+```python
+'*'
+```
+
+So:
+
+```python
+[3, '*', 2]
+```
+
+becomes:
+
+```python
+[['*', 3, 2]]
+```
+
+Finally:
+
+```python
+return lst[0]
+```
+
+returns:
+
+```python
+['*', 3, 2]
+```
+
+## Example 2
+
+```python
+struct([1, '+', 2, 'mul', 3])
+```
+
+First, `'mul'` is processed because it is a level one operator:
+
+```python
+[1, '+', 2, 'mul', 3]
+```
+
+becomes:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+There are no level one operators left, so `'+'` is processed:
+
+```python
+[1, '+', ['mul', 2, 3]]
+```
+
+becomes:
+
+```python
+[['+', 1, ['mul', 2, 3]]]
+```
+
+The final result is:
+
+```python
+['+', 1, ['mul', 2, 3]]
+```
+
+## Example 3
+
+```python
+struct([2, 'mod', 3, '-', 4, '/', 5.2])
+```
+
+The level one operators are:
+
+```text
+'mod'
+'/'
+```
+
+They are processed before `'-'`.
+
+The result becomes:
+
+```python
+['-', ['mod', 2, 3], ['/', 4, 5.2]]
+```
+
+This correctly represents the mathematical order:
+
+```text
+2 mod 3
+```
+
+and:
+
+```text
+4 / 5.2
+```
+
+are calculated before the subtraction.
+
+### Key idea
+
+The important part of this solution is:
+
+```python
+has_high = any(item in operators_high for item in lst)
+```
+
+followed by:
+
+```python
+if has_high and lst[i] in operators_high:
+```
+
+and:
+
+```python
+elif not has_high and lst[i] in operators_low:
+```
+
+This guarantees that **level one operators are always processed before level two operators**, so the resulting structure preserves the correct order of calculations.
