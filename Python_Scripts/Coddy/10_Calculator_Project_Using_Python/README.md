@@ -2092,3 +2092,423 @@ elif not has_high and lst[i] in operators_low:
 ```
 
 This guarantees that **level one operators are always processed before level two operators**, so the resulting structure preserves the correct order of calculations.
+
+# **Functions operators**
+
+**Function operators** are `'^'` (more to come?).
+
+The function operators calculated before **all** the other operators.
+
+
+
+# **Challenge**
+
+Easy
+
+Add support for function operators in `struct`.
+
+---
+
+## Solution
+
+```python
+def struct(lst):
+    operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+    operators_low = ['+', 'add', '-', 'sub']
+    operators_power = ['^', '**', 'pow']
+
+    while len(lst) > 1:
+        has_high = any(item in operators_high for item in lst)
+        has_power = any(item in operators_power for item in lst)
+        reduced = False
+
+        if has_power:
+            for i in range(len(lst)-2, 0, -1):
+                if lst[i] in operators_power:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_high:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif not has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_low:
+                    lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                    reduced = True
+                    break
+
+        if not reduced:
+            break
+
+    return lst[0]
+```
+
+## Explanation
+
+The main change in this version is that we now have **three levels of operators**:
+
+```python
+operators_power = ['^', '**', 'pow']
+```
+
+These are the **function operators**, and they have the highest priority.
+
+Then:
+
+```python
+operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+```
+
+These are the level one operators.
+
+Finally:
+
+```python
+operators_low = ['+', 'add', '-', 'sub']
+```
+
+These are the level two operators.
+
+So the order is:
+
+```text
+Function operators
+        ↓
+Level one operators
+        ↓
+Level two operators
+```
+
+### 1. Check for function operators
+
+```python
+has_power = any(item in operators_power for item in lst)
+```
+
+This checks whether the list contains a function operator such as:
+
+```python
+'^'
+```
+
+or:
+
+```python
+'**'
+```
+
+or:
+
+```python
+'pow'
+```
+
+If one exists, we must process it **before anything else**.
+
+### 2. Why do we search from right to left?
+
+When we find a function operator, we use:
+
+```python
+for i in range(len(lst)-2, 0, -1):
+```
+
+This means we start searching from the **right side of the list** and move toward the left.
+
+This is important for power operations because exponentiation is evaluated from **right to left**.
+
+For example:
+
+```python
+2 ^ 3 ^ 2
+```
+
+is interpreted as:
+
+```text
+2 ^ (3 ^ 2)
+```
+
+rather than:
+
+```text
+(2 ^ 3) ^ 2
+```
+
+So we need to process the rightmost `^` first.
+
+For example:
+
+```python
+[2, '^', 3, '^', 2]
+```
+
+First we find the second `^`:
+
+```python
+[2, '^', 3, '^', 2]
+             ↑
+```
+
+and restructure:
+
+```python
+[2, '^', ['^', 3, 2]]
+```
+
+Then the remaining `^` is processed:
+
+```python
+[['^', 2, ['^', 3, 2]]]
+```
+
+Finally:
+
+```python
+return lst[0]
+```
+
+returns:
+
+```python
+['^', 2, ['^', 3, 2]]
+```
+
+This preserves the correct order of exponentiation.
+
+### 3. Create the nested structure
+
+The same slice assignment is used:
+
+```python
+lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+```
+
+It takes:
+
+```python
+[num1, op, num2]
+```
+
+and replaces it with:
+
+```python
+[op, num1, num2]
+```
+
+as one element inside the list.
+
+For example:
+
+```python
+[2, '^', 3]
+```
+
+becomes:
+
+```python
+[['^', 2, 3]]
+```
+
+### 4. The `reduced` variable
+
+```python
+reduced = False
+```
+
+At the beginning of every `while` iteration, we assume that nothing was changed.
+
+When an operator is found and processed:
+
+```python
+reduced = True
+```
+
+This tells us that the list was successfully reduced.
+
+For example:
+
+```python
+[2, '^', 3]
+```
+
+has three elements.
+
+After restructuring:
+
+```python
+[['^', 2, 3]]
+```
+
+it has one element.
+
+So the list was reduced.
+
+### 5. Why do we check `reduced`?
+
+At the end:
+
+```python
+if not reduced:
+    break
+```
+
+If no operator was found, `reduced` remains:
+
+```python
+False
+```
+
+and we break out of the `while` loop.
+
+This prevents the function from getting stuck in an infinite loop when the list cannot be reduced any further.
+
+### 6. If there are no function operators
+
+If:
+
+```python
+has_power
+```
+
+is `False`, we move to:
+
+```python
+elif has_high:
+```
+
+So level one operators such as:
+
+```python
+'*'
+'/'
+'%'
+```
+
+are processed next.
+
+For example:
+
+```python
+[1, '+', 2, '*', 3]
+```
+
+has no power operator, but it has a level one operator:
+
+```python
+'*'
+```
+
+So we process `*` first:
+
+```python
+[1, '+', ['*', 2, 3]]
+```
+
+Then there is no level one operator left, so we can process `+`:
+
+```python
+[['+', 1, ['*', 2, 3]]]
+```
+
+The final result is:
+
+```python
+['+', 1, ['*', 2, 3]]
+```
+
+### 7. Finally, process level two operators
+
+If there are no function operators and no level one operators, we reach:
+
+```python
+elif not has_high:
+```
+
+and search for:
+
+```python
+operators_low
+```
+
+which contains:
+
+```python
+['+', 'add', '-', 'sub']
+```
+
+These are processed last.
+
+---
+
+## Example
+
+Consider:
+
+```python
+[2, '^', 3, '*', 4, '+', 5]
+```
+
+The function operator `^` has the highest priority.
+
+First:
+
+```python
+[2, '^', 3, '*', 4, '+', 5]
+```
+
+becomes:
+
+```python
+[['^', 2, 3], '*', 4, '+', 5]
+```
+
+Now there is no function operator, so `*` is processed:
+
+```python
+[[ '*', ['^', 2, 3], 4], '+', 5]
+```
+
+Finally, `+` is processed:
+
+```python
+[['+', ['*', ['^', 2, 3], 4], 5]]
+```
+
+The final result is:
+
+```python
+['+', ['*', ['^', 2, 3], 4], 5]
+```
+
+This structure correctly represents:
+
+```text
+(2 ^ 3) * 4 + 5
+```
+
+### Key idea
+
+The solution now respects the priority of all three operator levels:
+
+```text
+'^', '**', 'pow'
+        ↓
+'*', '/', '%', 'mul', 'div', 'mod'
+        ↓
+'+', 'add', '-', 'sub'
+```
+
+And for the function operators specifically, the search is performed **from right to left**:
+
+```python
+for i in range(len(lst)-2, 0, -1):
+```
+
+so expressions involving multiple powers are structured correctly according to the right-to-left nature of exponentiation.
