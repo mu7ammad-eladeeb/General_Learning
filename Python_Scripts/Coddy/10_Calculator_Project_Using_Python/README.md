@@ -2512,3 +2512,231 @@ for i in range(len(lst)-2, 0, -1):
 ```
 
 so expressions involving multiple powers are structured correctly according to the right-to-left nature of exponentiation.
+
+# **Single number operator**
+
+As we saw before we handle special case when a single number operator, `'+'` or `'-'`.
+
+This happen **only** when the list we get is of size 2!
+
+
+
+# **Challenge**
+
+Easy
+
+Add support for single number operator in `struct`.
+
+
+
+## **Hints**
+
+Hint 1
+
+
+
+If the `len` of the input is `2` return the input!
+
+---
+
+## Solution
+
+```python
+def struct(lst):
+    operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+    operators_low = ['+', 'add', '-', 'sub']
+    operators_power = ['^', '**', 'pow']
+
+    if len(lst) == 2:
+        return lst
+
+    while len(lst) > 1:
+        has_high = any(item in operators_high for item in lst)
+        has_power = any(item in operators_power for item in lst)
+        reduced = False
+
+        if has_power:
+            for i in range(len(lst) - 2, 0, -1):
+                if lst[i] in operators_power:
+                    lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                    reduced = True
+                    break
+
+        elif has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_high:
+                    lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                    reduced = True
+                    break
+
+        elif not has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_low:
+                    lst[i - 1:i + 2] = [[lst[i], lst[i - 1], lst[i + 1]]]
+                    reduced = True
+                    break
+
+        if not reduced:
+            break
+
+    return lst[0]
+```
+
+## Explanation
+
+A **single number operator** is an operator that works with only one number.
+
+For example:
+
+```python
+['+', 5]
+```
+
+means:
+
+```text
++5
+```
+
+and:
+
+```python
+['-', 5]
+```
+
+means:
+
+```text
+-5
+```
+
+Normally, our `struct` function works with three elements:
+
+```python
+[num1, op, num2]
+```
+
+and transforms them into:
+
+```python
+[op, num1, num2]
+```
+
+But a single number operator has only two elements:
+
+```python
+[op, num]
+```
+
+For example:
+
+```python
+['-', 5]
+```
+
+There is no third element to process.
+
+### Handling the special case
+
+The hint tells us:
+
+```python
+if len(lst) == 2:
+    return lst
+```
+
+So we add this at the beginning of the function:
+
+```python
+if len(lst) == 2:
+    return lst
+```
+
+If the input is:
+
+```python
+['+', 5]
+```
+
+then:
+
+```python
+len(lst) == 2
+```
+
+is `True`.
+
+Therefore, the function immediately returns:
+
+```python
+['+', 5]
+```
+
+Likewise:
+
+```python
+struct(['-', 5])
+```
+
+returns:
+
+```python
+['-', 5]
+```
+
+This is already in the correct format for `eval`, so there is no need to restructure anything.
+
+### Why must we handle it before the `while` loop?
+
+The normal restructuring code expects three elements:
+
+```python
+lst[i - 1]
+lst[i]
+lst[i + 1]
+```
+
+But with:
+
+```python
+['-', 5]
+```
+
+there is no `lst[i + 1]` that represents a second number.
+
+So we handle the special case first:
+
+```python
+if len(lst) == 2:
+    return lst
+```
+
+and avoid entering the normal restructuring process.
+
+### Examples
+
+```python
+struct(['+', 5])
+```
+
+returns:
+
+```python
+['+', 5]
+```
+
+And:
+
+```python
+struct(['-', 3])
+```
+
+returns:
+
+```python
+['-', 3]
+```
+
+The important idea is:
+
+> When `lst` has exactly two elements, it is already in the correct `eval` format, so we simply return it without restructuring.
