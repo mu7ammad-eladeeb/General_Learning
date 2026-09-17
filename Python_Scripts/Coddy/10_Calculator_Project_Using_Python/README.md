@@ -2740,3 +2740,157 @@ returns:
 The important idea is:
 
 > When `lst` has exactly two elements, it is already in the correct `eval` format, so we simply return it without restructuring.
+
+# Handling Errors
+
+## Challenge
+
+**Difficulty:** Easy
+
+As always, raise an error in case the input cannot be structured.
+
+### Examples
+
+```python
+struct(4)
+# Exception: Failed to structure "4"
+
+struct(['+'])
+# Exception: Failed to structure "['+']"
+
+struct([2, '+', 3, '+'])
+# Exception: Failed to structure "[2, '+', 3, '+']"
+
+struct([2, 'mul', '+'])
+# ['mul', 2, '+']
+```
+
+## Solution
+
+```python
+def struct(lst):
+    operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+    operators_low = ['+', 'add', '-', 'sub']
+    operators_power = ['^', '**', 'pow']
+
+    if not isinstance(lst, list):
+        raise Exception(f'Failed to structure "{lst}"')
+
+    if len(lst) == 2:
+        return lst
+
+    if len(lst) <= 1 or len(lst) % 2 == 0:
+        raise Exception(f'Failed to structure "{lst}"')
+
+    while len(lst) > 1:
+        has_high = any(item in operators_high for item in lst)
+        has_power = any(item in operators_power for item in lst)
+        reduced = False
+
+        if has_power:
+            for i in range(len(lst) - 2, 0, -1):
+                if lst[i] in operators_power:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_high:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        else:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_low:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        if not reduced:
+            raise Exception(f'Failed to structure "{lst}"')
+
+    return lst[0]
+```
+
+## Explanation
+
+### 1. Check the input type
+
+```python
+if not isinstance(lst, list):
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+The function expects a list. If the input is not a list, it raises an error.
+
+### 2. Handle a two-item list
+
+```python
+if len(lst) == 2:
+    return lst
+```
+
+A two-item list is returned as-is, matching the challenge's expected behavior.
+
+### 3. Check the list length
+
+```python
+if len(lst) <= 1 or len(lst) % 2 == 0:
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+- `len(lst) <= 1` rejects lists with zero or one item.
+- `len(lst) % 2 == 0` rejects lists with an even number of items.
+
+A normal binary expression needs at least three items, such as `[2, '+', 3]`, and alternates between operands and operators.
+
+### 4. Process operators by precedence
+
+The function processes operators in this order:
+
+1. Powers: `^`, `**`, `pow`
+2. Multiplication and division: `*`, `/`, `%`, `mul`, `div`, `mod`
+3. Addition and subtraction: `+`, `add`, `-`, `sub`
+
+Power operators are processed from right to left. Other operators are processed from left to right.
+
+### 5. Group the expression
+
+```python
+lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+```
+
+This replaces three elements with one nested list.
+
+For example:
+
+```python
+[2, 'mul', 3]
+```
+
+becomes:
+
+```python
+[['mul', 2, 3]]
+```
+
+### 6. Detect when no progress is possible
+
+```python
+if not reduced:
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+If no recognized operator can be processed, the function raises an error instead of continuing indefinitely.
+
+### 7. Return the result
+
+```python
+return lst[0]
+```
+
+When the expression has been reduced to one nested structure, the function returns it.
+
+**Note:** This solution checks basic list structure and whether recognized operators can be processed. It does not fully validate that every operand is a valid number or expression.
