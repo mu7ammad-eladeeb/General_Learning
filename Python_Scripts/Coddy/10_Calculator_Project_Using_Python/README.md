@@ -2742,6 +2742,7 @@ The important idea is:
 > When `lst` has exactly two elements, it is already in the correct `eval` format, so we simply return it without restructuring.
 
 # Handling Errors
+As always raise error in case the input cannot be structured.
 
 ## Challenge
 
@@ -2894,3 +2895,213 @@ return lst[0]
 When the expression has been reduced to one nested structure, the function returns it.
 
 **Note:** This solution checks basic list structure and whether recognized operators can be processed. It does not fully validate that every operand is a valid number or expression.
+
+# Structure for All
+
+## Description
+
+Currently, we are structuring all the supported operators, but we also want to structure “typos” so we can get the right error message from the `calc` function.
+
+For example:
+
+```python
+struct([2, '?', 3])  # -> ['?', 2, 3]
+```
+
+Currently:
+
+```python
+struct([2, '?', 3])  # -> [2, '?', 3]
+```
+
+Notice that `'?'` should be in the operator place even though it is not a real operator we support.
+
+## Challenge
+
+**Difficulty:** Medium
+
+Add support for structuring all kinds of operators in `struct`, including operators that are not supported yet or are typos.
+
+## Hints
+
+### Hint 1
+
+Find the unsupported operators by looking for items that are not numbers (`int` or `float`).
+
+### Hint 2
+
+Also make sure not to count `list` as this kind of operator.
+
+## Solution
+
+```python
+def struct(lst):
+    operators_high = ['*', '/', '%', 'mul', 'div', 'mod']
+    operators_low = ['+', 'add', '-', 'sub']
+    operators_power = ['^', '**', 'pow']
+
+    if not isinstance(lst, list):
+        raise Exception(f'Failed to structure "{lst}"')
+
+    if len(lst) == 2:
+        return lst
+
+    if len(lst) <= 1 or len(lst) % 2 == 0:
+        raise Exception(f'Failed to structure "{lst}"')
+
+    while len(lst) > 1:
+        has_high = any(item in operators_high for item in lst)
+        has_low = any(item in operators_low for item in lst)
+        has_power = any(item in operators_power for item in lst)
+
+        has_typo = any(
+            not isinstance(item, (int, float, list))
+            and item not in (operators_high + operators_low + operators_power)
+            for item in lst
+        )
+
+        reduced = False
+
+        if has_power:
+            for i in range(len(lst) - 2, 0, -1):
+                if lst[i] in operators_power:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif has_high:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_high:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif has_low:
+            for i in range(1, len(lst) - 1):
+                if lst[i] in operators_low:
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        elif has_typo:
+            for i in range(1, len(lst) - 1):
+                if (
+                    lst[i] not in (operators_high + operators_low + operators_power)
+                    and not isinstance(lst[i], (int, float, list))
+                ):
+                    lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+                    reduced = True
+                    break
+
+        if not reduced:
+            raise Exception(f'Failed to structure "{lst}"')
+
+    return lst[0]
+```
+
+## Explanation
+
+### 1. Define the operator groups
+
+The operators are separated into three groups:
+
+- `operators_power`: power operators such as `^`, `**`, and `pow`.
+- `operators_high`: multiplication and division operators.
+- `operators_low`: addition and subtraction operators.
+
+This allows the function to structure expressions according to operator precedence.
+
+### 2. Validate the input
+
+```python
+if not isinstance(lst, list):
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+The function expects a list. If the input is not a list, it raises an exception.
+
+```python
+if len(lst) == 2:
+    return lst
+
+if len(lst) <= 1 or len(lst) % 2 == 0:
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+A two-item list is returned as-is. Other expressions must contain at least three items and have an odd number of items.
+
+### 3. Detect supported operators
+
+```python
+has_high = any(item in operators_high for item in lst)
+has_low = any(item in operators_low for item in lst)
+has_power = any(item in operators_power for item in lst)
+```
+
+`any()` returns `True` if at least one item in `lst` belongs to the corresponding operator group.
+
+### 4. Detect unsupported operators or typos
+
+```python
+has_typo = any(
+    not isinstance(item, (int, float, list))
+    and item not in (operators_high + operators_low + operators_power)
+    for item in lst
+)
+```
+
+This checks whether the list contains an item that:
+
+- Is not an integer or a float.
+- Is not itself a list.
+- Is not one of the supported operators.
+
+For example, `'?'` is not a number, list, or supported operator, so it can be treated as an operator for structuring purposes.
+
+### 5. Structure the expression
+
+The function checks operators in precedence order:
+
+1. Power operators.
+2. Multiplication and division operators.
+3. Addition and subtraction operators.
+4. Unsupported operators or typos.
+
+When it finds an operator, it replaces the operator and its two neighboring operands with a nested list:
+
+```python
+lst[i-1:i+2] = [[lst[i], lst[i-1], lst[i+1]]]
+```
+
+For example:
+
+```python
+[2, '?', 3]
+```
+
+becomes:
+
+```python
+[['?', 2, 3]]
+```
+
+The final `return lst[0]` returns the nested structure:
+
+```python
+['?', 2, 3]
+```
+
+### 6. Raise an exception if no restructuring happens
+
+```python
+if not reduced:
+    raise Exception(f'Failed to structure "{lst}"')
+```
+
+`reduced` becomes `True` when the function successfully restructures part of the list.
+
+If no operator can be processed, it remains `False`, and the function raises an exception rather than continuing the loop without making progress.
+
+## Summary
+
+The main addition is `has_typo`, which detects unsupported operator-like items. This allows `struct` to place typos such as `'?'` in the operator position, so the `calc` function can handle the unsupported operator and produce the appropriate error message.
