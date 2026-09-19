@@ -3105,3 +3105,158 @@ If no operator can be processed, it remains `False`, and the function raises an 
 ## Summary
 
 The main addition is `has_typo`, which detects unsupported operator-like items. This allows `struct` to place typos such as `'?'` in the operator position, so the `calc` function can handle the unsupported operator and produce the appropriate error message.
+
+# Get Number
+
+## Description
+
+Now we want to parse a string into a list representation that `eval` can get as input.
+
+For example, `32 +12* 4` should be parsed to:
+
+```python
+['+', 32, ['*', 12, 4]]
+```
+
+Let's start from a helper function that will help us in the main parse function.
+
+## Challenge
+
+**Difficulty:** Easy
+
+Create a function `get_next` which gets a string with no spaces and a number, the start index in the string, and returns the next number or operator.
+
+This time, only deal with **numbers**.
+
+### Examples
+
+```python
+get_next('32+12*4', 0)  # -> 32
+get_next('1.2*3.54', 4)  # -> 3.54
+get_next('3/56-2', 3)  # -> 6
+```
+
+You can assume the start index is placed on a number.
+
+**Note:** There are two types of numbers: `int` or `float`.
+
+Make sure to return an `int` or `float` type number, not a `str`!
+
+## Hints
+
+### Hint 1
+
+Use `int(val)` or `float(val)` to cast your return value.
+
+## Solution
+
+```python
+def get_next(str_val, indx):
+
+    n_list = []
+
+    for i in str_val[indx:]:
+
+        if i.isdigit() or i == ".":
+            n_list.append(i)
+
+        else:
+            break
+
+    finale = "".join(n_list)
+
+    if "." in finale:
+        return float(finale)
+
+    else:
+        return int(finale)
+```
+
+## Explanation
+
+### 1. Create an empty list
+
+```python
+n_list = []
+```
+
+This list will store each character that belongs to the number.
+
+### 2. Loop through the string from the starting index
+
+```python
+for i in str_val[indx:]:
+```
+
+`str_val[indx:]` creates a substring starting at `indx` and continuing to the end of the string.
+
+For example:
+
+```python
+get_next('32+12*4', 0)
+```
+
+The loop starts at `'3'`.
+
+### 3. Collect digits and the decimal point
+
+```python
+if i.isdigit() or i == ".":
+    n_list.append(i)
+else:
+    break
+```
+
+- `i.isdigit()` checks whether the character is a digit.
+- `i == "."` checks whether the character is a decimal point.
+- If either condition is true, the character is added to `n_list`.
+- Otherwise, `break` stops the loop because the number has ended.
+
+For example, with `'1.2*3.54'` starting at index `4`, the characters `'3'`, `'.'`, `'5'`, and `'4'` are collected.
+
+### 4. Join the characters into a string
+
+```python
+finale = "".join(n_list)
+```
+
+`join()` combines the characters in `n_list` into one string.
+
+For example:
+
+```python
+['3', '.', '5', '4']
+```
+
+becomes:
+
+```python
+'3.54'
+```
+
+### 5. Convert the string into a number
+
+```python
+if "." in finale:
+    return float(finale)
+else:
+    return int(finale)
+```
+
+If the number contains a decimal point, `float()` converts it into a float.
+
+Otherwise, `int()` converts it into an integer.
+
+This ensures the function returns a numeric value rather than a string.
+
+## Summary
+
+The function starts at the given index, collects the characters that form a number, joins them into a string, and converts that string into either an `int` or a `float`.
+
+For example:
+
+```python
+get_next('32+12*4', 0)  # Returns the integer 32
+get_next('1.2*3.54', 4)  # Returns the float 3.54
+get_next('3/56-2', 3)  # Returns the integer 6
+```
