@@ -3260,3 +3260,153 @@ get_next('32+12*4', 0)  # Returns the integer 32
 get_next('1.2*3.54', 4)  # Returns the float 3.54
 get_next('3/56-2', 3)  # Returns the integer 6
 ```
+
+# Get Operator
+
+## Description
+
+Now let's take care of what is not numbers — operators.
+
+## Challenge
+
+**Difficulty:** Easy
+
+Add support for `get_next` to find also operators and not only numbers.
+
+### Examples
+
+```python
+get_next('12+34', 2)       # -> '+'
+get_next('42.2mul16+32', 4)  # -> 'mul'
+get_next('42.2mul16+32', 6)  # -> 'l'
+get_next('42.2mul16+32', 7)  # -> 16
+```
+
+Make sure to check if you read a number or an operator.
+
+**Note:** Don't check if the operator is a real operator. We are already doing this check in another function!
+
+## Solution
+
+```python
+def get_next(str_val, indx):
+    if str_val[indx].isdigit() or str_val[indx] == ".":
+        n_list = []
+
+        for i in str_val[indx:]:
+            if i.isdigit() or i == ".":
+                n_list.append(i)
+            else:
+                break
+
+        finale = "".join(n_list)
+
+        if "." in finale:
+            return float(finale)
+        else:
+            return int(finale)
+
+    else:
+        op = []
+
+        for i in str_val[indx:]:
+            if not i.isdigit() and i != ".":
+                op.append(i)
+            else:
+                break
+
+        return "".join(op)
+```
+
+## Explanation
+
+### 1. Check whether the character is a number
+
+```python
+if str_val[indx].isdigit() or str_val[indx] == ".":
+```
+
+This checks whether the character at the starting index is a digit or a decimal point.
+
+- If it is, the function reads a number.
+- Otherwise, the function reads an operator.
+
+### 2. Read a number
+
+```python
+n_list = []
+
+for i in str_val[indx:]:
+    if i.isdigit() or i == ".":
+        n_list.append(i)
+    else:
+        break
+```
+
+The loop collects digits and decimal points until it reaches a character that is not part of the number.
+
+```python
+finale = "".join(n_list)
+
+if "." in finale:
+    return float(finale)
+else:
+    return int(finale)
+```
+
+The collected characters are joined into a string and converted into an `int` or `float`.
+
+### 3. Read an operator
+
+```python
+op = []
+
+for i in str_val[indx:]:
+    if not i.isdigit() and i != ".":
+        op.append(i)
+    else:
+        break
+
+return "".join(op)
+```
+
+If the starting character is not part of a number, the function collects characters until it reaches a digit or decimal point.
+
+It then joins the collected characters and returns them as a string.
+
+The function does not check whether the operator is supported. It simply returns the sequence of non-numeric characters.
+
+## Examples Explained
+
+```python
+get_next('12+34', 2)
+```
+
+The character at index `2` is `'+'`, so the function returns `'+'`.
+
+```python
+get_next('42.2mul16+32', 4)
+```
+
+Starting at index `4`, the characters `'m'`, `'u'`, and `'l'` are collected. The function returns `'mul'`.
+
+```python
+get_next('42.2mul16+32', 6)
+```
+
+The character at index `6` is `'l'`. The function reads from that position and returns `'l'` because the next character is a digit.
+
+```python
+get_next('42.2mul16+32', 7)
+```
+
+The character at index `7` is `'1'`, so the function reads the number `16` and returns it as an integer.
+
+## Summary
+
+The function now handles both numbers and operators:
+
+- If the starting character is a digit or decimal point, it reads and returns a number.
+- Otherwise, it reads and returns a string of non-numeric characters.
+
+This allows `get_next` to recognize operators without needing to know whether they are valid.
