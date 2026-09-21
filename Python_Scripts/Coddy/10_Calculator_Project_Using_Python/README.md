@@ -3410,3 +3410,84 @@ The function now handles both numbers and operators:
 - Otherwise, it reads and returns a string of non-numeric characters.
 
 This allows `get_next` to recognize operators without needing to know whether they are valid.
+
+# Get with Errors
+
+## Description
+
+As always, let's take care of the errors that can happen:
+
+- Empty string as input.
+- Start index is over the length of the string.
+
+In both cases, raise an exception with the message `"End of string"`.
+
+## Challenge
+
+**Difficulty:** Easy
+
+Add error handling as described above to `get_next`.
+
+## Solution
+
+```python
+def get_next(str_val, indx):
+    if indx >= len(str_val):
+        raise Exception("End of string")
+
+    if str_val[indx].isdigit() or str_val[indx] == ".":
+        n_list = []
+
+        for i in str_val[indx:]:
+            if i.isdigit() or i == ".":
+                n_list.append(i)
+            else:
+                break
+
+        finale = "".join(n_list)
+
+        if "." in finale:
+            return float(finale)
+        else:
+            return int(finale)
+
+    else:
+        op = []
+
+        for i in str_val[indx:]:
+            if not i.isdigit() and i != ".":
+                op.append(i)
+            else:
+                break
+
+        return "".join(op)
+```
+
+## Explanation
+
+### 1. Check the starting index
+
+```python
+if indx >= len(str_val):
+    raise Exception("End of string")
+```
+
+This checks whether the starting index is at or beyond the end of the string.
+
+- If the string is empty, its length is `0`, so an index of `0` triggers the exception.
+- If the index is equal to or greater than the string's length, the exception is raised.
+
+### 2. Read a number or operator
+
+The rest of the function works as before:
+
+- If the character at `indx` is a digit or decimal point, it collects the number and converts it to `int` or `float`.
+- Otherwise, it collects the non-numeric characters and returns them as a string.
+
+## Summary
+
+The new check prevents the function from trying to access a character that does not exist. Both an empty string and an index at or beyond the string's length raise:
+
+```python
+Exception("End of string")
+```
