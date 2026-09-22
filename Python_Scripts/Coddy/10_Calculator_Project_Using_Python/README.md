@@ -3491,3 +3491,190 @@ The new check prevents the function from trying to access a character that does 
 ```python
 Exception("End of string")
 ```
+
+# Simple Calculation
+
+## Description
+
+We are done with the helper function!
+
+Now let's make the real `parse` function. The goal of this function is to get a string and parse it into our structured format, which `eval` gets.
+
+## Challenge
+
+**Difficulty:** Easy
+
+Create a function `parse` which gets a string and returns a structured format.
+
+This time, we are going to deal **only** with simple calculations, with one operator.
+
+### Examples
+
+```python
+parse('1+2')       # -> ['+', 1, 2]
+parse('  3*  5')   # -> ['*', 3, 5]
+parse('3 pow 2.5') # -> ['pow', 3, 2.5]
+```
+
+Make use of `get_next` and `struct` functions.
+
+**Note:** Before everything, you must remove all the whitespaces!
+
+## Hints
+
+### Hint 1
+
+First, remove the whitespaces with:
+
+```python
+s = s.replace(' ', '')
+```
+
+### Hint 2
+
+Call `get_next` 3 times with the right start index:
+
+```python
+a1 = get_next(s, 0)
+a2 = get_next(s, ?)
+a3 = get_next(s, ?)
+```
+
+Calculate the start index from your previous `get_next` calls' results.
+
+---
+
+## Solution 1: Simple Approach
+
+```python
+def parse(expression):
+    expression = expression.replace(" ", "")
+
+    first = get_next(expression, 0)
+    second = get_next(expression, len(str(first)))
+    third = get_next(
+        expression,
+        len(str(first)) + len(str(second))
+    )
+
+    return struct([first, second, third])
+```
+
+### Explanation
+
+1. Remove spaces from the expression.
+2. Call `get_next()` to extract the first number, starting at index `0`.
+3. Use the length of the first result to find the operator.
+4. Add the lengths of the first two results to find the second number.
+5. Pass all three parts to `struct()`.
+
+This approach works for expressions containing exactly one operator, such as `1+2` or `3pow2.5`.
+
+---
+
+## Solution 2: Advanced Approach
+
+```python
+def parse(expression):
+    expression = expression.replace(" ", "")
+
+    parts = []
+    index = 0
+
+    while index < len(expression):
+        result = get_next(expression, index)
+        parts.append(result)
+        index += len(str(result))
+
+    return struct(parts)
+```
+
+### Explanation
+
+#### 1. Remove spaces
+
+```python
+expression = expression.replace(" ", "")
+```
+
+Removes spaces from the expression.
+
+#### 2. Initialize variables
+
+```python
+parts = []
+index = 0
+```
+
+- `parts` stores the extracted numbers and operators.
+- `index` tracks the current position in the string.
+
+#### 3. Loop through the expression
+
+```python
+while index < len(expression):
+```
+
+The loop continues until the index reaches the end of the expression.
+
+#### 4. Extract each part
+
+```python
+result = get_next(expression, index)
+parts.append(result)
+```
+
+`get_next()` extracts the next number or operator and adds it to `parts`.
+
+#### 5. Move the index forward
+
+```python
+index += len(str(result))
+```
+
+The index advances by the length of the extracted result.
+
+For example:
+- `32` has a string length of `2`.
+- `'pow'` has a length of `3`.
+
+#### 6. Structure the result
+
+```python
+return struct(parts)
+```
+
+Once all parts have been extracted, `struct()` arranges them into the structured format expected by `eval`.
+
+---
+
+## Example
+
+```python
+parse("3 pow 2.5")
+```
+
+After removing spaces:
+
+```python
+"3pow2.5"
+```
+
+The advanced solution extracts:
+
+```python
+[3, 'pow', 2.5]
+```
+
+Then `struct()` returns:
+
+```python
+['pow', 3, 2.5]
+```
+
+## Summary
+
+- **Simple approach:** Calls `get_next()` three times. Suitable for expressions with one operator.
+- **Advanced approach:** Uses a loop to extract every number and operator. More flexible for longer expressions.
+
+Both approaches use `get_next()` to extract parts and `struct()` to build the final structured expression.
