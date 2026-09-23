@@ -3678,3 +3678,134 @@ Then `struct()` returns:
 - **Advanced approach:** Uses a loop to extract every number and operator. More flexible for longer expressions.
 
 Both approaches use `get_next()` to extract parts and `struct()` to build the final structured expression.
+
+# Multiple Operators
+
+## Description
+
+Now let's handle calculations with multiple operators parsing.
+
+## Challenge
+
+**Difficulty:** Easy
+
+Add support for multiple operators in the `parse` function.
+
+## Solution
+
+```python
+# Removes whitespace, extracts all numbers and operators,
+# and structures the expression.
+def parse(expression):
+    expression = expression.replace(" ", "")
+
+    parts = []
+    index = 0
+
+    while index < len(expression):
+        result = get_next(expression, index)
+        parts.append(result)
+        index += len(str(result))
+
+    return struct(parts)
+```
+
+## Explanation
+
+### 1. Remove whitespace
+
+```python
+expression = expression.replace(" ", "")
+```
+
+Removes spaces from the expression so it can be parsed more easily.
+
+For example:
+
+```python
+"2 + 3 * 4"
+```
+
+becomes:
+
+```python
+"2+3*4"
+```
+
+### 2. Initialize the list and index
+
+```python
+parts = []
+index = 0
+```
+
+- `parts` stores all the numbers and operators extracted from the expression.
+- `index` tracks the current position in the string.
+
+### 3. Loop through the expression
+
+```python
+while index < len(expression):
+```
+
+The loop continues until the index reaches the end of the expression.
+
+### 4. Extract the next part
+
+```python
+result = get_next(expression, index)
+parts.append(result)
+```
+
+`get_next()` extracts the next number or operator, and the result is added to `parts`.
+
+For example, parsing `"2+3*4"` extracts:
+
+```python
+[2, '+', 3, '*', 4]
+```
+
+### 5. Move to the next part
+
+```python
+index += len(str(result))
+```
+
+The index advances by the length of the extracted result.
+
+For example:
+- If `result` is `2`, its string length is `1`.
+- If `result` is `"mul"`, its length is `3`.
+- If `result` is `12`, its string length is `2`.
+
+This allows the loop to continue from the next unprocessed character.
+
+### 6. Structure the expression
+
+```python
+return struct(parts)
+```
+
+Once all parts have been extracted, `struct()` arranges them according to operator precedence.
+
+For example:
+
+```python
+parse("2+3*4")
+```
+
+First extracts:
+
+```python
+[2, '+', 3, '*', 4]
+```
+
+Then `struct()` returns:
+
+```python
+['+', 2, ['*', 3, 4]]
+```
+
+## Summary
+
+The `parse()` function now supports multiple operators by repeatedly calling `get_next()` until the entire expression has been processed. It then passes all extracted parts to `struct()`, which builds the nested structure expected by `eval`.
