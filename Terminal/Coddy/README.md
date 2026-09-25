@@ -50,3 +50,40 @@ the terminal prints:
     Hello World!
 
 The output is **case sensitive**, so the capitalization, spaces, and exclamation mark must match the required text exactly.
+
+# **Comments**
+
+**Comments** are lines in your shell script that are ignored by the shell. They are used to add notes and explanations to your code for human understanding.
+
+In the shell, a comment starts with the `#` symbol. Everything after `#` on that line is ignored:
+
+    # This is a comment
+    echo "Hello!"  # This also prints Hello!
+
+When you run the above, only `Hello!` is printed: the comments are completely invisible to the shell.
+
+**Common uses for comments:**
+
+**1. Explaining what a command does:**
+
+    # Print a welcome message
+    echo "Welcome to the terminal!"
+
+**2. Disabling a command temporarily:**
+
+    # echo "This line is disabled"
+    echo "This line will execute"
+
+**3. The Shebang line:**
+
+A special comment at the very top of a shell script tells the system which shell to use:
+
+    #!/bin/bash
+    echo "This script runs with Bash"
+
+This line starts with `#!` (called a **shebang**) followed by the path to the shell. It is always the first line of a script.
+
+**4. TODO Comments: mark future tasks:**
+
+    # TODO: Add error handling here
+    echo "Processing files..."
