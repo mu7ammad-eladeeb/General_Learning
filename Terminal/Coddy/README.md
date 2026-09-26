@@ -87,3 +87,34 @@ This line starts with `#!` (called a **shebang**) followed by the path to the sh
 
     # TODO: Add error handling here
     echo "Processing files..."
+
+# **Print Working Directory**
+
+The `pwd` command stands for **Print Working Directory**. It shows you the **full path** of the directory you are currently in.
+
+When you open a terminal, you start in your **home directory**. The `pwd` command helps you confirm exactly where you are in the filesystem at any moment.
+
+Simply type `pwd` and press Enter:
+
+```bash
+pwd
+
+```
+
+The output will look something like this:
+
+```bash
+/home
+
+```
+
+This is called a **path**. It shows the full location of your current directory, starting from the **root** of the filesystem (`/`).
+
+**Understanding paths:**
+
+- `/`: the root of the entire filesystem
+- `/home`: the home directory
+
+* `/home/documents`: the documents folder inside home
+
+`pwd` is especially useful when you have navigated deep into different folders and need to remember where you are.
