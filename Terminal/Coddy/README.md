@@ -118,3 +118,60 @@ This is called a **path**. It shows the full location of your current directory,
 * `/home/documents`: the documents folder inside home
 
 `pwd` is especially useful when you have navigated deep into different folders and need to remember where you are.
+
+# **List Files**
+
+The `ls` command stands for **list**. It shows you all the files and folders inside your current directory.
+
+Simply type `ls` and press Enter:
+
+
+```python
+ls
+
+```
+
+The output will show everything in your current location:
+
+
+```python
+documents
+readme.txt
+
+```
+
+**Useful options you can add to `ls`:**
+
+`ls -l`: shows a **detailed list** with file sizes, permissions, and dates:
+
+
+```python
+ls -l
+
+```
+
+`ls -a`: shows **all files**, including hidden files that start with a `.`:
+
+
+```python
+ls -a
+
+```
+
+`ls -la`: combines both options, showing a detailed list of all files including hidden ones:
+
+
+```python
+ls -la
+
+```
+
+You can also list the contents of a **specific folder** by passing its name:
+
+
+```python
+ls documents
+
+```
+
+This shows the contents of the `documents` folder without having to navigate into it first.
