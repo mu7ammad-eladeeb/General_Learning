@@ -175,3 +175,53 @@ ls documents
 ```
 
 This shows the contents of the `documents` folder without having to navigate into it first.
+
+# **Change Directory**
+
+The **`cd`** command stands for **Change Directory**. It lets you navigate from one folder to another in the filesystem.
+
+To move into a folder, type **`cd`** followed by the folder name:
+
+```python
+cd documents
+
+```
+
+After running this, you are now inside the **`documents`** folder. You can confirm this with **`pwd`**:
+
+```python
+/home/documents
+
+```
+
+**Useful ways to use `cd`:**
+
+**`cd ..`**. Move **up one level** to the parent directory:
+
+```python
+cd ..
+
+```
+
+**`cd ~`**: go directly to your **home directory** from anywhere:
+
+```python
+cd ~
+
+```
+
+**`cd /`**: go to the **root directory**, the very top of the filesystem:
+
+```python
+cd /
+
+```
+
+**`cd -`**: go back to the **previous directory** you were in:
+
+```python
+cd -
+
+```
+
+**Tip:** You can combine **`cd`** with **`ls`** and **`pwd`** to explore your filesystem confidently: list what's there, move into it, and confirm where you are.
