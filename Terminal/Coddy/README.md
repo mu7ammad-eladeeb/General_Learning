@@ -225,3 +225,46 @@ cd -
 ```
 
 **Tip:** You can combine **`cd`** with **`ls`** and **`pwd`** to explore your filesystem confidently: list what's there, move into it, and confirm where you are.
+
+# **Absolute vs Relative Paths**
+
+When navigating the filesystem, you can refer to a location in two ways: using an **absolute path** or a **relative path**.
+
+**Absolute Path**: starts from the **root** of the filesystem (**`/`**). It always points to the same location no matter where you currently are:
+
+```python
+cd /home/documents
+
+```
+
+An absolute path always begins with **`/`**.
+
+**Relative Path**: starts from your **current directory**. It depends on where you are right now:
+
+```python
+cd documents
+
+```
+
+If you are currently in **`/home`**, this will take you to **`/home/documents`**.
+
+**Comparing the two:**
+
+- If you are in **`/home`** and want to go to **`/home/documents`**:
+  Absolute: **`cd /home/documents`**
+  Relative: **`cd documents`**
+
+* If you are in **`/home/documents`** and want to go up one level:
+  Absolute: **`cd /home`**
+  Relative: **`cd ..`**
+
+**Special relative path symbols:**
+
+- **`.`**. Refers to your **current directory**
+
+* **`..`**. Refers to the **parent directory** (one level up)
+
+```python
+cd ./documents   # same as: cd documents
+cd ..            # go up one level
+```
