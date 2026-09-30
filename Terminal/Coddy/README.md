@@ -268,3 +268,56 @@ If you are currently in **`/home`**, this will take you to **`/home/documents`**
 cd ./documents   # same as: cd documents
 cd ..            # go up one level
 ```
+
+# **Home And Root Directory**
+
+Two of the most important directories in any Unix-based filesystem are the **root directory** and the **home directory**. Understanding the difference between them is important because they represent two very different locations in the filesystem.
+
+**Root Directory (`/`)**
+
+The root directory is the **top of the entire filesystem**. Every file and folder on your system lives somewhere inside it. It is represented by a single forward slash:
+
+```bash
+cd /
+
+```
+
+From the root, you can reach any location on the system using an absolute path.
+
+**Home Directory (`~`)**
+
+The home directory is your **personal space** in the filesystem. It is where you normally start when you open a new terminal session. It is represented by the tilde symbol:
+
+```bash
+cd ~
+
+```
+
+You can always return to your home directory from anywhere using **`cd ~`** or simply **`cd`** with no arguments:
+
+```bash
+cd
+
+```
+
+Your home directory usually contains your personal files and folders, such as documents, downloads, and configuration files.
+
+**Comparing root and home:**
+
+- **`/`**: the root of the whole system. It contains all files and directories on the system.
+- **`~`**: your personal home directory. It usually points to **`/home/username`**.
+
+Think of the root as the **entire building**, and your home directory as **your own room inside it**.
+
+You can always check where **`~`** points to by running:
+
+```bash
+echo ~
+
+```
+
+For example, if your username is `username`, the command might output:
+
+```bash
+/home/username
+```
