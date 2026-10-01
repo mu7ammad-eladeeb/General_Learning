@@ -321,3 +321,48 @@ For example, if your username is `username`, the command might output:
 ```bash
 /home/username
 ```
+
+# **Create A File**
+
+The **`touch`** command is used to **create a new empty file** in your current directory.
+
+Simply type **`touch`** followed by the name of the file you want to create:
+
+```bash
+touch hello.txt
+
+```
+
+This creates a new empty file called **`hello.txt`**. You can confirm it was created by running **`ls`**:
+
+```bash
+ls
+hello.txt
+
+```
+
+The `ls` command lists the files and folders in your current directory, so seeing `hello.txt` in the output confirms that the file was created.
+
+**Creating multiple files at once:**
+
+You can create several files in a single command by listing their names separated by spaces:
+
+```bash
+touch file1.txt file2.txt file3.txt
+
+```
+
+This creates three empty files: `file1.txt`, `file2.txt`, and `file3.txt`.
+
+**Creating a file inside a folder:**
+
+You can create a file directly inside another directory without navigating into it first:
+
+```bash
+touch documents/notes.txt
+
+```
+
+This creates `notes.txt` inside the `documents` directory. The `documents` directory must already exist; otherwise, the command will fail.
+
+**Note:** If the file already exists, **`touch`** will not overwrite its contents. Instead, it updates the file's **last modified timestamp**, which records when the file's contents were last changed.
