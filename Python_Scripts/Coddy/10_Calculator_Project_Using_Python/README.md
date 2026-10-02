@@ -3809,3 +3809,267 @@ Then `struct()` returns:
 ## Summary
 
 The `parse()` function now supports multiple operators by repeatedly calling `get_next()` until the entire expression has been processed. It then passes all extracted parts to `struct()`, which builds the nested structure expected by `eval`.
+
+# **Parenthesis**
+
+This is where things get excited!
+
+We want to add support for **parenthesis** in **`parse`**.
+
+For example,
+
+- **`parse('2*(3+4)')`**  ->  **`['*', 2, ['+', 3, 4]]`**
+
+
+## **Challenge**
+
+Hard
+
+Add support for parenthesis in **`parse`** function.
+
+
+### **Hints**
+
+#### Hint 1
+
+
+Use recursive calls to **`parse`** based on **`'('`** and **`')'`** chars.
+
+> *This is one of the hardest challenges in this course, don't give up!*
+
+
+#### Hint 2
+
+
+Make the **`get_next`** function to not include/read parenthesis.
+
+So,
+
+- **`get_next('2*(3+5)', 1)`**  ->  **`'*'`**
+
+And not,
+
+- **`get_next('2*(3+5)', 1)`**  ->  **`'*('`**
+
+
+#### Hint 3
+
+
+Inside **`parse`** function after you see **`'('`** the function should call **`parse`** recursively.
+
+For example of calls,
+
+1. **`parse('2*(3+4)')`**
+   1. **`struct([2, '*', ['+', 3, 4]])`**  ->  **`['*', 2, ['+', 3, 4]]`**
+   2. **`['*', 2, ['+', 3, 4]]`**
+2. **`parse('3+4)')`**
+   1. **`struct([3, '+', 4])`**  ->  **`['+', 3, 4]`**
+   2. **`['+', 3, 4]**
+
+
+## **Solution**
+
+```python
+def get_next(str_val, indx):
+    if indx >= len(str_val):
+        raise Exception("End of string")
+
+    if str_val[indx].isdigit() or str_val[indx] == ".":
+        n_list = []
+
+        for i in str_val[indx:]:
+            if i.isspace():
+                continue
+            if i.isdigit() or i == ".":
+                n_list.append(i)
+            else:
+                break
+
+        finale = "".join(n_list)
+
+        if "." in finale:
+            return float(finale)
+        else:
+            return int(finale)
+
+    else:
+        op = []
+
+        for i in str_val[indx:]:
+            if i.isspace():
+                continue
+            if not i.isdigit() and i != "." and i not in "()":
+                op.append(i)
+            else:
+                break
+
+        return "".join(op)
+
+
+# Removes whitespace, extracts all numbers and operators,
+# and structures the expression.
+def parse(expression):
+    expression = expression.replace(" ", "")
+
+    parts = []
+    index = 0
+
+    while index < len(expression):
+        char = expression[index]
+
+        if char == "(":
+            depth = 1
+            close_index = index + 1
+
+            while depth > 0 and close_index < len(expression):
+                if expression[close_index] == "(":
+                    depth += 1
+                elif expression[close_index] == ")":
+                    depth -= 1
+                close_index += 1
+
+            inner_expr = expression[index + 1: close_index - 1]
+            sub_ast = parse(inner_expr)
+            parts.append(sub_ast)
+            index = close_index
+
+        else:
+            result = get_next(expression, index)
+            parts.append(result)
+            index += len(str(result))
+
+    return struct(parts)
+```
+
+## **Explanation of the solution**
+
+The main idea is to treat everything inside a pair of parentheses as a **separate expression** and parse it recursively.
+
+### 1. Updating `get_next`
+
+The important change in `get_next` is this condition:
+
+```python
+if not i.isdigit() and i != "." and i not in "()":
+```
+
+The `i not in "()"` part prevents `get_next` from including parentheses as part of an operator.
+
+For example:
+
+```python
+get_next('2*(3+5)', 1)
+```
+
+returns:
+
+```python
+'*'
+```
+
+instead of treating `*(` as the operator.
+
+### 2. Detecting `(` inside `parse`
+
+Inside `parse`, we check the current character:
+
+```python
+if char == "(":
+```
+
+When an opening parenthesis is found, we need to find its matching closing parenthesis.
+
+### 3. Finding the matching `)`
+
+The variable `depth` keeps track of nested parentheses:
+
+```python
+depth = 1
+close_index = index + 1
+```
+
+Every time another `(` is found, `depth` increases:
+
+```python
+if expression[close_index] == "(":
+    depth += 1
+```
+
+Every time a `)` is found, `depth` decreases:
+
+```python
+elif expression[close_index] == ")":
+    depth -= 1
+```
+
+This allows the code to correctly handle nested expressions such as:
+
+```python
+2 * (3 + (4 * 5))
+```
+
+The matching `)` is found when `depth` reaches `0`.
+
+### 4. Parsing the expression inside the parentheses
+
+Once the matching closing parenthesis is found, we extract everything between the parentheses:
+
+```python
+inner_expr = expression[index + 1: close_index - 1]
+```
+
+Then we call `parse` again:
+
+```python
+sub_ast = parse(inner_expr)
+```
+
+This is the **recursive call**.
+
+For example:
+
+```python
+parse("2*(3+4)")
+```
+
+eventually extracts:
+
+```python
+"3+4"
+```
+
+and calls:
+
+```python
+parse("3+4")
+```
+
+which produces:
+
+```python
+['+', 3, 4]
+```
+
+That result is then added to `parts`:
+
+```python
+parts.append(sub_ast)
+```
+
+So the outer expression becomes:
+
+```python
+['*', 2, ['+', 3, 4]]
+```
+
+### 5. Moving past the entire parenthesized expression
+
+Finally:
+
+```python
+index = close_index
+```
+
+moves the index to the position after the closing `)` so that the expression inside the parentheses is not processed again.
+
+The important concept here is **recursion**: `parse` calls itself whenever it encounters parentheses, allowing each parenthesized expression to be parsed independently and then inserted into the larger expression tree.
