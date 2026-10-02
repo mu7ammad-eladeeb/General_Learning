@@ -366,3 +366,49 @@ touch documents/notes.txt
 This creates `notes.txt` inside the `documents` directory. The `documents` directory must already exist; otherwise, the command will fail.
 
 **Note:** If the file already exists, **`touch`** will not overwrite its contents. Instead, it updates the file's **last modified timestamp**, which records when the file's contents were last changed.
+
+# **Read A File**
+
+The **`cat`** command is short for **concatenate**, which means to link things together. While its original purpose was to join files, its most common use today is to **read and display the contents of a file** directly in the terminal.
+
+Simply type **`cat`** followed by the filename:
+
+```bash
+cat readme.txt
+
+```
+
+The contents of the file will be printed to the terminal immediately.
+
+**Other useful ways to read files:**
+
+**`head`**: displays only the **first 10 lines** of a file:
+
+```bash
+head readme.txt
+
+```
+
+**`tail`**: displays only the **last 10 lines** of a file:
+
+```bash
+tail readme.txt
+
+```
+
+You can control how many lines to show with the **`-n`** option:
+
+```bash
+head -n 5 readme.txt   # show first 5 lines
+tail -n 3 readme.txt   # show last 3 lines
+
+```
+
+**`less`**: opens the file in a **scrollable viewer**. Press **`q`** to quit:
+
+```bash
+less readme.txt
+
+```
+
+**Note:** **`cat`** is best for short files. For long files, **`less`** is more comfortable to read.
