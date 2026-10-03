@@ -412,3 +412,58 @@ less readme.txt
 ```
 
 **Note:** **`cat`** is best for short files. For long files, **`less`** is more comfortable to read.
+
+# **Copy A File**
+
+The **`cp`** command stands for **copy**. It lets you create a copy of a file in a new location or with a new name.
+
+The basic format is:
+
+```bash
+cp source destination
+
+```
+
+For example, to copy **`readme.txt`** and name the copy **`backup.txt`**:
+
+```bash
+cp readme.txt backup.txt
+
+```
+
+The original file stays in place and a new copy is created.
+
+**Copy a file into a folder:**
+
+You can copy a file directly into another directory:
+
+```bash
+cp readme.txt documents/readme.txt
+
+```
+
+Or simply pass the folder as the destination and the filename will be kept:
+
+```bash
+cp readme.txt documents/
+
+```
+
+**Copy a folder and all its contents:**
+
+To copy an entire directory, use the **`-r`** flag (recursive):
+
+```bash
+cp -r documents backup_documents
+
+```
+
+The **`-r`** flag is only **required** for directories. It is still accepted on a single file, where it simply copies that file.
+
+**Note:** **`cp`** will **overwrite** the destination file if it already exists.
+
+Use the **`-i`** flag to get a confirmation prompt before overwriting:
+
+```bash
+cp -i readme.txt backup.txt
+```
