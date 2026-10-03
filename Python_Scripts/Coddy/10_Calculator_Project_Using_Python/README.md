@@ -4073,3 +4073,77 @@ index = close_index
 moves the index to the position after the closing `)` so that the expression inside the parentheses is not processed again.
 
 The important concept here is **recursion**: `parse` calls itself whenever it encounters parentheses, allowing each parenthesized expression to be parsed independently and then inserted into the larger expression tree.
+
+# **Handling errors**
+
+Last step - handling the errors.
+
+In this function most of the errors handled by other function, the only error we should raise is on **not matching open and closed parenthesis**.
+
+Examples:
+
+- **`parse('3+(1*2')`**
+- **`parse('3+5)')`**
+- **`parse('2*(3+(2-1))+1)')`**
+
+> *Adding to parse function this handling can be **very hard**, so let's create another function which will be called before.*
+
+
+
+## **Challenge**
+
+Easy
+
+Create a function **`pre_parse`** which gets a string and raise an error in case the parenthesis not matching, the function should not return anything.
+
+Raise the exception with the message **`'Not matching parenthesis'`**.
+
+## **Solution**
+
+```python
+def pre_parse(expression):
+    count = 0
+
+    for char in expression:
+        if char == "(":
+            count += 1
+        elif char == ")":
+            count -= 1
+
+        if count < 0:
+            raise Exception("Not matching parenthesis")
+
+    if count != 0:
+        raise Exception("Not matching parenthesis")
+```
+
+## **Explanation**
+
+The function checks whether every opening parenthesis **`(`** has a matching closing parenthesis **`)`**.
+
+- **`count = 0`** starts a counter for the currently unmatched opening parentheses.
+- When the character is **`(`**, we increase **`count`** by `1`.
+- When the character is **`)`**, we decrease **`count`** by `1`.
+- If **`count < 0`**, there is a closing parenthesis without a matching opening parenthesis before it. We immediately raise the required exception.
+- After checking the entire expression, if **`count != 0`**, there are unmatched opening parentheses, so we raise the same exception.
+- If `count` is `0` at the end, all parentheses are properly matched, and the function does not return anything.
+
+For example:
+
+```python
+pre_parse("3+(1*2")
+```
+
+There is one unmatched **`(`**, so the function raises:
+
+```text
+Not matching parenthesis
+```
+
+While:
+
+```python
+pre_parse("3+(1*2)")
+```
+
+has a matching pair of parentheses, so no exception is raised.
