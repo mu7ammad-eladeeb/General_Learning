@@ -210,6 +210,6 @@ def parse(expression):
 
     return struct(parts)
     
-def coordinate(str_val):
-    result = parse(str_val)
-    return eval(result)
+# Parse the expression and evaluate the resulting structure (Put Everything Together)
+def coordinate(expression):
+    return eval(parse(expression))
