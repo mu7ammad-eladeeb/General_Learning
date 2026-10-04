@@ -467,3 +467,52 @@ Use the **`-i`** flag to get a confirmation prompt before overwriting:
 ```bash
 cp -i readme.txt backup.txt
 ```
+# **Move And Rename A File**
+
+The **`mv`** command stands for **move**. It is used to **move a file to a different location** or to **rename a file**: both actions use the exact same command.
+
+The basic format is:
+
+```python
+mv source destination
+
+```
+
+**Renaming a file:**
+
+To rename **`readme.txt`** to **`info.txt`**:
+
+```python
+mv readme.txt info.txt
+
+```
+
+The file stays in the same directory but now has a new name.
+
+**Moving a file to another directory:**
+
+To move **`readme.txt`** into the **`documents`** folder:
+
+```python
+mv readme.txt documents/
+
+```
+
+The original file is removed from the current directory and placed inside **`documents`**.
+
+**Moving and renaming at the same time:**
+
+You can move a file to a new location and give it a new name in one command:
+
+```python
+mv readme.txt documents/info.txt
+
+```
+
+**Note:** Unlike **`cp`**, **`mv`** does **not** keep the original file. It is moved, not copied.
+
+Use **`-i`** to get a prompt before overwriting an existing file:
+
+```python
+mv -i readme.txt documents/
+```
