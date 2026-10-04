@@ -4147,3 +4147,79 @@ pre_parse("3+(1*2)")
 ```
 
 has a matching pair of parentheses, so no exception is raised.
+
+# **Everything together**
+
+Now we are ready to put everything together!
+
+
+
+## **Challenge**
+
+Easy
+
+Create a function **`coordinate`** which gets string with calculation and returns the result of this calculation!
+
+> *You can assume in this lesson, you are given **error free** calculation*
+
+### **Hints**
+
+#### Hint 1
+
+
+
+Call the previous functions, **`parse`** and **`eval`**, with the expected arguments.
+
+**`pre_parse`** will be used later.
+
+
+
+#### Hint 2
+
+
+
+If you are getting the output **`"Not a number"`** check your **`eval`** and make sure it returns **`int`** or **`float`** type value.
+
+# **Solution**
+
+```python
+def coordinate(expression):
+    return eval(parse(expression))
+```
+
+# **Explanation**
+
+The **`coordinate`** function connects the previous functions together to complete the calculation.
+
+- **`expression`** receives the calculation as a string, for example **`"3+5"`**.
+- **`parse(expression)`** takes the string and converts it into the structure expected by **`eval`**.
+- **`eval(...)`** then evaluates that parsed structure and calculates the final result.
+- The result of **`eval`** is returned directly by **`coordinate`**.
+
+For example:
+
+```python
+coordinate("3+5")
+```
+
+The process is:
+
+```text
+"3+5"
+  ↓
+parse("3+5")
+  ↓
+parsed expression
+  ↓
+eval(parsed expression)
+  ↓
+8
+```
+
+So the function returns:
+
+```text
+8
+```
+
+`pre_parse` is **not used yet**, as the challenge assumes that the given calculations are error-free. It will be useful later when we add error handling for unmatched parentheses.
