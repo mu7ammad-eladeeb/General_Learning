@@ -563,3 +563,88 @@ rm -f readme.txt
 ```
 
 > ***Warning:** The terminal has **no recycle bin**. Files deleted with **`rm`** are gone permanently and cannot be recovered. Always double-check before running **`rm`**.*
+
+## **Recap - File Operations**
+
+
+
+### **Challenge**
+
+Easy
+
+Put all your file operation skills together! You must execute the following commands in order to complete the task:
+
+1. Create a new file called **`newfile.txt`** using **`touch`**
+2. Copy **`newfile.txt`** to **`backup.txt`** using **`cp`**
+3. Move **`backup.txt`** into the **`documents`** folder using **`mv`**
+4. Delete **`newfile.txt`** using **`rm`**
+5. List the contents of the current directory using **`ls`**
+6. List the contents of the **`documents`** folder using **`ls documents`**
+
+> ***Note:** The check lists the home directory and the **`documents`** folder itself, so an extra command of your own does not break it.*
+
+#### **Hints**
+
+**Hint 1**
+
+
+
+Step 1: Use **`touch newfile.txt`** to create a new file.
+
+
+
+**Hint 2**
+
+
+
+
+
+Step 2: Use **`cp newfile.txt backup.txt`** to copy it.
+
+
+
+**Hint 3**
+
+
+
+Step 3: Use **`mv backup.txt documents/backup.txt`** to move the copy into the documents folder.
+
+
+
+**Hint 4**
+
+
+
+Step 4: Use **`rm newfile.txt`** to delete the original file.
+
+
+
+**Hint 5**
+
+
+
+Step 5: Use **`ls`** and **`ls documents`** to confirm the final state.
+
+### **Solution**
+
+```bash
+touch newfile.txt
+cp newfile.txt backup.txt
+mv backup.txt documents/backup.txt
+rm newfile.txt
+ls
+ls documents
+```
+
+### **Explanation**
+
+The commands are executed in the required order:
+
+1. **`touch newfile.txt`** creates the new file.
+2. **`cp newfile.txt backup.txt`** creates a copy named `backup.txt`.
+3. **`mv backup.txt documents/backup.txt`** moves the copy into the `documents` folder.
+4. **`rm newfile.txt`** deletes the original file.
+5. **`ls`** displays the contents of the current directory.
+6. **`ls documents`** displays the contents of the `documents` folder and confirms that `backup.txt` is there.
+
+At the end, **`newfile.txt`** is deleted, while **`backup.txt`** exists inside the **`documents`** folder.
