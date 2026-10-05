@@ -4,9 +4,9 @@ The **terminal** is a powerful text-based interface that lets you communicate di
 
 Instead of clicking buttons and icons, you type commands to navigate files, run programs, and manage your system. Learning the terminal is an essential skill for any developer.
 
-# Your First Command
+## Your First Command
 
-## Challenge
+### Challenge
 
 **Beginner**
 
@@ -16,7 +16,7 @@ Use the `echo` command to print `Hello World!` to the terminal.
 
 Use the `echo` command followed by your text in double quotes.
 
-## Hints
+#### Hints
 
 **Hint 1**
 
@@ -26,11 +26,11 @@ A command line has two parts: the program you run and the argument you pass it. 
 
 Type `echo`, a space, then your text inside double quotes, and press Enter. The text is **case sensitive**, so it has to match the task exactly.
 
-## Solution
+### Solution
 
     echo "Hello World!"
 
-## Explanation
+### Explanation
 
 The `echo` command is used to print text to the terminal.
 
@@ -51,7 +51,7 @@ the terminal prints:
 
 The output is **case sensitive**, so the capitalization, spaces, and exclamation mark must match the required text exactly.
 
-# **Comments**
+## **Comments**
 
 **Comments** are lines in your shell script that are ignored by the shell. They are used to add notes and explanations to your code for human understanding.
 
@@ -88,7 +88,7 @@ This line starts with `#!` (called a **shebang**) followed by the path to the sh
     # TODO: Add error handling here
     echo "Processing files..."
 
-# **Print Working Directory**
+## **Print Working Directory**
 
 The `pwd` command stands for **Print Working Directory**. It shows you the **full path** of the directory you are currently in.
 
@@ -119,7 +119,7 @@ This is called a **path**. It shows the full location of your current directory,
 
 `pwd` is especially useful when you have navigated deep into different folders and need to remember where you are.
 
-# **List Files**
+## **List Files**
 
 The `ls` command stands for **list**. It shows you all the files and folders inside your current directory.
 
@@ -176,7 +176,7 @@ ls documents
 
 This shows the contents of the `documents` folder without having to navigate into it first.
 
-# **Change Directory**
+## **Change Directory**
 
 The **`cd`** command stands for **Change Directory**. It lets you navigate from one folder to another in the filesystem.
 
@@ -226,7 +226,7 @@ cd -
 
 **Tip:** You can combine **`cd`** with **`ls`** and **`pwd`** to explore your filesystem confidently: list what's there, move into it, and confirm where you are.
 
-# **Absolute vs Relative Paths**
+## **Absolute vs Relative Paths**
 
 When navigating the filesystem, you can refer to a location in two ways: using an **absolute path** or a **relative path**.
 
@@ -322,7 +322,7 @@ For example, if your username is `username`, the command might output:
 /home/username
 ```
 
-# **Create A File**
+## **Create A File**
 
 The **`touch`** command is used to **create a new empty file** in your current directory.
 
@@ -367,7 +367,7 @@ This creates `notes.txt` inside the `documents` directory. The `documents` direc
 
 **Note:** If the file already exists, **`touch`** will not overwrite its contents. Instead, it updates the file's **last modified timestamp**, which records when the file's contents were last changed.
 
-# **Read A File**
+## **Read A File**
 
 The **`cat`** command is short for **concatenate**, which means to link things together. While its original purpose was to join files, its most common use today is to **read and display the contents of a file** directly in the terminal.
 
@@ -413,7 +413,7 @@ less readme.txt
 
 **Note:** **`cat`** is best for short files. For long files, **`less`** is more comfortable to read.
 
-# **Copy A File**
+## **Copy A File**
 
 The **`cp`** command stands for **copy**. It lets you create a copy of a file in a new location or with a new name.
 
@@ -467,7 +467,7 @@ Use the **`-i`** flag to get a confirmation prompt before overwriting:
 ```bash
 cp -i readme.txt backup.txt
 ```
-# **Move And Rename A File**
+## **Move And Rename A File**
 
 The **`mv`** command stands for **move**. It is used to **move a file to a different location** or to **rename a file**: both actions use the exact same command.
 
@@ -516,3 +516,50 @@ Use **`-i`** to get a prompt before overwriting an existing file:
 ```python
 mv -i readme.txt documents/
 ```
+
+## **Delete A File**
+
+The **`rm`** command stands for **remove**. It permanently **deletes a file** from the filesystem.
+
+Simply type **`rm`** followed by the filename:
+
+```python
+rm readme.txt
+
+```
+
+The file is deleted immediately. You can confirm it is gone with **`ls`**.
+
+**Deleting multiple files at once:**
+
+```python
+rm file1.txt file2.txt file3.txt
+
+```
+
+**Deleting a folder and all its contents:**
+
+To delete an entire directory including everything inside it, use the **`-r`** flag (recursive):
+
+```python
+rm -r documents
+
+```
+
+**Safety flags:**
+
+**`-i`**: asks for confirmation before deleting each file:
+
+```python
+rm -i readme.txt
+
+```
+
+**`-f`**: force delete without any prompts (use with caution!):
+
+```python
+rm -f readme.txt
+
+```
+
+> ***Warning:** The terminal has **no recycle bin**. Files deleted with **`rm`** are gone permanently and cannot be recovered. Always double-check before running **`rm`**.*
