@@ -4299,3 +4299,88 @@ Error: Not matching parenthesis
 ```
 
 This way, instead of stopping the program with an exception, **`coordinate` returns a readable error message**.
+
+# **Main function**
+
+After having the **`coordinate`** function what left is to add the option to take input from the user and calling **`coordinate`**.
+
+Try making it inside the "main function" in python ([read more](https://docs.python.org/3/library/__main__.html)),
+
+```python
+if __name__ == '__main__':
+    ...
+
+```
+
+
+## **Challenge**
+
+Easy
+
+Ask for input from the user and print the result of the calculation.
+
+
+### **Hints**
+
+#### Hint 1
+
+
+Use **`input()`** to take input from user
+
+## **Solution**
+
+```python
+if __name__ == '__main__':
+    expression = input()
+    print(coordinate(expression))
+```
+
+## **Explanation**
+
+The following code creates the **main function** of the program:
+
+```python
+if __name__ == '__main__':
+```
+
+This condition checks whether the Python file is being run directly. If it is, the code inside the block will execute.
+
+- **`input()`** waits for the user to enter a calculation and stores it in **`expression`**.
+- **`coordinate(expression)`** sends the user's calculation to the `coordinate` function.
+- **`print()`** displays the result returned by `coordinate`.
+
+For example, if the user enters:
+
+```text
+3+5
+```
+
+The program calls:
+
+```python
+coordinate("3+5")
+```
+
+and prints:
+
+```text
+8
+```
+
+So the complete flow is:
+
+```text
+User input
+    ↓
+input()
+    ↓
+coordinate()
+    ↓
+pre_parse()
+    ↓
+parse()
+    ↓
+eval()
+    ↓
+print(result)
+```
