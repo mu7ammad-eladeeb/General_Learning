@@ -3,7 +3,7 @@
 Let's start with the calculation!
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -25,7 +25,7 @@ For now, deal only with the basic operators: `+`, `-`, `*`, `/`.
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def calc(operator, num1, num2):
@@ -39,7 +39,7 @@ def calc(operator, num1, num2):
         return num1 / num2
 ```
 
-# Explanation
+## Explanation
 
 The `calc` function takes three arguments:
 
@@ -108,7 +108,7 @@ We've added the basics operators: `+`, `-`, `*`, `/`
 
 Let's add some more!
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -119,7 +119,7 @@ Add support for the operators -
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def calc(operator, num1, num2):
@@ -137,7 +137,7 @@ def calc(operator, num1, num2):
         return num1 ** num2
 ```
 
-# Explanation
+## Explanation
 
 We keep the four basic operators from the previous challenge and add two new cases.
 
@@ -201,7 +201,7 @@ The calculator should accept **alias names** for each operation:
 
 ---
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -209,7 +209,7 @@ Make `calc` support the alias names described above. Check the test cases for an
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def calc(operator, num1, num2):
@@ -229,7 +229,7 @@ def calc(operator, num1, num2):
         return num1 % num2
 ```
 
-# Explanation
+## Explanation
 
 First, we convert the `operator` to lowercase:
 
@@ -304,7 +304,7 @@ There are some possible errors we should consider,
 - Invalid number - `calc('+', 'not_a_number', 2)`
 
 
-# **Challenge**
+## **Challenge**
 
 Medium
 
@@ -318,7 +318,7 @@ The error messages should be in the following formats,
 
 > ***Number**** is of type **`int`** or **`float`**
 
-## **Hints**
+### **Hints**
 
 To raise an exception with the message `"msg"` use,
 
@@ -336,7 +336,7 @@ Don't forget to check also `float`!
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def calc(operator, num1, num2):
@@ -370,7 +370,7 @@ def calc(operator, num1, num2):
         return num1 % num2
 ```
 
-# Explanation
+## Explanation
 
 The goal is to make `calc` detect three types of errors:
 
@@ -378,7 +378,7 @@ The goal is to make `calc` detect three types of errors:
 2. Invalid operators
 3. Division by zero
 
-## 1. Check that the numbers are valid
+### 1. Check that the numbers are valid
 
 A valid number must be either an `int` or a `float`.
 
@@ -418,7 +418,7 @@ raises:
 Invalid number "[]"
 ```
 
-## 2. Check that the operator is valid
+### 2. Check that the operator is valid
 
 We create a list containing all supported operators and aliases:
 
@@ -452,7 +452,7 @@ This makes the aliases case-insensitive.
 
 For example, `ADD`, `Add`, and `add` are all converted to `add`.
 
-## 3. Check for division by zero
+### 3. Check for division by zero
 
 Division by zero is handled before performing the division:
 
@@ -486,7 +486,7 @@ elif operator == '%' or operator == 'mod':
     return num1 % num2
 ```
 
-## 4. Perform the calculation
+### 4. Perform the calculation
 
 After all the error checks pass, the function performs the requested operation normally:
 
@@ -518,7 +518,7 @@ Let's add single number operations for `'+'` and `'-'`,
 
 ---
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -528,9 +528,9 @@ Add support for single number operators for `'+'` and `'-'`.
 
 ---
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 To add default value, `None`, use,
 
@@ -540,7 +540,7 @@ def calc(op, n1, n2=None):
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def calc(operator, num1, num2=None):
@@ -584,7 +584,7 @@ def calc(operator, num1, num2=None):
         return num1 % num2
 ```
 
-# Explanation
+## Explanation
 
 The main change is giving the third argument a default value of `None`:
 
@@ -606,7 +606,7 @@ is equivalent to:
 calc('+', 5.4, None)
 ```
 
-## 1. Validate the first number
+### 1. Validate the first number
 
 The first number must still be an `int` or `float`:
 
@@ -615,7 +615,7 @@ if not isinstance(num1, (int, float)):
     raise Exception(f'Invalid number "{num1}"')
 ```
 
-## 2. Validate the second number only when it exists
+### 2. Validate the second number only when it exists
 
 Because `num2` can now be `None`, we need to make sure we don't treat `None` as an invalid number:
 
@@ -626,7 +626,7 @@ if num2 is not None and not isinstance(num2, (int, float)):
 
 The condition checks whether `num2` is not `None` before checking its type.
 
-## 3. Handle single-number operations
+### 3. Handle single-number operations
 
 We check whether the user provided only one number:
 
@@ -662,7 +662,7 @@ else:
     raise Exception(f'Invalid operator "{operator}"')
 ```
 
-## 4. Keep the existing two-number operations
+### 4. Keep the existing two-number operations
 
 If `num2` is provided, the function continues to perform the normal two-number calculations:
 
@@ -720,7 +720,7 @@ Some examples:
 ```
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -730,7 +730,7 @@ Use the `calc` function you created!
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def eval(expression):
@@ -738,7 +738,7 @@ def eval(expression):
     return calc(operator, num1, num2)
 ```
 
-# Explanation
+## Explanation
 
 The `eval` function receives a list containing three values:
 
@@ -819,7 +819,7 @@ Some more examples of calculations to recursive structure:
 
 ---
 
-# **Challenge**
+## **Challenge**
 
 Medium
 
@@ -832,9 +832,9 @@ Notes:
 
 ---
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 To check if `val` is a `list`, use:
 
@@ -846,7 +846,7 @@ This is also the way to determine if one of the arguments is another structure (
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def eval(expression):
@@ -861,7 +861,7 @@ def eval(expression):
     return calc(operator, num1, num2)
 ```
 
-# Explanation
+## Explanation
 
 The `eval` function receives a structure containing an operator and two arguments:
 
@@ -885,7 +885,7 @@ num2 = 3
 
 The important part is that `num1` is a list, which means it is another calculation that needs to be evaluated first.
 
-## 1. Check if the first argument is a list
+### 1. Check if the first argument is a list
 
 ```python
 if isinstance(num1, list):
@@ -908,7 +908,7 @@ returns:
 
 So `num1` becomes `3`.
 
-## 2. Check if the second argument is a list
+### 2. Check if the second argument is a list
 
 We do the same thing for `num2`:
 
@@ -919,7 +919,7 @@ if isinstance(num2, list):
 
 This allows either argument to contain another nested calculation.
 
-## 3. Use `calc` when both arguments are numbers
+### 3. Use `calc` when both arguments are numbers
 
 After recursively evaluating any nested lists, `num1` and `num2` are numbers.
 
@@ -931,7 +931,7 @@ return calc(operator, num1, num2)
 
 This follows the challenge requirement to use `calc` for the actual calculation.
 
-## Example
+#### Example
 
 Consider:
 
@@ -1000,16 +1000,16 @@ This is some examples with `eval`,
 - `eval(['*', ['+', 4], ['-', 4]])` -> `-16`
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
 Add support for single number operator for the `eval` function.
 
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 
 Add separation between the length of the list,
@@ -1024,7 +1024,7 @@ def eval(lst):
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def eval(lst):
@@ -1048,7 +1048,7 @@ def eval(lst):
         return calc(operator, num1, num2)
 ```
 
-# Explanation
+## Explanation
 
 The `eval` function needs to support both **single-number** and **two-number** operations.
 
@@ -1205,7 +1205,7 @@ Currently `eval` is not considering invalid input. The possible errors are:
 
 ---
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -1220,7 +1220,7 @@ Some examples of the error messages by calls:
 
 ---
 
-# Solution
+## Solution
 
 ```python
 def eval(lst):
@@ -1247,7 +1247,7 @@ def eval(lst):
         return calc(operator, num1, num2)
 ```
 
-# Explanation
+## Explanation
 
 The first thing we need to do is validate the input before trying to unpack or evaluate it.
 
@@ -1397,7 +1397,7 @@ Examples:
 - `[1, 'sub', 2, 'add', 3, '+', 4]`  ->  `['+', ['add', ['sub', 1, 2], 3], 4]`
 
 
-# **Challenge (2 Solutions Below)**
+## **Challenge (2 Solutions Below)**
 
 Medium
 
@@ -1406,15 +1406,15 @@ Create the function `struct` which gets list in the above format and returns the
 Currently deal only with basic operators `'+'` and `'-'`.
 
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 
 Start from dealing with [num1, op, num2] formats and then move to the other ones.
 
 
-Hint 2
+#### Hint 2
 
 
 change the input on the go,
@@ -1445,11 +1445,11 @@ def struct(lst):
 
 ### Explanation
 
-### How `struct()` Collapses Linear Expressions
+#### How `struct()` Collapses Linear Expressions
 
 The `struct` function converts a flat list of operations—such as `[1, 'sub', 2, 'add', 3]`—into a nested prefix structure like `['add', ['sub', 1, 2], 3]` so `eval()` can process it recursively.
 
-### Code Implementation
+#### Code Implementation
 
 def struct(lst):
     while len(lst) > 1:
@@ -1463,7 +1463,7 @@ def struct(lst):
 
 ---
 
-### Step-by-Step Execution Mechanics
+#### Step-by-Step Execution Mechanics
 
 1. Outer Loop (`while len(lst) > 1`):
    - Controls the global process. It keeps running as long as there are multiple items in `lst`.
@@ -1489,7 +1489,7 @@ def struct(lst):
 
 ---
 
-### Execution Trace Example
+#### Execution Trace Example
 
 For input `[1, 'sub', 2, 'add', 3]`:
 
@@ -1638,7 +1638,7 @@ returns:
 ```
 
 
-### Difference between the two solutions
+## Difference between the two solutions
 
 **Solution 1** follows the hint exactly: it uses a `while` loop, iterates over the list with a `for` loop, and searches for `'+'` or `'-'`.
 
@@ -1666,7 +1666,7 @@ And the operators `'+'` and `'-'` - **level two operators**.
 
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -1684,9 +1684,9 @@ Examples:
 
 
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 
 
@@ -1694,7 +1694,7 @@ First go over all the **level one operators** and then the **level two operators
 
 
 
-# Solution
+## Solution
 
 ```python
 def struct(lst):
@@ -1717,7 +1717,7 @@ def struct(lst):
     return lst[0]
 ```
 
-# Explanation
+## Explanation
 
 The main purpose of this solution is to make `struct` respect the mathematical order of operations.
 
@@ -1735,7 +1735,7 @@ operators_low = ['+', 'add', '-', 'sub']
 
 These are the **level two operators**, so they are processed after all level one operators have been handled.
 
-## 1. Continue until one structure remains
+### 1. Continue until one structure remains
 
 ```python
 while len(lst) > 1:
@@ -1767,7 +1767,7 @@ returns:
 ['+', 1, ['mul', 2, 3]]
 ```
 
-## 2. Check whether a level one operator exists
+### 2. Check whether a level one operator exists
 
 ```python
 has_high = any(item in operators_high for item in lst)
@@ -1797,7 +1797,7 @@ True
 
 This tells us that we must process the level one operator before processing `'+'`.
 
-## 3. Iterate through the list
+### 3. Iterate through the list
 
 ```python
 for i in range(1, len(lst) - 1):
@@ -1818,7 +1818,7 @@ index:  0    1    2     3    4
         1   '+'   2    mul   3
 ```
 
-## 4. Process level one operators first
+### 4. Process level one operators first
 
 ```python
 if has_high and lst[i] in operators_high:
@@ -1860,7 +1860,7 @@ Notice that `'+'` was **not** processed yet.
 
 This is exactly what we want because multiplication has higher priority than addition.
 
-## 5. Why `break` is important
+### 5. Why `break` is important
 
 After restructuring one operation:
 
@@ -1894,7 +1894,7 @@ becomes:
 
 Then we start searching again from the beginning.
 
-## 6. Process level two operators
+### 6. Process level two operators
 
 The `elif` handles level two operators:
 
@@ -1942,7 +1942,7 @@ becomes:
 
 Now the list has one element, so the `while` loop stops.
 
-## 7. Why `lst[0]` is returned
+### 7. Why `lst[0]` is returned
 
 At the end, `lst` contains one element:
 
@@ -1964,7 +1964,7 @@ return lst[0]
 
 returns the structure required by `eval`.
 
-## Example 1
+#### Example 1
 
 ```python
 struct([3, '*', 2])
@@ -2000,7 +2000,7 @@ returns:
 ['*', 3, 2]
 ```
 
-## Example 2
+#### Example 2
 
 ```python
 struct([1, '+', 2, 'mul', 3])
@@ -2036,7 +2036,7 @@ The final result is:
 ['+', 1, ['mul', 2, 3]]
 ```
 
-## Example 3
+#### Example 3
 
 ```python
 struct([2, 'mod', 3, '-', 4, '/', 5.2])
@@ -2101,7 +2101,7 @@ The function operators calculated before **all** the other operators.
 
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -2447,7 +2447,7 @@ These are processed last.
 
 ---
 
-## Example
+#### Example
 
 Consider:
 
@@ -2521,7 +2521,7 @@ This happen **only** when the list we get is of size 2!
 
 
 
-# **Challenge**
+## **Challenge**
 
 Easy
 
@@ -2529,9 +2529,9 @@ Add support for single number operator in `struct`.
 
 
 
-## **Hints**
+### **Hints**
 
-Hint 1
+#### Hint 1
 
 
 
@@ -3648,7 +3648,7 @@ Once all parts have been extracted, `struct()` arranges them into the structured
 
 ---
 
-## Example
+### Example
 
 ```python
 parse("3 pow 2.5")
@@ -4180,14 +4180,14 @@ Call the previous functions, **`parse`** and **`eval`**, with the expected argum
 
 If you are getting the output **`"Not a number"`** check your **`eval`** and make sure it returns **`int`** or **`float`** type value.
 
-# **Solution**
+## **Solution**
 
 ```python
 def coordinate(expression):
     return eval(parse(expression))
 ```
 
-# **Explanation**
+## **Explanation**
 
 The **`coordinate`** function connects the previous functions together to complete the calculation.
 
@@ -4223,3 +4223,79 @@ So the function returns:
 ```
 
 `pre_parse` is **not used yet**, as the challenge assumes that the given calculations are error-free. It will be useful later when we add error handling for unmatched parentheses.
+
+# **Errors**
+
+We have been handling all the errors in each one of the functions, now let's use them.
+
+
+
+## **Challenge**
+
+Easy
+
+Add to **`coordinate`** the option to return error message with **`'Error: '`** in the start.
+
+
+
+### **Hints**
+
+#### Hint 1
+
+
+
+Use,
+
+```python
+try:
+    ...
+except Exception as e:
+    ...
+```
+
+## **Solution**
+
+```python
+def coordinate(expression):
+
+    try:
+
+        pre_parse(expression)
+
+        return eval(parse(expression))
+
+    except Exception as e:
+
+        return f"Error: {e}"
+```
+
+## **Explanation**
+
+The **`coordinate`** function now handles errors using **`try`** and **`except`**.
+
+- **`try`** contains the code that might raise an exception.
+- **`pre_parse(expression)`** checks whether the parentheses are correctly matched.
+- **`eval(parse(expression))`** parses the expression and then evaluates it.
+- If any of these functions raises an exception, Python jumps to the **`except`** block.
+- **`except Exception as e`** catches the error and stores it in **`e`**.
+- **`return f"Error: {e}"`** returns the error message with **`"Error: "`** added to the beginning.
+
+For example, if the expression has unmatched parentheses:
+
+```python
+coordinate("3+(1*2")
+```
+
+`pre_parse` raises:
+
+```text
+Not matching parenthesis
+```
+
+The `except` block catches it and `coordinate` returns:
+
+```text
+Error: Not matching parenthesis
+```
+
+This way, instead of stopping the program with an exception, **`coordinate` returns a readable error message**.
