@@ -4384,3 +4384,49 @@ eval()
     ↓
 print(result)
 ```
+
+# **Multiple calculations**
+
+Final lesson!
+
+## **Challenge**
+
+Easy
+
+Add the option for the user to enter calculations one after one **until** the user enters **`'q'`** or **`'quit'`**.
+
+## **Solution**
+
+```python
+if __name__ == '__main__':
+    while True:
+        expression = input().strip()
+        if expression in ["q", "quit"]:
+            break
+        print(coordinate(expression))
+```
+
+## **Explanation**
+
+The program now allows the user to enter multiple calculations one after another until they choose to quit.
+
+- **`if __name__ == '__main__':`** runs the code only when the file is executed directly.
+- **`while True:`** creates a loop that continues running until we explicitly stop it.
+- **`input().strip()`** gets the user's input and removes any extra whitespace from the beginning or end.
+- **`if expression in ["q", "quit"]:`** checks whether the user entered either **`q`** or **`quit`**.
+- **`break`** stops the loop when the user wants to quit.
+- If the user enters a calculation, **`coordinate(expression)`** processes it and **`print()`** displays the result.
+
+For example:
+
+```text
+3+5
+8
+10*2
+20
+7-3
+4
+quit
+```
+
+The program processes each calculation and stops when **`quit`** is entered.
