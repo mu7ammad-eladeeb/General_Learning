@@ -648,3 +648,47 @@ The commands are executed in the required order:
 6. **`ls documents`** displays the contents of the `documents` folder and confirms that `backup.txt` is there.
 
 At the end, **`newfile.txt`** is deleted, while **`backup.txt`** exists inside the **`documents`** folder.
+
+## **Create A Directory**
+
+The **`mkdir`** command stands for **make directory**. It creates a new folder in your current location.
+
+Simply type **`mkdir`** followed by the name of the folder you want to create:
+```python
+mkdir projects
+
+```
+
+You can confirm it was created by running **`ls`**:
+```python
+ls
+documents
+projects
+readme.txt
+
+```
+
+**Creating multiple directories at once:**
+
+You can create several folders in a single command by listing them separated by spaces:
+```python
+mkdir projects documents backups
+
+```
+
+**Creating nested directories:**
+
+Use the **`-p`** flag to create a directory and all its parent directories at once:
+```python
+mkdir -p projects/app/src
+
+```
+
+Without **`-p`**, this would fail if **`projects`** or **`app`** don't already exist. With **`-p`**, all three folders are created automatically.
+
+**Note:** Directory names follow the same rules as file names: avoid spaces and special characters. Use hyphens or underscores instead:
+```python
+mkdir my-project    # ✅ good
+mkdir my_project    # ✅ good
+mkdir my project    # ❌ creates two folders: my and project
+```
