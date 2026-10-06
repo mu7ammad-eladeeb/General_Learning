@@ -692,3 +692,40 @@ mkdir my-project    # ✅ good
 mkdir my_project    # ✅ good
 mkdir my project    # ❌ creates two folders: my and project
 ```
+
+## **Copy A Directory**
+
+Just like copying a file with **`cp`**, you can also copy an entire directory. However, to copy a directory and **all of its contents**, you must use the **`-r`** flag, which stands for **recursive**.
+
+The basic format is:
+```python
+cp -r source destination
+
+```
+
+For example, to copy the **`documents`** folder and name the copy **`documents_backup`**:
+```python
+cp -r documents documents_backup
+
+```
+
+Both the original folder and the copy will now exist. You can verify with **`ls`**:
+```python
+ls
+documents
+documents_backup
+readme.txt
+
+```
+
+**Copying a directory into another directory:**
+
+If the destination already exists as a directory, the source folder will be placed **inside** it:
+```python
+cp -r documents projects/
+
+```
+
+This creates **`projects/documents`** with all the original contents.
+
+**Note:** Without the **`-r`** flag, **`cp`** will refuse to copy a directory and show an error. Always use **`-r`** when copying folders.
