@@ -4430,3 +4430,21 @@ quit
 ```
 
 The program processes each calculation and stops when **`quit`** is entered.
+
+# **Next steps**
+
+## **Well done!**
+
+You made a fully working console calculator.
+
+---
+
+What's next?
+
+- Add support for more operators and aliases
+- Welcome string when you start your program
+- Customise all the function names and error messages to your own names
+- Apply [clean code](https://coddy.tech/courses/clean_code__write_better_code_using_python) rules to your project
+- Sharing your project!
+
+The sky is the limit!
