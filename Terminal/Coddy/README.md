@@ -729,3 +729,43 @@ cp -r documents projects/
 This creates **`projects/documents`** with all the original contents.
 
 **Note:** Without the **`-r`** flag, **`cp`** will refuse to copy a directory and show an error. Always use **`-r`** when copying folders.
+
+## **Move And Rename A Directory**
+
+Just like with files, the **`mv`** command is used to **move or rename a directory**. The great thing about **`mv`** is that it works the same way for both files and folders: no extra flags needed.
+
+The basic format is:
+```python
+mv source destination
+
+```
+
+**Renaming a directory:**
+
+To rename the **`documents`** folder to **`files`**:
+```python
+mv documents files
+
+```
+
+The folder stays in the same location but now has a new name.
+
+**Moving a directory into another directory:**
+
+To move the **`documents`** folder into a folder called **`projects`**:
+```python
+mv documents projects/
+
+```
+
+The **`documents`** folder is now located at **`projects/documents`**.
+
+**Moving and renaming at the same time:**
+
+You can move a directory to a new location and give it a new name in one command:
+```python
+mv documents projects/files
+
+```
+
+**Note:** Unlike **`cp -r`**, **`mv`** does **not** keep the original directory. It is moved entirely. Always double-check your source and destination before running **`mv`**.
