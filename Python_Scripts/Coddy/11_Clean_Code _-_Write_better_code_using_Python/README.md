@@ -326,3 +326,50 @@ This makes the code easier to:
 - **Test** — each function can be tested separately.
 
 This is the main clean-code concept being practiced in this challenge: **separate different responsibilities into different functions**.
+
+# **Naming Conventions**
+
+Naming is crucial part of writing code, You give names to variable, function, classes and more...
+
+Python introduce some suggested naming styles:
+
+| Type     | Convention                       | Example                                    |
+| -------- | -------------------------------- | ------------------------------------------ |
+| Variable | Snake case                       | **`x`**, **`index`**, **`max_number`**     |
+| Function | Snake case                       | **`calculate`**, **`convert_to_int`**      |
+| Class    | Pascal case                      | **`Person`**, **`JavaCompiler`**           |
+| Method   | Snake case                       | **`print`**, **`make_sound`**              |
+| Constant | Snake case (all caps)            | **`PI`**, **`MAX_TIMEOUT`**, **`MIN_AGE`** |
+| Module   | Snake case                       | **`script.py`**, **`my_app.py`**           |
+| Package  | Snake case (without underscores) | **`package`**, **`mypackage`**             |
+
+- Snake case (snake_case) - Lower case letters, words separated with underscores.
+- Pascal case (PascalCase) - Capitalised words
+
+More detailed example of using it all together,
+```python
+import my_module
+
+
+class ImportantClass:
+    MY_CONSTANT = 3.14
+
+    def good_function(self, variable):
+        return variable
+        
+    def better_function(self):
+        return MY_CONSTANT
+        
+
+def __name__ == '__main__':
+    var = my_module.secret()
+    important_class = ImportantClass()
+    important_class.good_function(var)
+    print(important_class.better_function())
+
+
+```
+
+Notice all the diferent types here!
+
+> *Did you know? the difference between function and method is that method is a function associated with object/class*
