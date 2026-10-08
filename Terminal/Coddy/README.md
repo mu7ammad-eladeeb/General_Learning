@@ -801,3 +801,34 @@ rm -rf documents
 ```
 
 > ***Warning:** **`rm -rf`** is one of the most powerful and dangerous commands in the terminal. It permanently deletes everything without asking. Always double-check your path before running it. There is no undo.*
+
+## **The Right Name**
+
+When choosing names, you should always choose **descriptive names** that make your code much more **readable**.
+
+For example:
+```python
+def foo(x):
+    return x * 2
+
+```
+
+The example above is unclear because the function name **`foo`** and the parameter name **`x`** do not tell us what they represent.
+
+**The right way:**
+```python
+def multiply_by_2(num):
+    return num * 2
+
+```
+
+Now the code is clear even without reading the function's body. The name **`multiply_by_2`** tells us exactly what the function does, while **`num`** makes it clear that the parameter represents a number.
+
+> *Whenever possible, avoid using one-letter names like `a`, `x`, `i`, etc. Use descriptive names that make the purpose of the variable or function clear.*
+
+**Note:** One-letter names can sometimes be appropriate when their meaning is obvious from the context, such as **`i`** in a simple loop:
+```python
+for i in range(10):
+    print(i)
+
+```
