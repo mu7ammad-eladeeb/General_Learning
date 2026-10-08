@@ -373,3 +373,62 @@ def __name__ == '__main__':
 Notice all the diferent types here!
 
 > *Did you know? the difference between function and method is that method is a function associated with object/class*
+
+# **The Right Name**
+
+When choosing names, you should always choose **descriptive names** that make your code much more **readable**.
+
+For example:
+```python
+def foo(x):
+    return x * 2
+
+```
+
+The example above is unclear because the function name **`foo`** and the parameter name **`x`** do not tell us what they represent.
+
+## **The right way:**
+```python
+def multiply_by_2(num):
+    return num * 2
+
+```
+
+Now the code is clear even without reading the function's body. The name **`multiply_by_2`** tells us exactly what the function does, while **`num`** makes it clear that the parameter represents a number.
+
+> *Whenever possible, avoid using one-letter names like `a`, `x`, `i`, etc. Use descriptive names that make the purpose of the variable or function clear.*
+
+**Note:** One-letter names can sometimes be appropriate when their meaning is obvious from the context, such as **`i`** in a simple loop:
+```python
+for i in range(10):
+    print(i)
+```
+
+# **Block Comments**
+
+> *“If the implementation is hard to explain, it’s a bad idea.”*
+>
+> *- The Zen of Python*
+
+Comments are important so that anyone who will read your code can understand it.
+
+Comments in Python seperate into 3 kinds:
+
+- Block Comments
+- Inline Comments
+- Documentation Strings
+
+Let's start from the **Block Comments** -
+
+- Starts from the same indent block as the code they describe.
+- Start each line with a **`#`** followed by a single space.
+
+For example,
+```python
+while i < 10:
+    # Loop over i until i < 10
+    # print i with new line and increment it by 1
+    print(i, '\n')
+    i += 1
+```
+
