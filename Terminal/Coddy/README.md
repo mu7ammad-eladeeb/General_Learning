@@ -801,6 +801,3 @@ rm -rf documents
 ```
 
 > ***Warning:** **`rm -rf`** is one of the most powerful and dangerous commands in the terminal. It permanently deletes everything without asking. Always double-check your path before running it. There is no undo.*
-
-```
-
