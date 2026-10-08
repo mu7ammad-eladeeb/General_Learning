@@ -769,3 +769,35 @@ mv documents projects/files
 ```
 
 **Note:** Unlike **`cp -r`**, **`mv`** does **not** keep the original directory. It is moved entirely. Always double-check your source and destination before running **`mv`**.
+
+## **Delete A Directory**
+
+To delete a directory in the terminal, you have two options depending on whether the directory is empty or not.
+
+**Deleting an empty directory:**
+
+The **`rmdir`** command stands for **remove directory**. It can only delete a directory that is **completely empty**:
+```python
+rmdir empty_folder
+
+```
+
+If the folder contains any files or subdirectories, **`rmdir`** will fail with an error.
+
+**Deleting a directory and all its contents:**
+
+To delete a directory along with everything inside it, use **`rm`** with the **`-r`** flag (recursive):
+```python
+rm -r documents
+
+```
+
+This removes the **`documents`** folder and every file and subfolder inside it.
+
+You can also combine it with **`-f`** to force delete without any confirmation prompts:
+```python
+rm -rf documents
+
+```
+
+> ***Warning:** **`rm -rf`** is one of the most powerful and dangerous commands in the terminal. It permanently deletes everything without asking. Always double-check your path before running it. There is no undo.*
