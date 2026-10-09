@@ -536,3 +536,46 @@ You can print the Zen of Python by running the following in the Python interpret
 ```python
 >>> import this
 ```
+
+# **Variable Tricks**
+
+Python offers various options for dealing with variables. One of the most powerful is **variable unpacking**.
+
+When it comes to swapping values, you can do it this way:
+```python
+temp = a
+a = b
+b = temp
+
+```
+
+Now the values of **`a`** and **`b`** have been swapped.
+
+In a Pythonic way, using variable unpacking, you can do it easily:
+```python
+a, b = b, a
+
+```
+
+Or to unpack tuples:
+```python
+x, y = (10, 20)  # x = 10, y = 20
+
+```
+
+Using **`*`**, we can deal with multiple values at once!
+```python
+a, *b, c = [1, 2, 3, 4]  # a = 1, b = [2, 3], c = 4
+
+```
+
+> *If there are not enough values to unpack into the variables, Python will raise an error!*
+>
+> ```python
+> a, b = [1, 2, 3]  # Error
+>
+> ```
+>
+> ```python
+> a, *b = [1, 2, 3]  # a = 1, b = [2, 3]
+> ```
