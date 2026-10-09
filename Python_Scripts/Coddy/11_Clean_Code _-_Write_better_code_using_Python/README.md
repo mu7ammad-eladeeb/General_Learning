@@ -447,3 +447,42 @@ result = check(name)  # Check if name is good
 ```
 
 > *Most of the times you will prefer using Comments Blocks instead of Inline Blocks.*
+
+# **Documentation Strings**
+
+Document String or Docstring it mostly occurs as the **first statement** in a module, function, class, or method definition.
+
+Declare docstring by wrapping string with **`"""`** or **`'''`** for example,
+```python
+def complex(real=0.0, imag=0.0):
+    """
+    Form a complex number.
+
+        Parameters:
+            real (float) -- the real part (default 0.0)
+            imag (float) -- the imaginary part (default 0.0)
+    """
+    if imag == 0.0 and real == 0.0:
+        return complex_zero
+    ...
+
+```
+
+take a look at how it documents the **`complex(real, imag)`** function. 
+
+> *Notice the indentation of the doc body and the **`"""`***
+
+After using docstring like this you can use **`__doc__`** property to get the documentation,
+```python
+complex.__doc__
+
+```
+
+Will output the following,
+```python
+Form a complex number.
+
+    Parameters:
+        real (float) -- the real part (default 0.0)
+        imag (float) -- the imaginary part (default 0.0)
+```
