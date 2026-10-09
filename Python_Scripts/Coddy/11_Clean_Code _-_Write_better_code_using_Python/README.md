@@ -431,4 +431,19 @@ while i < 10:
     print(i, '\n')
     i += 1
 ```
+# **Inline Comments**
 
+Inline comments explain a single statement in a piece of code.
+
+- Write inline comments on the same line as the statement they refer to.
+- Separate inline comments by **two or more spaces** from the statement.
+- Starts with a **`#`** and a single space.
+- Don’t use them to explain the obvious.
+
+For example,
+```python
+result = check(name)  # Check if name is good
+
+```
+
+> *Most of the times you will prefer using Comments Blocks instead of Inline Blocks.*
