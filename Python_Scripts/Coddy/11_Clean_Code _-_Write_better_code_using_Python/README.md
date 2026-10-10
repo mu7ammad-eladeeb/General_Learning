@@ -618,3 +618,17 @@ positive_and_power = [num * num for num in numbers if num > 0]
 > print(next(filtered_gen))  # 2
 > print(next(filtered_gen))  # 5
 > ```
+
+# **With a File**
+
+Python uses a special keyword when dealing with files: **`with`**.
+
+When using the **`with open`** syntax, the file you open will **automatically** close for you when you exit the **`with`** block.
+```python
+with open('file.txt') as f:
+    content = f.read()
+    ...
+
+```
+
+> *The **`with`** statement is better because it ensures that the file is always closed, even if an exception is raised inside the **`with`** block.*
