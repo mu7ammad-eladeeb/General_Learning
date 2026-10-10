@@ -692,3 +692,25 @@ def area(sizes):
 - `return width * height` multiplies the width by the height and returns the calculated area.
 
 Using **`get()`** makes the code concise and avoids a `KeyError` when either key is missing.
+
+# **Equals Operations**
+
+Using the **`not`** and **`is`** keywords is good practice when checking truthiness or comparing with **`None`**.
+```python
+if value1:
+    print("value1 is truthy!")
+
+if not value2:
+    print("value2 is falsey!")
+
+if value3 is None:
+    print("value3 is None!")
+
+if value4 is not None:
+    print("value4 is not None!")
+
+```
+
+Using **`==`** and **`!=`** to compare with **`True`**, **`False`**, or **`None`** is generally not the Pythonic way.
+
+For example, prefer **`if value:`** over **`if value == True:`**, and **`if value is None:`** over **`if value == None:`**.
