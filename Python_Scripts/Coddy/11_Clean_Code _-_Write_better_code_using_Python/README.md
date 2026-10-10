@@ -714,3 +714,14 @@ if value4 is not None:
 Using **`==`** and **`!=`** to compare with **`True`**, **`False`**, or **`None`** is generally not the Pythonic way.
 
 For example, prefer **`if value:`** over **`if value == True:`**, and **`if value is None:`** over **`if value == None:`**.
+# **PEP8**
+
+## **Introduction**
+
+[PEP 8](https://www.python.org/dev/peps/pep-0008/) is a style guide that describes the coding standards for Python.
+
+It's the most popular guide within the Python community.
+
+We will go over some of the guidelines and get familiar with them.
+
+> *PEP 8 is **not required** when coding in Python, although it's a very good practice to use it!*
