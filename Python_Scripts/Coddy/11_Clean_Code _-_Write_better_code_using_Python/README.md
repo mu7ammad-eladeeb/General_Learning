@@ -579,3 +579,42 @@ a, *b, c = [1, 2, 3, 4]  # a = 1, b = [2, 3], c = 4
 > ```python
 > a, *b = [1, 2, 3]  # a = 1, b = [2, 3]
 > ```
+
+# **Dealing With Lists**
+
+Lists are a big part of Python, so various list techniques can make your code more Pythonic.
+
+You can initialize or create a list in a simple way using the **`*`** operator.
+```python
+arr = [1] * 3  # arr = [1, 1, 1]
+
+```
+
+Using a **`for`** loop, you can filter or map elements and create lists in a more Pythonic way.
+```python
+numbers = [1, 2, -3, -2, 5]
+
+# Filter the numbers list to contain only positive numbers
+# filtered_list = [1, 2, 5]
+filtered_list = [num for num in numbers if num > 0]
+
+# Map numbers to a list of their squares
+# mapped_list = [1, 4, 9, 4, 25]
+mapped_list = [num * num for num in numbers]
+
+```
+
+You can map and filter at the same time!
+```python
+positive_and_power = [num * num for num in numbers if num > 0]
+
+```
+
+> *When using `()` instead of `[]`, Python creates a generator expression instead of a list comprehension.*
+>
+> ```python
+> filtered_gen = (num for num in numbers if num > 0)
+> print(next(filtered_gen))  # 1
+> print(next(filtered_gen))  # 2
+> print(next(filtered_gen))  # 5
+> ```
