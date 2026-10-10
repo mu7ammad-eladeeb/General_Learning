@@ -632,3 +632,63 @@ with open('file.txt') as f:
 ```
 
 > *The **`with`** statement is better because it ensures that the file is always closed, even if an exception is raised inside the **`with`** block.*
+
+# **Access a Dictionary Element**
+
+When accessing an element in a dictionary, there is always the risk that the key does not exist.
+
+The Pythonic way to check if a key exists in a dictionary is the **`in`** keyword:
+```python
+if 'name' in person_dict:
+    print(person_dict['name'])
+
+```
+
+If a default value can be supplied, it is a good idea to use **`get()`**:
+```python
+print(person_dict.get('name', 'Anonymous'))
+
+```
+
+The following will print **`'Anonymous'`** if **`'name'`** does not exist in **`person_dict`**; otherwise, it will print the value associated with **`'name'`**.
+
+## **Challenge**
+
+Easy
+
+Create a function **`area(sizes)`**.
+
+**`sizes`** is a dictionary with 2 keys - **`width`** and **`height`**. If the keys do not exist, the default value should be **`1`**.
+
+The expected output should be the **area size** - **`width * height`**.
+
+> *Write Pythonic Code!*
+
+### **Hints**
+
+Hint 1
+
+To get the **`width`**, you can use:
+```python
+width = sizes.get('width', 1)
+
+```
+
+In the same way, get the **`height`** and then return the product of the two values.
+
+## **Solution**
+```python
+def area(sizes):
+    width = sizes.get('width', 1)
+    height = sizes.get('height', 1)
+    return width * height
+```
+
+## **Explanation**
+
+- `def area(sizes):` defines a function named `area` that accepts a dictionary called `sizes`.
+- `sizes.get('width', 1)` retrieves the value associated with the key `'width'`. If the key does not exist, it returns the default value `1`.
+- `sizes.get('height', 1)` does the same for the key `'height'`.
+- `return width * height` multiplies the width by the height and returns the calculated area.
+
+Using **`get()`** makes the code concise and avoids a `KeyError` when either key is missing.
