@@ -890,3 +890,15 @@ def calc(num=0.0):    # good
 SOLID principles can fit into a whole course. In this course, the basics will be shown with examples and challenges.
 
 [Read more](https://en.wikipedia.org/wiki/SOLID)
+
+## **Single responsibility**
+
+> *"There should never be more than one reason for a class to change."*
+
+Single responsibility principle (SRP) states that every class and function should have only one job or one reason to change.
+
+Goals -
+
+- Create highly cohesive and robust classes and functions.
+- Promote class composition.
+- Avoid code duplication.
