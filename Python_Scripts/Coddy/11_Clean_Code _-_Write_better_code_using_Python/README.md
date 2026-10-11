@@ -725,3 +725,53 @@ It's the most popular guide within the Python community.
 We will go over some of the guidelines and get familiar with them.
 
 > *PEP 8 is **not required** when coding in Python, although it's a very good practice to use it!*
+
+# **Code Lay-out**
+
+PEP 8 states some rules related to "Code Lay-out":
+
+- Indent using 4 spaces or a tab.
+- Lines should not be longer than 79 characters.
+
+```python
+# line with 137 characters
+def some_very_long_function_name(very_important_argument1, very_important_argument2, very_important_argument3, very_important_argument4):
+    pass
+
+# Fix suggestion
+def some_very_long_function_name(
+    very_important_argument1,
+    very_important_argument2,
+    very_important_argument3,
+    very_important_argument4):
+    pass
+
+# Much better!
+```
+
+> *Indenting continuation lines, as in the above example, is good practice.*
+
+- Avoid multiple statements on the same line.
+
+```python
+do_calc1(); do_calc2(); x = 3;  # bad
+```
+
+```python
+# good
+do_calc1()
+do_calc2()
+x = 3
+```
+
+- Imports should be on separate lines.
+
+```python
+import sys, numpy  # bad
+```
+
+```python
+# good
+import sys
+import numpy
+```
