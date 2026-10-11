@@ -824,3 +824,39 @@ class MyClass:
 
 - Extra blank lines may be used (sparingly) to separate groups of related functions.
 - Use blank lines in functions, sparingly, to indicate logical sections.
+
+# **Whitespace**
+
+PEP 8 whitespace guidelines are the following:
+
+- Avoid extra spaces within braces or brackets.
+
+```python
+items = [ 1 , 'abc'  ]  # bad
+items = [1, 'abc']       # good
+
+def func( parm ):  # bad
+    ...
+def func(parm):    # good
+    ...
+
+```
+
+- Avoid trailing whitespace anywhere.
+
+- Surround operators with one space on each side.
+
+```python
+n =3+5      # bad
+n = 3 + 5   # good
+
+```
+
+- Don't use spaces around the **`=`** sign when it is used to indicate a keyword argument.
+
+```python
+def calc(num = 0.0):  # bad
+    ...
+def calc(num=0.0):    # good
+    ...
+```
