@@ -775,3 +775,52 @@ import sys, numpy  # bad
 import sys
 import numpy
 ```
+
+# **Blank Lines**
+
+PEP 8 rules related to blank lines:
+
+- Surround top-level function and class definitions with two blank lines.
+
+```python
+import some_module
+
+
+class ClassA:
+    pass
+
+
+class ClassB:
+    pass
+
+```
+
+or
+
+```python
+def top_function1():
+    pass
+
+
+def top_function2():
+    pass
+
+```
+
+- Method definitions inside a class are surrounded by a single blank line.
+
+```python
+class MyClass:
+    def __init__(self):
+        pass
+
+    def func1(self):
+        pass
+
+    def func2(self):
+        pass
+
+```
+
+- Extra blank lines may be used (sparingly) to separate groups of related functions.
+- Use blank lines in functions, sparingly, to indicate logical sections.
