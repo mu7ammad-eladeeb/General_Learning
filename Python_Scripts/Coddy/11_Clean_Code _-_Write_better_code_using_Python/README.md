@@ -726,7 +726,7 @@ We will go over some of the guidelines and get familiar with them.
 
 > *PEP 8 is **not required** when coding in Python, although it's a very good practice to use it!*
 
-# **Code Lay-out**
+## **Code Lay-out**
 
 PEP 8 states some rules related to "Code Lay-out":
 
@@ -776,7 +776,7 @@ import sys
 import numpy
 ```
 
-# **Blank Lines**
+## **Blank Lines**
 
 PEP 8 rules related to blank lines:
 
@@ -825,7 +825,7 @@ class MyClass:
 - Extra blank lines may be used (sparingly) to separate groups of related functions.
 - Use blank lines in functions, sparingly, to indicate logical sections.
 
-# **Whitespace**
+## **Whitespace**
 
 PEP 8 whitespace guidelines are the following:
 
@@ -860,3 +860,33 @@ def calc(num = 0.0):  # bad
 def calc(num=0.0):    # good
     ...
 ```
+
+# **SOLID**
+
+## **Introduction**
+
+**SOLID** principles are five basic rules to follow when programming:
+
+**S**ingle-responsibility principle -
+
+> *"There should never be more than one reason for a class to change."*
+
+**O**pen–closed principle -
+
+> *"Software entities should be open for extension, but closed for modification."*
+
+**L**iskov substitution principle -
+
+> *"Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it."*
+
+**I**nterface segregation principle -
+
+> *"Many client-specific interfaces are better than one general-purpose interface."*
+
+**D**ependency inversion principle -
+
+> *"Depend upon abstractions, [not] concretions."*
+
+SOLID principles can fit into a whole course. In this course, the basics will be shown with examples and challenges.
+
+[Read more](https://en.wikipedia.org/wiki/SOLID)
