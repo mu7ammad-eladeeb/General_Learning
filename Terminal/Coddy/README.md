@@ -801,3 +801,51 @@ rm -rf documents
 ```
 
 > ***Warning:** **`rm -rf`** is one of the most powerful and dangerous commands in the terminal. It permanently deletes everything without asking. Always double-check your path before running it. There is no undo.*
+# **Wildcards and Patterns**
+## **The Star Wildcard**
+
+A **wildcard** is a special character that acts as a placeholder to match one or more characters in filenames. Wildcards let you work with multiple files at once without typing every name.
+
+The **star wildcard** **`*`** matches **any number of characters** (including zero). It is the most powerful and commonly used wildcard.
+
+For example, to list all files ending in **`.txt`**:
+```bash
+ls *.txt
+
+```
+
+This matches any filename that ends with **`.txt`**, no matter how long the name is.
+
+**More examples:**
+
+Match all files starting with **`photo`**:
+```bash
+ls photo*
+
+```
+
+Match all files containing **`report`** anywhere in the name:
+```bash
+ls *report*
+
+```
+
+Match all files of any name or extension:
+```bash
+ls *
+
+```
+
+You can use **`*`** with any command, not just **`ls`**. For example, copy all **`.jpg`** files into a folder:
+```bash
+cp *.jpg photos/
+
+```
+
+Or delete all **`.log`** files at once:
+```bash
+rm *.log
+
+```
+
+> ***Tip:** Always run **`ls`** with your wildcard pattern first before using it with **`rm`** or **`mv`**. This way you can see exactly which files will be affected before making any changes.*
