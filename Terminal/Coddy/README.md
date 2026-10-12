@@ -849,3 +849,53 @@ rm *.log
 ```
 
 > ***Tip:** Always run **`ls`** with your wildcard pattern first before using it with **`rm`** or **`mv`**. This way you can see exactly which files will be affected before making any changes.*
+
+## **The Question Mark Wildcard**
+
+The **question mark wildcard** **`?`** matches **exactly one character**. Unlike **`*`**, which matches any number of characters, **`?`** is more precise: each **`?`** represents a single character position.
+
+For example, if you have these files:
+```bash
+file1.txt
+file2.txt
+file3.txt
+file10.txt
+notes.txt
+
+```
+
+Using **`?`** to match files with exactly one character after **`file`**:
+```bash
+ls file?.txt
+
+```
+
+Output:
+```bash
+file1.txt
+file2.txt
+file3.txt
+
+```
+
+Notice that **`file10.txt`** is **not** matched because **`10`** is two characters, not one.
+
+**Using multiple question marks:**
+
+Each **`?`** matches exactly one character, so you can chain them:
+```bash
+ls file??.txt  # matches file10.txt, file23.txt, etc.
+
+```
+
+**Mixing with other characters:**
+```bash
+ls ???.txt     # matches any .txt file with exactly a 3-character name
+ls img_?.jpg   # matches img_1.jpg, img_2.jpg but NOT img_10.jpg
+
+```
+
+**When to use `?` vs `*`:**
+
+- Use **`?`** when you know exactly how many characters vary.
+- Use **`*`** when the number of varying characters is unknown.
