@@ -87,3 +87,91 @@ The term open source was launched as a campaign in 1998 by a group that included
 * **Bruce Perens:** An American computer programmer and open-source advocate who co-founded the Open Source Initiative and authored the Open Source Definition based on the Debian Free Software Guidelines.
 
 **Source:** en.wikipedia.org (Added details by Gemini AI)
+
+# Commands With a Story
+
+## 1973
+
+### **What grep stands for**
+
+The name grep comes from the ed editor command g/re/p, meaning global, regular expression, print. That command printed every line that matched a pattern. grep became its own program and was first included in Version 4 Unix.
+
+* **grep:** A command-line utility in Unix and Unix-like operating systems that searches plain-text data sets for lines matching a regular expression.
+* **`ed`:** The original standard text editor for the Unix operating system, designed by Ken Thompson, which operated line-by-line using commands like `g/re/p`.
+* **`g/re/p`:** The specific `ed` sequence representing **g**lobal / **r**egular **e**xpression / **p**rint, which instructs the editor to search globally through a file for matches to a regular expression and print those lines.
+* **Regular Expression (regex):** A sequence of characters that specifies a match pattern in text, widely used in string-searching algorithms and text processing.
+* **Version 4 Unix:** The November 1973 release of Unix that marked its transition to being rewritten in C, which was also the first official release to include `grep` as a standalone binary tool.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
+## 1976
+
+### **Why vi moves with h, j, k and l**
+
+Bill Joy used a Lear Siegler ADM-3A terminal, which had no separate arrow keys. Instead, arrows were printed on the H, J, K and L keys. vi used those keys to move the cursor, and Vim still does.
+
+* **Bill Joy:** An American computer scientist and co-founder of Sun Microsystems who created the `vi` text editor and the C shell (`csh`), and played a key role in developing BSD Unix.
+* **Lear Siegler ADM-3A:** An iconic computer terminal manufactured in the 1970s that featured a minimalist keyboard layout where cursor directional arrows shared physical keys with H, J, K, and L.
+* **vi:** A visual mode text editor developed by Bill Joy in 1976 for early BSD Unix systems, famous for its modal editing paradigm and keyboard-centric navigation.
+* **Vim (Vi IMproved):** A highly configurable, open-source clone of `vi` created by Bram Moolenaar in 1991 that retains original `vi` keybindings like `hjkl` navigation while adding modern editing features.
+* **Modal Editing:** A user interface concept where keys perform different functions depending on the active mode (e.g., Command Mode vs. Insert Mode), allowing efficient document editing without a mouse.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
+## 1980
+
+### **Where sudo was born**
+
+Robert Coggeshall and Cliff Spencer wrote the first version of sudo around 1980 at the computer science department of SUNY Buffalo. The name originally meant superuser do. It lets a normal user run one command with administrator rights.
+
+* **sudo:** A command-line program for Unix and Unix-like operating systems that allows permitted users to execute commands with elevated privileges (typically as the superuser or root account).
+* **Superuser (root):** The administrative user account in Unix-like operating systems with unrestricted permissions and access to all system resources and files.
+* **SUNY Buffalo (University at Buffalo):** A major public research university in New York where developers Robert Coggeshall and Cliff Spencer created the initial `sudo` tool to manage system access.
+* **Robert Coggeshall & Cliff Spencer:** Computer science staff members at SUNY Buffalo who authored the original `sudo` program around 1980 to eliminate the need to share the root account password.
+* **Principle of Least Privilege:** A fundamental computer security concept where users are given only the minimum level of access needed to perform a specific task, which `sudo` enforces by granting temporary root privileges for individual commands.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
+# Teletypes and Terminals
+
+## 1963
+
+### **Ctrl+D means you are done**
+
+Ctrl+D sends the ASCII End of Transmission character. In a Unix terminal it signals the end of input, so a program waiting for text knows you are finished. Pressing it at an empty shell prompt usually closes the shell.
+
+* **ASCII (American Standard Code for Information Interchange):** A character encoding standard designed in 1963 for electronic communication, mapping text characters and control codes to digital values.
+* **End of Transmission (EOT):** A non-printable ASCII control character (value 4) originally used in telecommunications to signal the end of a transmission, mapped to `Ctrl+D` in Unix-like terminal environments.
+* **Terminal (TTY):** An input/output environment that allows users to interact with an operating system kernel using text-based commands and control sequences.
+* **EOF (End-of-File):** A condition in computer operating systems where no more data can be read from a data source, signaled in interactive shell sessions via the `Ctrl+D` shortcut.
+* **Unix Shell:** A command-line interpreter (such as `bash` or `zsh`) that executes commands typed by the user, which interprets an EOF signal on an empty prompt as a command to exit the session.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
+## 1964
+
+### **Who named the shell?**
+
+In 1964, Louis Pouzin had the idea of using commands somehow like a programming language. He called the program that does this a shell, and he described it for the Multics system. Every command-line interpreter since has been called a shell.
+
+* **Louis Pouzin:** A French computer scientist who invented the concept of the command-line shell for Multics and developed the datagram packet-switching network architecture (CYCLADES) that laid the foundation for the Internet.
+* **Multics (Multiplexed Information and Computing Service):** An influential early time-sharing operating system started in 1964 by MIT, GE, and Bell Labs that pioneered many fundamental computer system concepts, including file system hierarchies and the shell.
+* **Shell:** A user interface program that acts as an outer layer surrounding the operating system kernel, interpreting user commands and scripting logic to execute system operations.
+* **Command-Line Interpreter (CLI):** A computer program that reads and executes text-based commands entered by a user, converting high-level user instructions into system execution calls.
+* **Time-Sharing Systems:** An operating system architecture that allows multiple users to access a single central computer simultaneously through independent terminals, creating the need for user command interpreters like shells.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
+## 1984
+
+### **The terminal becomes a window**
+
+In the summer of 1984, Mark Vandevoorde, a student of Jim Gettys, wrote xterm. It became the standard terminal of the X Window System. A terminal emulator like xterm is a program that pretends to be a hardware terminal inside a window.
+
+* **`xterm`:** The standard terminal emulator for the X Window System, originally developed by Mark Vandevoorde to allow graphical displays to run command-line interface sessions.
+* **Terminal Emulator:** A software application that replicates the functionality of a physical video terminal or teletype hardware inside a graphical user interface (GUI) window.
+* **X Window System (X11):** A graphical windowing system developed at MIT in 1984 that provides the core framework and network protocol for building graphical user interfaces on Unix and Unix-like operating systems.
+* **Jim Gettys:** A computer scientist and prominent contributor to the X Window System who mentored Mark Vandevoorde during the creation of `xterm` at MIT.
+* **Hardware Terminal:** A physical hardware device consisting of a display screen and keyboard (such as the VT100) used to send data to and display data from a remote mainframe or central computer.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
