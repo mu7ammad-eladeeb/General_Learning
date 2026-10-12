@@ -15,7 +15,7 @@ Python borrowed many ideas from ABC, a language for beginners that Guido had hel
 - **Hard to extend:** Difficult to modify or build upon by adding new features.
 - **Influence:** To have an effect on how something is designed or developed.
 
-**Source:** python.org
+**Source:** python.org (Added details by ChatGPT)
 
 ## 1989
 
@@ -31,7 +31,7 @@ Guido named his language after Monty Python's Flying Circus, the British comedy 
 - **Mysterious:** Something that is unusual or not immediately easy to understand.
 - **Snake:** A legless reptile. Although Python is also the name of a group of snakes, the programming language was named after the comedy show, not the animal.
 
-**Source:** docs.python.org
+**Source:** docs.python.org (Added details by ChatGPT)
 
 ## 1994
 
@@ -49,7 +49,7 @@ Python 1.0 came out in January 1994. It added functional programming tools like 
 - **Lisp:** A family of programming languages known for their use of functions and symbolic expressions. It influenced ideas used in many other programming languages.
 - **Contributed:** Added or provided something to help develop or improve a project.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2000
 
@@ -67,7 +67,7 @@ Python 2.0, released in October 2000, introduced list comprehensions and a garba
 - **Community:** The group of people who use, develop, and contribute to Python.
 - **Open development:** A way of developing software that makes more of the work, discussions, and decisions visible to the public, allowing community members to participate.
 
-**Source:** docs.python.org
+**Source:** docs.python.org (Added details by ChatGPT)
 
 ## 2004
 
@@ -85,7 +85,7 @@ Tim Peters wrote 19 guiding principles for Python, like "Readability counts". In
 - **Python interpreter:** A program that executes Python code.
 - **Philosophy:** The set of ideas and beliefs that guide how something is designed or used.
 
-**Source:** peps.python.org
+**Source:** peps.python.org (Added details by ChatGPT)
 
 ## 2019
 
@@ -102,7 +102,7 @@ After Guido stepped down, Python's core developers voted for a new model: a five
 - **Regularly:** At repeated intervals, according to a schedule.
 - **Guido van Rossum:** The creator of Python, who stepped down as its BDFL in 2018 but joined the first Steering Council in 2019.
 
-**Source:** peps.python.org
+**Source:** peps.python.org (Added details by ChatGPT)
 
 ## 2022
 
@@ -117,7 +117,7 @@ Python 3.11, released in October 2022, runs typical programs between 10% and 60%
 - **Released:** Officially made available for people to use.
 - **10% to 60% faster:** Depending on the program, Python 3.11 could complete certain tasks in less time than Python 3.10. The improvement varies by workload.
 
-**Source:** docs.python.org
+**Source:** docs.python.org (Added details by ChatGPT)
 
 ## 2024
 
@@ -136,7 +136,7 @@ Python 3.13, released in October 2024, added an experimental build without the G
 - **CPython:** The most widely used implementation of Python, written mainly in C.
 - **Bytecode:** A lower-level set of instructions produced from Python code for the interpreter to execute.
 
-**Source:** docs.python.org
+**Source:** docs.python.org (Added details by ChatGPT)
 
 # Python People and Fun Facts
 
@@ -156,7 +156,7 @@ The title Benevolent Dictator For Life, or BDFL, is thought to have been first u
 - **Open-source project:** A software project whose source code is available for people to study, use, and modify under its license.
 - **Email:** An electronic message sent over the internet.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 1999
 
@@ -172,7 +172,7 @@ In 1999, Guido van Rossum sent a funding proposal called *Computer Programming f
 - **Everyday tasks:** Common activities, such as working with files, processing text, and automating repetitive work.
 - **Guido van Rossum:** The creator of Python.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2003
 
@@ -187,7 +187,7 @@ The original PyCon was held in North America in 2003. Today there are PyCon conf
 - **Code of conduct:** A set of rules explaining how people are expected to behave and treat one another at an event or within a community.
 - **Dozens:** Groups of twelve; in this context, it means many countries.
 
-**Source:** python.org, en.wikipedia.org
+**Source:** python.org, en.wikipedia.org (Added details by ChatGPT)
 
 ## 2013
 
@@ -202,7 +202,7 @@ In January 2013, Guido van Rossum started working at the file storage company Dr
 - **Software engineer:** A person who designs, develops, tests, and maintains software.
 - **Officially retired:** Formally stopped working in a professional career. In Guido's case, he later returned to work in the technology industry, so his retirement in 2019 was not permanent.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2020
 
@@ -218,7 +218,7 @@ On 12 November 2020, Guido van Rossum announced he was coming out of retirement.
 - **Technology strategy:** A plan for how a company will use and develop technology to achieve its goals.
 - **Announced:** Made information officially or publicly known.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2020
 
@@ -234,7 +234,7 @@ The TIOBE index tracks how popular programming languages are. Each year it names
 - **Gain in popularity:** An increase in how popular something is compared with an earlier period.
 - **Ranking:** An ordered list that places items according to a measurement or criterion.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 # Built with Python
 
@@ -254,7 +254,7 @@ In autumn 2003, Adrian Holovaty and Simon Willison, web programmers at the Lawre
 - **Open source:** Software whose source code is available for people to inspect, use, and modify under its license.
 - **Adrian Holovaty and Simon Willison:** The programmers who created Django while working on newspaper websites.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2005
 
@@ -272,7 +272,7 @@ Olivia Mackall announced Mercurial on 19 April 2005. It is a distributed version
 - **Open source:** Software whose source code is available for people to inspect, use, and modify under its license.
 - **Collaborate:** To work together toward a shared goal.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2010
 
@@ -289,7 +289,7 @@ Flask is a small web framework created by Armin Ronacher. He has said it began a
 - **Web application:** Software that runs on a web server and is accessed through a web browser, such as an online store or email service.
 - **Python web framework:** A framework built with Python that provides tools for handling web requests, URLs, and responses.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 2010
 
@@ -309,4 +309,4 @@ Instagram launched in October 2010, and its web backend was built with Django. I
 - **Social media platform:** An online service where people create, share, and interact with content.
 - **Database:** An organized collection of information that software can store, retrieve, and update.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
