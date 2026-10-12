@@ -162,6 +162,25 @@ In 1964, Louis Pouzin had the idea of using commands somehow like a programming 
 
 **Source:** en.wikipedia.org (Added details by Gemini AI)
 
+## 1978
+
+**The VT100 video terminal**
+
+DEC introduced the VT100 video terminal in August 1978. It was one of the first terminals to support ANSI escape codes, special sequences that move the cursor and change how text looks. Terminal programs today still understand those codes.
+
+- **DEC:** Stands for *Digital Equipment Corporation*, a computer company that developed computers and terminals, including the VT100.
+- **VT100:** A video terminal introduced by DEC in 1978. It allowed users to interact with a computer by typing commands and viewing text on a screen.
+- **Video terminal:** An electronic device consisting of a screen and a keyboard that lets a person communicate with a computer.
+- **ANSI:** Stands for *American National Standards Institute*, an organization that coordinates standards used in different industries.
+- **ANSI escape codes:** Special character sequences that control how text appears in a terminal. They can move the cursor, change text colors, clear parts of the screen, and perform other formatting actions.
+- **Escape code:** A sequence of characters that tells a terminal to perform a special action instead of displaying ordinary text.
+- **Cursor:** The visible indicator showing where the next character will appear on the screen.
+- **Terminal:** An interface that lets users interact with a computer by entering commands and viewing text output.
+- **Terminal program:** Software that provides a text-based interface for interacting with a computer or running commands.
+- **Support:** In computing, to recognize and correctly handle a feature or technology.
+
+**Source:** en.wikipedia.org
+
 ## 1984
 
 ### **The terminal becomes a window**
