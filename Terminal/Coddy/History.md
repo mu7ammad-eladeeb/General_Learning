@@ -137,6 +137,20 @@ Bill Joy used a Lear Siegler ADM-3A terminal, which had no separate arrow keys. 
 
 **Source:** en.wikipedia.org (Added details by Gemini AI)
 
+## 1979
+
+### **Why tar is named after tape**
+
+The tar command came to Unix in January 1979. Its name is short for tape archive, because it was made for storing files on magnetic tape. Today people mostly use it to bundle files into one archive.
+
+* **`tar` (Tape Archive):** A computer software utility in Unix and Unix-like systems used to combine multiple files and directories into a single composite archive file.
+* **Magnetic Tape Storage:** A sequential access physical storage medium consisting of a thin, magnetizable coating on a long strip of plastic film, heavily utilized in early computing for data backups.
+* **Tarball:** A common colloquial term for a single archive file produced by the `tar` command, often compressed using secondary tools like `gzip` (`.tar.gz`) or `bzip2` (`.tar.bz2`).
+* **Archive File:** A single file containing one or more sub-files alongside associated metadata (such as permissions, timestamps, and directory structure), created to simplify storage and transfer.
+* **Sequential Access:** A data storage access method where data is read or written in a continuous linear sequence, characteristic of magnetic tape drives and the linear design of `tar`.
+
+**Source:** en.wikipedia.org (Added details by Gemini AI)
+
 ## 1980
 
 ### **Where sudo was born**
