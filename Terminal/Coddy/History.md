@@ -1,5 +1,24 @@
 # The Birth of Unix
 
+## 1969
+
+**The first three programs**
+
+In August 1969, Ken Thompson wrote the first key parts of Unix on a PDP-7 at Bell Labs. They were an assembler, an editor called ed and a shell. The rest of the system grew around them.
+
+- **Ken Thompson:** An American computer scientist who helped create the Unix operating system.
+- **Unix:** An operating system originally developed at Bell Labs. It introduced ideas and tools that influenced many modern operating systems, including Linux and macOS.
+- **PDP-7:** A small computer manufactured by Digital Equipment Corporation (DEC). Ken Thompson used it to develop the early version of Unix.
+- **Bell Labs:** Short for Bell Telephone Laboratories, a research and development organization where Unix was created.
+- **Assembler:** A program that translates assembly language, which uses short symbolic instructions, into machine code that a computer's processor can execute.
+- **Editor (`ed`):** A text-editing program used to create and modify text. The Unix editor `ed` was a line-based editor, meaning users edited text by specifying individual lines or ranges of lines.
+- **Shell:** A program that provides a command-line interface, allowing users to type commands to run programs and interact with the operating system.
+- **Operating system:** The main software that manages a computer's hardware and resources and provides services for other programs.
+- **System:** In this context, the collection of software components that together form an operating system.
+- **Grew around them:** Means that additional parts of Unix were developed after these three foundational programs, gradually building a more complete operating system.
+
+**Source:** en.wikipedia.org (Added details by ChatGPT)
+
 ## 1973
 
 ### **An operating system written in C**
@@ -179,7 +198,7 @@ DEC introduced the VT100 video terminal in August 1978. It was one of the first 
 - **Terminal program:** Software that provides a text-based interface for interacting with a computer or running commands.
 - **Support:** In computing, to recognize and correctly handle a feature or technology.
 
-**Source:** en.wikipedia.org
+**Source:** en.wikipedia.org (Added details by ChatGPT)
 
 ## 1984
 
