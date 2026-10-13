@@ -899,3 +899,96 @@ ls img_?.jpg   # matches img_1.jpg, img_2.jpg but NOT img_10.jpg
 
 - Use **`?`** when you know exactly how many characters vary.
 - Use **`*`** when the number of varying characters is unknown.
+
+## Bracket Wildcards
+
+The bracket wildcard `[]` matches exactly one character from a specific set or range of characters that you define inside the brackets.
+
+For example, if you have these files:
+
+```text
+file1.txt
+file2.txt
+file3.txt
+file4.txt
+file5.txt
+```
+
+### Matching specific characters
+
+Match only files with `1`, `2`, or `3`:
+
+```bash
+ls file[123].txt
+```
+
+**Output:**
+
+```text
+file1.txt
+file2.txt
+file3.txt
+```
+
+- `[]`: Matches exactly one character from the set of characters inside the brackets.
+- `[123]`: Matches one character that is either `1`, `2`, or `3`.
+- `ls`: A command that lists files and directories.
+
+### Using ranges inside brackets
+
+Instead of listing every character, you can use a range with a hyphen `-`:
+
+```bash
+ls file[1-3].txt    # same as [123]
+ls file[a-z].txt    # matches any lowercase letter
+ls file[A-Z].txt    # matches any uppercase letter
+ls file[0-9].txt    # matches any single digit
+```
+
+- `-`: Defines a range between two characters.
+- `[1-3]`: Matches one digit from `1` to `3`.
+- `[a-z]`: Matches one lowercase letter from `a` to `z`.
+- `[A-Z]`: Matches one uppercase letter from `A` to `Z`.
+- `[0-9]`: Matches one digit from `0` to `9`.
+- **Lowercase:** Letters from `a` to `z`.
+- **Uppercase:** Letters from `A` to `Z`.
+- **Digit:** A numeric character from `0` to `9`.
+
+### Negating a bracket pattern
+
+Use `!` or `^` at the start of the bracket expression to match any character **not** in the specified set:
+
+```bash
+ls file[!45].txt    # matches file1, file2, file3 but NOT file4 or file5
+ls file[^45].txt    # same result
+```
+
+- `!`: When placed immediately after `[`, it excludes the listed characters in Bash and many other shells.
+- `^`: Also indicates negation in many shells, including Bash, when placed immediately after `[`.
+- **Negating:** Excluding specified characters from a match.
+- `[!45]` or `[^45]`: Matches one character other than `4` or `5`.
+
+**Note:** These patterns match filenames only if the corresponding files exist. For example, `file[!45].txt` can match `file1.txt`, `file2.txt`, or `file3.txt` among the example files, but it can also match other single-character filenames such as `filea.txt` if they exist.
+
+### Combining character sets
+
+You can combine individual characters and ranges in the same bracket expression:
+
+```bash
+ls file[1-3a-c].txt
+```
+
+This matches:
+
+- `file1.txt`
+- `file2.txt`
+- `file3.txt`
+- `filea.txt`
+- `fileb.txt`
+- `filec.txt`
+
+- `[1-3a-c]`: Matches exactly one character that is either a digit from `1` to `3` or a lowercase letter from `a` to `c`.
+- **Character set:** A collection of characters that a pattern is allowed to match.
+- **Wildcard pattern:** A pattern used by the shell to find filenames that match specified rules.
+
+**Key takeaway:** Bracket wildcards match **exactly one character** from a set or range. They are useful when you want to match specific characters, character ranges, or everything except certain characters.
