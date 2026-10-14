@@ -992,3 +992,152 @@ This matches:
 - **Wildcard pattern:** A pattern used by the shell to find filenames that match specified rules.
 
 **Key takeaway:** Bracket wildcards match **exactly one character** from a set or range. They are useful when you want to match specific characters, character ranges, or everything except certain characters.
+
+## Combining Wildcards
+
+The real power of wildcards comes when you **combine them together**. You can mix `*`, `?`, and `[]` in a single pattern to create very precise file matching.
+
+Given this filesystem:
+
+```text
+photo_1.jpg
+photo_2.jpg
+photo_10.jpg
+photo_1.png
+photo_2.png
+report_1.txt
+report_2.txt
+notes.txt
+```
+
+### Combining `*` and `[]`
+
+List image files with the extensions `.jpg` and `.png`:
+
+```bash
+ls *.[jp]*
+```
+
+This matches filenames containing a dot followed by `j` or `p`, then any number of additional characters. For the example files, it matches `.jpg` and `.png` files.
+
+You can also use **brace expansion** to list files with specific extensions:
+
+```bash
+ls *.{jpg,png}
+```
+
+- `*`: Matches zero or more characters.
+- `[jp]`: Matches exactly one character, either `j` or `p`.
+- `.{jpg,png}`: Brace expansion generates separate patterns, `*.jpg` and `*.png`, before the shell runs `ls`.
+- **Brace expansion:** A shell feature that generates multiple strings from a pattern containing braces and comma-separated alternatives.
+
+**Note:** `*.[jp]*` can also match other extensions beginning with `j` or `p`, such as `.jpeg`. It is broader than matching only `.jpg` and `.png`.
+
+### Combining `?` and `[]`
+
+List only single-digit photo files ending in `.jpg`:
+
+```bash
+ls photo_[0-9].jpg
+```
+
+This matches:
+
+```text
+photo_1.jpg
+photo_2.jpg
+```
+
+It does not match `photo_10.jpg` because `[0-9]` matches exactly one digit.
+
+- `?`: Matches exactly one character of any kind.
+- `[0-9]`: Matches exactly one digit from `0` to `9`.
+- **Single-digit:** A number represented by one digit, such as `1` or `7`.
+
+### Combining all three wildcards
+
+Match report files with a single digit before `.txt`:
+
+```bash
+ls *_[0-9].txt
+```
+
+This matches:
+
+```text
+report_1.txt
+report_2.txt
+```
+
+Explanation:
+
+- `*`: Matches zero or more characters before the underscore.
+- `_`: Matches a literal underscore.
+- `[0-9]`: Matches exactly one digit.
+- `.txt`: Matches the literal `.txt` extension.
+
+Now match files that start with `p` or `r`, followed by any characters, an underscore, exactly one character, and `.txt`:
+
+```bash
+ls [pr]*_?.txt
+```
+
+This matches:
+
+```text
+report_1.txt
+report_2.txt
+```
+
+Explanation:
+
+- `[pr]`: Matches exactly one character, either `p` or `r`.
+- `*`: Matches zero or more characters after the first character.
+- `_`: Matches a literal underscore.
+- `?`: Matches exactly one character after the underscore.
+- `.txt`: Matches the literal `.txt` extension.
+
+**Important:** In the example filesystem, `notes.txt` does not match because its name does not contain the required underscore and extra character before `.txt`.
+
+### Using wildcards with other commands
+
+Wildcards work with many shell commands, not just `ls`.
+
+#### Move single-digit JPG photos into a folder
+
+```bash
+mv photo_[0-9].jpg archive/
+```
+
+This moves files such as `photo_1.jpg` and `photo_2.jpg` into the `archive/` directory.
+
+- `mv`: Moves files or directories, and can also rename them.
+- `archive/`: The destination directory. It must already exist for this command to work as intended.
+
+#### Delete `.log` files from immediate subfolders
+
+```bash
+rm */*.log
+```
+
+This removes `.log` files located one directory level below the current directory.
+
+- `rm`: Removes files.
+- `*/*.log`: Matches files whose parent directory is one level below the current directory and whose names end in `.log`.
+- **Subfolder:** A directory inside another directory.
+- **Immediate subfolder:** A directory directly inside the current directory, rather than a deeper nested directory.
+
+**Warning:** `rm` deletes files without moving them to a recycle bin in typical command-line environments. Check what a wildcard matches before running a deletion command. You can preview matching paths with:
+
+```bash
+ls */*.log
+```
+
+### Key takeaway
+
+- `*` matches zero or more characters.
+- `?` matches exactly one character.
+- `[]` matches exactly one character from a specified set or range.
+- `{a,b}` uses brace expansion to generate alternatives; it is not a wildcard itself.
+
+Combining these patterns lets you select files precisely for listing, moving, copying, or deleting.
