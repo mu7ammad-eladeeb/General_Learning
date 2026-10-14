@@ -902,3 +902,109 @@ Goals -
 - Create highly cohesive and robust classes and functions.
 - Promote class composition.
 - Avoid code duplication.
+
+## Open-Closed Principle
+
+> *"Software entities should be open for extension, but closed for modification."*
+
+The **Open-Closed Principle (OCP)** states that a function, module, or class should allow its behavior to be extended without requiring changes to its existing code.
+
+This is one of the five principles of **SOLID**, a set of guidelines for designing maintainable and flexible object-oriented software.
+
+### Example: A class that converts TXT files
+
+Let's say we have a class called `TxtConvertor` that converts TXT files to JSON or XML:
+
+```python
+class TxtConvertor:
+    def convert_to_json(self, file):
+        print("converts file to json")
+
+    def convert_to_xml(self, file):
+        print("converts file to xml")
+```
+
+This structure violates the Open-Closed Principle because adding a new conversion format requires modifying the existing class.
+
+#### Why?
+
+For example, if we want to add support for converting TXT files to HTML, we would have to modify the existing `TxtConvertor` class by adding another method:
+
+```python
+def convert_to_html(self, file):
+    print("converts file to html")
+```
+
+As the number of supported formats grows, the class keeps changing to accommodate each new format. This makes the code harder to maintain and extend.
+
+- **Open for extension:** We should be able to add new functionality, such as HTML conversion.
+- **Closed for modification:** We should avoid changing existing, working code whenever we add new functionality.
+- **Violation:** Adding a new conversion format requires modifying the original class.
+
+### So, what should we do?
+
+One solution is to create an **abstract base class** that defines the common interface for all converters. Each specific converter can then implement its own conversion behavior.
+
+```python
+from abc import ABC, abstractmethod
+
+
+class TxtConvertor(ABC):
+    @abstractmethod
+    def convert(self, file):
+        pass
+
+
+class TxtConvertorToJson(TxtConvertor):
+    def convert(self, file):
+        print("converts file to json")
+
+
+class TxtConvertorToXml(TxtConvertor):
+    def convert(self, file):
+        print("converts file to xml")
+
+
+class TxtConvertorToHtml(TxtConvertor):
+    def convert(self, file):
+        print("converts file to html")
+```
+
+#### Explanation of the solution
+
+1. **`from abc import ABC, abstractmethod`** imports the tools needed to define an abstract base class and abstract methods.
+2. **`class TxtConvertor(ABC)`** defines an abstract base class that establishes a common interface for all TXT converters.
+3. **`@abstractmethod`** marks `convert()` as a method that subclasses must implement before their objects can be instantiated.
+4. **`def convert(self, file):`** defines the common method signature. Each converter provides its own implementation.
+5. **`pass`** is a placeholder that does nothing. It allows the abstract method to have a body, even though subclasses are expected to implement it.
+6. **`TxtConvertorToJson`, `TxtConvertorToXml`, and `TxtConvertorToHtml`** are concrete subclasses that implement the `convert()` method for their respective formats.
+
+Now, if we want to support another format, such as PDF, we can create a new subclass without modifying the existing converters:
+
+```python
+class TxtConvertorToPdf(TxtConvertor):
+    def convert(self, file):
+        print("converts file to pdf")
+```
+
+This makes the design easier to extend because each new format gets its own class.
+
+### Important terms
+
+- **Abstract base class (ABC):** A class designed to define a common interface or shared behavior for its subclasses. It generally cannot be instantiated directly when it contains unimplemented abstract methods.
+- **Subclass:** A class that inherits from another class.
+- **Inheritance:** An object-oriented programming feature that allows one class to inherit behavior and structure from another class.
+- **Interface:** A set of methods that a class is expected to provide.
+- **Implementation:** The actual code that performs a method's task.
+- **Concrete class:** A class that implements all required abstract methods and can be instantiated.
+- **`self`:** A reference to the current object instance, used to access its methods and attributes.
+- **`file`:** A parameter representing the file or file-related data to convert. In this example, the methods only print messages; they do not perform actual file conversion.
+- **SOLID:** Five object-oriented design principles intended to help developers create maintainable and extensible software.
+
+> **Note:** The example demonstrates the design principle rather than a complete file-conversion system. In a real application, each `convert()` method would contain the actual conversion logic.
+
+### Learn more
+
+The Python `abc` library supports abstract base classes.
+
+You can read more [here](https://docs.python.org/3/library/abc.html)
