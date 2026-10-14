@@ -1158,3 +1158,119 @@ This means both child classes can be used wherever a `Notification` object is ex
 - **Interface:** The methods and expected behavior that a class exposes to other code.
 - **Substitutable:** Able to replace something else without breaking the expected behavior.
 - **SOLID:** Five object-oriented design principles that help make software easier to maintain and extend.
+
+## **Interface segregation**
+
+> *"Many client-specific interfaces are better than one general-purpose interface."*
+
+An interface is a description of behaviors that an object can do.
+
+**The interface segregation** principle states that an interface should be as small a possible in terms of cohesion. In other words, it should only do **ONE** thing.
+
+Let's see a bad example and we will fix it,
+
+```python
+from abc import ABC, abstractmethod
+
+
+class Animal(ABC):
+    @abstractmethod
+    def walk(self):
+        pass
+
+    @abstractmethod
+    def swim(self):
+        pass
+```
+
+This is interface with multiple responsibilities!
+
+And we will have problem when implementing this,
+
+```python
+class Frog(Animal):
+    def walk(self):
+        print("Walking")
+
+    def swim(self):
+        print("Swimming")
+
+
+class Giraffe(Animal):
+    def walk(self):
+        print("Walking")
+
+    def swim(self):
+        raise Exception("Girrafe cannot swim!")
+```
+
+As you see this interface is not compatible with animals which cannot walk and swim!
+
+### **Challenge**
+
+Easy
+
+Let's fix the above example by implementing **`Walkable`** and **`Swimable`** classes, you are given **`Frog`** and **`Giraffe`** classes which implements the new classes
+
+Tasks:
+
+- Create abstract class **`Walkable`** which has only one abstract function **`walk(self)`**
+- Create abstract class **`Swimable`** which has only one abstract function **`swim(self)`**
+
+Do not change the given code!
+
+> *Notice that now each interface has only one responsibility and follows the principle.*
+
+### **Solution:**
+
+```python
+from abc import ABC, abstractmethod
+
+
+class Walkable(ABC):
+    @abstractmethod
+    def walk(self):
+        pass
+
+
+class Swimable(ABC):
+    @abstractmethod
+    def swim(self):
+        pass
+
+
+class Frog(Walkable, Swimable):
+    def walk(self):
+        print("Walking")
+
+    def swim(self):
+        print("Swimming")
+
+
+class Giraffe(Walkable):
+    def walk(self):
+        print("Walking")
+
+
+if __name__ == "__main__":
+    animal_type = input()
+    if animal_type == "frog":
+        animal = Frog()
+        animal.walk()
+        animal.swim()
+    elif animal_type == "giraffe":
+        animal = Giraffe()
+        animal.walk()
+        print("not Swimming")
+```
+
+#### **Brief explanation of the solution**
+
+- **`Walkable(ABC)`** defines an abstract interface for animals that can walk. It requires the `walk()` method.
+- **`Swimable(ABC)`** defines a separate abstract interface for animals that can swim. It requires the `swim()` method.
+- **`Frog(Walkable, Swimable)`** inherits from both interfaces because a frog can walk and swim. It implements both methods.
+- **`Giraffe(Walkable)`** inherits only from `Walkable` because a giraffe can walk but does not need to implement `swim()`.
+- **`@abstractmethod`** requires subclasses to implement the specified method before their objects can be created.
+- **`pass`** is a placeholder for the method implementation.
+
+**Why this follows the Interface Segregation Principle:** Each interface has only one responsibility. Classes implement only the behaviors they need, so `Giraffe` is not forced to implement a swimming method it cannot use.
