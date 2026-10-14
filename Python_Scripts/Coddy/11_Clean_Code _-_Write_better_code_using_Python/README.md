@@ -1008,3 +1008,153 @@ This makes the design easier to extend because each new format gets its own clas
 The Python `abc` library supports abstract base classes.
 
 You can read more [here](https://docs.python.org/3/library/abc.html)
+
+## **Liskov substitution**
+
+> *"Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it."*
+
+This principle states that a child class must be substitutable from its parent class.
+
+For example,
+
+```python
+class Notification(ABC):
+    @abstractmethod
+    def notify(self, message, email):
+        pass
+
+
+class Email(Notification):
+    def notify(self, message, email):
+        print(f'Send {message} to {email}')
+
+
+class SMS(Notification):
+    def notify(self, message, phone):
+        print(f'Send {message} to {phone}')
+```
+
+As you can see both **`SMS`** and **`Email`** inherit from Notification but one is sending to **`email`** and one to **`phone`**, the **`SMS`** class is not substitutable from its parent **`Notification`**!
+
+
+### **Challenge**
+
+Medium
+
+Fix the given code to apply Liskov substitution principle -
+
+- **`notify`** function should only get **`message`** as argument.
+
+- **`Email`** and **`SMS`** should each have constructor which will initiate **`email`** and **`phone`** accordingly.
+
+- Edit the code to apply the changes.
+
+> *This is only one suggested solution to apply Liskov principle there are more that will work!*
+
+#### **Hints**
+
+Hint 1
+
+Your **`Email`** class should look like this,
+
+```python
+class Email(Notification):
+    def __init__(self, email):
+        self.email = email
+
+    def notify(self, message):
+        print(f'Send {message} to {self.email}')
+```
+
+Now change accordingly for **`SMS`** and the main code!
+
+Hint 2
+
+Don't forget to change the main function,
+
+```python
+if __name__ == '__main__':
+    email = input()
+    phone = input()
+    message = input()
+    notification1 = Email(email)
+    notification2 = SMS(phone)
+    notification1.notify(message)
+    notification2.notify(message)
+```
+
+### **Solution:**
+
+```python
+from abc import ABC, abstractmethod
+
+
+class Notification(ABC):
+    @abstractmethod
+    def notify(self, message):
+        pass
+
+
+class Email(Notification):
+    def __init__(self, email):
+        self.email = email
+
+    def notify(self, message):
+        print(f'Send {message} to {self.email}')
+
+
+class SMS(Notification):
+    def __init__(self, phone):
+        self.phone = phone
+
+    def notify(self, message):
+        print(f'Send {message} to {self.phone}')
+
+
+if __name__ == '__main__':
+    email = input()
+    phone = input()
+    message = input()
+    notification1 = Email(email)
+    notification2 = SMS(phone)
+    notification1.notify(message)
+    notification2.notify(message)
+```
+
+#### **Explanation of solution**
+
+1. **`from abc import ABC, abstractmethod`** imports the tools needed to define an abstract base class and abstract methods.
+2. **`class Notification(ABC)`** defines an abstract base class that establishes a common interface for all notification types.
+3. **`@abstractmethod`** marks `notify()` as a method that subclasses must implement before their objects can be instantiated.
+4. **`def notify(self, message):`** defines the common method signature. Both `Email` and `SMS` must implement this method with the same parameter.
+5. **`pass`** is a placeholder that does nothing. It allows the abstract method to have a body, even though subclasses are expected to implement it.
+6. **`class Email(Notification)`** defines a child class that inherits from `Notification`.
+7. **`def __init__(self, email):`** is the constructor that receives the email address when an `Email` object is created.
+8. **`self.email = email`** stores the email address inside the object so the `notify()` method can use it later.
+9. **`def notify(self, message):`** implements the notification behavior for email. It receives only the message and uses the stored email address as the recipient.
+10. **`class SMS(Notification)`** defines another child class that inherits from `Notification`.
+11. **`def __init__(self, phone):`** is the constructor that receives the phone number when an `SMS` object is created.
+12. **`self.phone = phone`** stores the phone number inside the object.
+13. **`def notify(self, message):`** implements the notification behavior for SMS. It receives only the message and uses the stored phone number as the recipient.
+14. **`if __name__ == '__main__':`** checks whether the Python file is being executed directly.
+15. **`input()`** reads the email address, phone number, and message from the user.
+16. **`notification1 = Email(email)`** creates an email notification object and stores the email address in it.
+17. **`notification2 = SMS(phone)`** creates an SMS notification object and stores the phone number in it.
+18. **`notification1.notify(message)`** calls the email implementation of `notify()`.
+19. **`notification2.notify(message)`** calls the SMS implementation of `notify()`.
+
+#### **Why solution follows the Liskov Substitution Principle**
+
+Both `Email` and `SMS` inherit from `Notification` and implement the same `notify(message)` interface. The recipient information is initialized in each class's constructor, so the calling code only needs to pass the message.
+
+This means both child classes can be used wherever a `Notification` object is expected, without requiring the calling code to know which specific notification type it is using.
+
+### **Important terms**
+
+- **Abstract base class (ABC):** A class designed to define a common interface for its subclasses.
+- **Subclass:** A class that inherits from another class.
+- **Constructor (`__init__`):** A special method that initializes an object when it is created.
+- **Method signature:** The method's name and its parameters.
+- **Interface:** The methods and expected behavior that a class exposes to other code.
+- **Substitutable:** Able to replace something else without breaking the expected behavior.
+- **SOLID:** Five object-oriented design principles that help make software easier to maintain and extend.
