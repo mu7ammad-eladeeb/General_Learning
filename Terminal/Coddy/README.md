@@ -1141,3 +1141,67 @@ ls */*.log
 - `{a,b}` uses brace expansion to generate alternatives; it is not a wildcard itself.
 
 Combining these patterns lets you select files precisely for listing, moving, copying, or deleting.
+
+## Head And Tail
+
+When working with large files, you often don't need to read the entire file. You just need to see the beginning or the end. The **`head`** and **`tail`** commands let you do exactly that.
+
+### The `head` command
+
+The **`head`** command shows the **first lines** of a file. By default, it shows the first 10 lines:
+
+```bash
+head log.txt
+```
+
+To specify how many lines to show, use the **`-n`** flag:
+
+```bash
+head -n 3 log.txt   # show first 3 lines
+head -n 1 log.txt   # show only the first line
+```
+
+- **`head`**: Displays the beginning of a file.
+- **`-n`**: Specifies the number of lines to display.
+- **`log.txt`**: The name of the file being read.
+- **Flag (option):** An argument that changes how a command behaves.
+
+### The `tail` command
+
+The **`tail`** command shows the **last lines** of a file. By default, it shows the last 10 lines:
+
+```bash
+tail log.txt
+```
+
+To specify how many lines to show:
+
+```bash
+tail -n 3 log.txt   # show last 3 lines
+tail -n 1 log.txt   # show only the last line
+```
+
+- **`tail`**: Displays the end of a file.
+- **`-n`**: Specifies the number of lines to display.
+- **Log file:** A file that records events, activities, or messages produced by a program or system.
+
+### When to use each
+
+- Use **`head`** to preview the structure or header of a file.
+- Use **`tail`** to check the most recent entries in a log file.
+
+### A useful trick: combining both
+
+You can use both commands together to see the start and end of a file at the same time:
+
+```bash
+head -n 2 log.txt
+tail -n 2 log.txt
+```
+
+- `head -n 2 log.txt` displays the first two lines.
+- `tail -n 2 log.txt` displays the last two lines.
+
+**Note:** These are two separate commands, so they display their results one after the other.
+
+**Key takeaway:** Use `head` to inspect the beginning of a file and `tail` to inspect its end without displaying the entire contents.
