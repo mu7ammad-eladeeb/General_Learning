@@ -1205,3 +1205,81 @@ tail -n 2 log.txt
 **Note:** These are two separate commands, so they display their results one after the other.
 
 **Key takeaway:** Use `head` to inspect the beginning of a file and `tail` to inspect its end without displaying the entire contents.
+
+## **Word Count**
+
+The **`wc`** command stands for **word count**. It counts the number of lines, words and characters in a file.
+
+we have **`notes.txt`**:
+
+```text
+Buy groceries from the store
+Call the doctor tomorrow morning
+Finish the terminal course today
+Read the new book this weekend
+Clean up the project folder
+```
+
+Simply type **`wc`** followed by the filename:
+
+```bash
+wc notes.txt
+```
+
+The output shows three numbers followed by the filename:
+
+```text
+  5  26  154 notes.txt
+```
+
+- First number: number of **lines**
+- Second number: number of **words**
+- Third number: number of **bytes** (the same as the character count for plain English text)
+
+You can also use flags to get only the information you need:
+
+**`-l`**: count only **lines**:
+
+```bash
+wc -l notes.txt
+```
+
+**`-w`**: count only **words**:
+
+```bash
+wc -w notes.txt
+```
+
+**`-c`**: count only **bytes** (use **`-m`** for characters, which differs for accented or non-Latin text):
+
+```bash
+wc -c notes.txt
+```
+
+**Counting multiple files at once:**
+
+```bash
+wc -l *.txt   # count lines in all .txt files
+```
+
+**How does `wc -l` count lines?**
+
+**`wc -l`** counts **newline characters** (**`\n`**), not the number of visible lines. This means if your file has 5 lines but the last line has **no newline at the end**, **`wc -l`** will report **`4`** instead of **`5`**.
+
+This is standard Unix behavior: a proper text file should always end with a newline character on the last line. Most text editors add this automatically.
+
+```bash
+wc -l notes.txt
+5 notes.txt   # correct: last line ends with newline
+
+wc -l notes.txt
+4 notes.txt   # missing newline at end of file
+```
+
+### **Common use cases:**
+
+- Check how many lines are in a large log file
+- Count words in a document
+- Verify a file has the expected number of entries
+
+**Note:** The example output `5 26 154 notes.txt` assumes the file contains five newline-terminated lines with the stated byte count. The exact counts depend on the file's contents, spacing, encoding, and whether the last line ends with a newline.
